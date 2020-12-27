@@ -139,7 +139,14 @@ endm ValidateName
 	endgameInfo     db '*to end the game press ESC$'
 	notifactionBar  db '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  $'
 	welcomePosition dw 0h
-
+	scoreMessage1	db 'Score #1: $'
+	scoreMessage2	db 'Score #2: $'
+	player1Score	db 0h
+	player2Score	db 0h
+	livesMessage1	db 'Lives #1: $'
+	livesMessage2	db 'Lives #2: $'
+	player1Lives	db 3h
+	player2lives	db 3h
 .code
 main proc far
 	                    mov           ax, @data
@@ -226,7 +233,23 @@ main proc far
 	
 	loadingMenu:        SetTextMode                          	;Just to ensure that the F2 check key is working is to later changed to the loading screen
 	                    displaystring welcomeMessage1
-	dummy:              jmp           dummy
+						SetVideoMode
+	temp:				
+						mov dx,2
+						movecursor 
+						displaystring	ScoreMessage1
+						mov dx,20
+						movecursor
+						displaystring	ScoreMessage2
+						mov dl,2
+						mov dh,70
+						movecursor
+						displaystring   LivesMessage1
+						mov dl,15
+						mov dh,50
+						movecursor
+						displaystring	LivesMessage2
+	dummy:				jmp           dummy
 
 	terminate:          
 	                    mov           ah, 4ch
