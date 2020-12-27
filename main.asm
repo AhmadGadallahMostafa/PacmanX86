@@ -87,11 +87,31 @@ SetTextMode macro   ;80x25 16 color , 8 pages
 		int 10h
 endm SetTextMode
 
-SetvideoMode macro   
+;-------------------------------------------------------------------------------------------------------------------------------------------
+
+SetvideoMode macro   ;320x200 pixel supporting 256 colors , 40x25 , (40 -> col - > x - > dl) , (25 -> row -> y -> dh)
 		mov ah,0
 		mov al,13h
 		int 10h
 endm SetvideoMode
+;------------------------------------------------------------------------------------------------------------------------------------------
+
+;usage 
+;mov si,@data
+;call macro
+displayTextVideoMode macro lengthString,xPosition,yPosition,string,color			
+mov ah,13h
+mov al,0
+mov bh,0
+mov bl,color   
+mov ch,0
+mov cl,lengthString
+mov dh,yPosition
+mov dl,xPosition
+mov es,si
+mov bp,offset string
+int 10h
+endm displayTextVideoMode
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -139,13 +159,13 @@ endm ValidateName
 	endgameInfo     db '*to end the game press ESC$'
 	notifactionBar  db '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  $'
 	welcomePosition dw 0h
-	scoreMessage1	db 'Score #1: $'
-	scoreMessage2	db 'Score #2: $'
-	player1Score	db 0h
-	player2Score	db 0h
-	livesMessage1	db 'Lives #1: $'
-	livesMessage2	db 'Lives #2: $'
-	player1Lives	db 3h
+	scoreMessage1   db 'Score #1: $'
+	scoreMessage2   db 'Score #2: $'
+	player1Score    db 0h
+	player2Score    db 0h
+	livesMessage1   db 'Lives #1: $'
+	livesMessage2   db 'Lives #2: $'
+	player1Lives    db 3h
 	player2lives	db 3h
 .code
 main proc far
@@ -233,23 +253,23 @@ main proc far
 	
 	loadingMenu:        SetTextMode                          	;Just to ensure that the F2 check key is working is to later changed to the loading screen
 	                    displaystring welcomeMessage1
-						SetVideoMode
-	temp:				
-						mov dx,2
-						movecursor 
-						displaystring	ScoreMessage1
-						mov dx,20
-						movecursor
-						displaystring	ScoreMessage2
-						mov dl,2
-						mov dh,70
-						movecursor
-						displaystring   LivesMessage1
-						mov dl,15
-						mov dh,50
-						movecursor
-						displaystring	LivesMessage2
-	dummy:				jmp           dummy
+	                    SetVideoMode
+	temp:               
+	                    mov           dx,2
+	                    movecursor
+	                    displaystring ScoreMessage1
+	                    mov           dx,20
+	                    movecursor
+	                    displaystring ScoreMessage2
+	                    mov           dl,2
+	                    mov           dh,70
+	                    movecursor
+	                    displaystring LivesMessage1
+	                    mov           dl,15
+	                    mov           dh,50
+	                    movecursor
+	                    displaystring LivesMessage2
+	dummy:              jmp           dummy
 
 	terminate:          
 	                    mov           ah, 4ch
