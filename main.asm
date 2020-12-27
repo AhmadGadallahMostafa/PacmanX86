@@ -81,11 +81,17 @@ endm MoveCursor
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
 
-SetTextMode macro
+SetTextMode macro   ;80x25 16 color , 8 pages 
 		mov ah,0
 		mov al,03h
 		int 10h
 endm SetTextMode
+
+SetvideoMode macro   
+		mov ah,0
+		mov al,13h
+		int 10h
+endm SetvideoMode
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -121,68 +127,109 @@ endm ValidateName
 .stack 64
 
 .data
-	player1Name		db 15 , ? , 30 dup("$")			;variable holding player 1 name
-	player2Name		db 15 , ? , 30 dup("$")			;variable holding player 2 name
-	nameMessage		db 'Please Enter Your Name: $'	;Message displayed to prompt the user to enter his name
-	enterMessage	db 'Press Enter to Continue$'
-	welcomeMessage1	db 'Welcome To Our Game, Player 1!$'
-	welcomeMessage2	db 'Welcome To Our Game, Player 2!$'
-	warningMessage	db '$$Please Enter a Valid Name!$'
-	welcomePosition	dw 0h
+	player1Name     db 15 , ? , 30 dup("$")                                                                	;variable holding player 1 name
+	player2Name     db 15 , ? , 30 dup("$")                                                                	;variable holding player 2 name
+	nameMessage     db 'Please Enter Your Name: $'                                                         	;Message displayed to prompt the user to enter his name
+	enterMessage    db 'Press Enter to Continue$'
+	welcomeMessage1 db 'Welcome To Our Game, Player 1!$'
+	welcomeMessage2 db 'Welcome To Our Game, Player 2!$'
+	warningMessage  db '$$Please Enter a Valid Name!$'
+	chattingInfo    db '*To start chatting press F1$'
+	gameStartInfo   db '*To Start the Game press F2$'
+	endgameInfo     db '*to end the game press ESC$'
+	notifactionBar  db '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  $'
+	welcomePosition dw 0h
 
 .code
 main proc far
-		mov ax, @data
-		mov ds, ax
-	player1:    ;Reading first player name and saving it to player1name
-		SetTextMode
-		mov dx, 0000
-		MoveCursor
-		displaystring welcomeMessage1
-		mov dx, 0d0dh
-		MoveCursor
-		displaystring enterMessage
-		mov dx, 0e0dh
-		MoveCursor
-		displaystring warningMessage
-		mov dx, 0A0dh
-		MoveCursor
-		ReadString nameMessage,player1Name
-		ValidateName player1Name
-		cmp bl, 0
-		je showWarning1
-		jmp player2
-	showWarning1:
-		lea si, warningMessage
-		mov [si], 0
-		jmp player1
-	player2:    ;Reading second player name and saving it to player2name
-		SetTextMode
-		mov dx, 0000
-		MoveCursor
-		displaystring welcomeMessage2
-		mov dx, 0d0dh
-		MoveCursor
-		displaystring enterMessage
-		mov dx, 0e0dh
-		MoveCursor
-		displaystring warningMessage
-		mov dx, 0A0dh
-		MoveCursor
-		ReadString nameMessage,player2Name
-		ValidateName player2name
-		cmp bl, 0
-		je showWarning2
-		jmp nextScreen
-	showWarning2:
-		lea si, warningMessage
-		mov [si], 0
-		jmp player2
-	nextScreen:
-		SetTextMode
+	                    mov           ax, @data
+	                    mov           ds, ax
+	player1:                                                 	;Reading first player name and saving it to player1name
+	                    SetTextMode
+	                    mov           dx, 0000
+	                    MoveCursor
+	                    displaystring welcomeMessage1
+	                    mov           dx, 0d0dh
+	                    mov           dl,25d
+	                    MoveCursor
+	                    displaystring enterMessage
+	                    mov           dx, 0f0dh
+	                    mov           dl,23d
+	                    MoveCursor
+	                    displaystring warningMessage
+	                    mov           dx, 0a0dh
+	                    mov           dl,25d
+	                    MoveCursor
+	                    ReadString    nameMessage,player1Name
+	                    ValidateName  player1Name
+	                    cmp           bl, 0
+	                    je            showWarning1
+	                    jmp           player2
+	showWarning1:       
+	                    lea           si, warningMessage
+	                    mov           [si], 0
+	                    jmp           player1
+	player2:                                                 	;Reading second player name and saving it to player2name
+	                    SetTextMode
+	                    mov           dx, 0000
+	                    MoveCursor
+	                    displaystring welcomeMessage2
+	                    mov           dx, 0d0dh
+	                    mov           dl,25d
+	                    MoveCursor
+	                    displaystring enterMessage
+	                    mov           dx, 0f0dh
+	                    mov           dl,23d
+	                    MoveCursor
+	                    displaystring warningMessage
+	                    mov           dx, 0A0dh
+	                    mov           dl,25d
+	                    MoveCursor
+	                    ReadString    nameMessage,player2Name
+	                    ValidateName  player2name
+	                    cmp           bl, 0
+	                    je            showWarning2
+	                    jmp           mainMenu
+	showWarning2:       
+	                    lea           si, warningMessage
+	                    mov           [si], 0
+	                    jmp           player2
+	
+	mainMenu:                                                	;displaying main menu and provided functions and how to use them
+	                    SetTextMode
+	                    mov           dx,080dh
+	                    mov           dl ,25d
+	                    MoveCursor
+	                    displaystring chattingInfo
+	                    mov           dx,0a0dh
+	                    mov           dl , 25d
+	                    MoveCursor
+	                    DisplayString gameStartInfo
+	                    mov           dx,0c0dh
+	                    mov           dl,25d
+	                    MoveCursor
+	                    DisplayString endgameInfo
+	                    mov           dl,0
+	                    mov           dh,22d
+	                    MoveCursor
+	                    displaystring notifactionBar
+	againTillKeyPressed:                                     	;checking if a key is pressed on the main menu
+	                    mov           ah,08h                 	;these two line are used to flush the keyboard buffer
+	                    int           21h
+	                    mov           ah,1
+	                    int           16h
+	                    cmp           al,1bh                 	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                    je            terminate
+	                    cmp           al,00h                 	;comparing ah with the f2 scan code if equal go to game loading menu
+	                    je            loadingMenu
+	                    jmp           againTillKeyPressed
+	
+	loadingMenu:        SetTextMode                          	;Just to ensure that the F2 check key is working is to later changed to the loading screen
+	                    displaystring welcomeMessage1
+	dummy:              jmp           dummy
 
-	terminate:
-		mov ah, 4ch
-		int 21h
+	terminate:          
+	                    mov           ah, 4ch
+	                    int           21h
 main endp
 end main
