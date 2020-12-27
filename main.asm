@@ -247,7 +247,7 @@ main proc far
 	                    int           16h
 	                    cmp           al,1bh                 	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                    je            terminate
-	                    cmp           al,00h                 	;comparing ah with the f2 scan code if equal go to game loading menu
+	                    cmp           al,3Ch                 	;comparing ah with the f2 scan code if equal go to game loading menu
 	                    je            loadingMenu
 	                    jmp           againTillKeyPressed
 	
@@ -255,20 +255,11 @@ main proc far
 	                    displaystring welcomeMessage1
 	                    SetVideoMode
 	temp:               
-	                    mov           dx,2
-	                    movecursor
-	                    displaystring ScoreMessage1
-	                    mov           dx,20
-	                    movecursor
-	                    displaystring ScoreMessage2
-	                    mov           dl,2
-	                    mov           dh,70
-	                    movecursor
-	                    displaystring LivesMessage1
-	                    mov           dl,15
-	                    mov           dh,50
-	                    movecursor
-	                    displaystring LivesMessage2
+						mov si,@data
+						DisplayTextVideoMode 10, 2,0,ScoreMessage1,14
+						DisplayTextVideoMode 10, 24,0,ScoreMessage2,14
+						DisplayTextVideoMode 10, 2,23, LivesMessage1,14
+						DisplayTextVideoMode 10, 24,23, LivesMessage2,14
 	dummy:              jmp           dummy
 
 	terminate:          
