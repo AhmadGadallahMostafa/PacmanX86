@@ -177,11 +177,9 @@ endm ValidateName
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
 
-DrawHorizontalLine macro xPosition, yPosition, color, count
+DrawHorizontalLine macro color, count ; put xPosition in cx, and yPosition in dx before calling
 local DrawLoop
 		mov ah, 0ch
-		mov dx, yPosition
-		mov cx, xPosition
 		mov al, color
 		mov bx, count
 	DrawLoop:
