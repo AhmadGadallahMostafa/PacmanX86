@@ -245,6 +245,126 @@ DrawPacman macro xPosition, yPosition, color
 		DrawHorizontalLine color, 4
 endm DrawPacman
 
+DrawGhost macro ghostXStart, ghostYStart
+	    mov                cx, ghostXStart
+	    mov                dx, ghostYStart
+	    DrawHorizontalLine black, 4
+		DrawHorizontalLine ghostColor, 2
+	    DrawHorizontalLine black, 4
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 3
+		DrawHorizontalLine ghostColor, 4
+		DrawHorizontalLine black, 3
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 6
+		DrawHorizontalLine black, 2
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine White, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine White, 1
+		DrawHorizontalLine ghostColor, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine black, 1
+
+endm DrawGhost
+
+
+DrawGrid macro
+    mov ch, gridYCount
+    currentX dw gridStartX
+    currentY dw gridStartY
+    drawrow:
+        mov currentX, gridStartX
+        mov cl, gridXCount
+        drawcell:
+            push cx
+            DrawSquare currentX, currentY, gridStep, blue, black
+            pop cx
+            add currentX, gridStep
+            dec cl
+            jnz drawcell
+        add currentY, gridStep
+        dec ch
+        jnz drawrow
+endm DrawGrid
+
+DrawSquare macro xPosition, yPosition, sideLength, edgeColor, fillColor
+local drawFill
+    mov dx, yPosition
+    mov cx, xPosition
+    DrawHorizontalLine edgeColor, sideLength
+    mov si, 8
+    drawFill:
+        inc dx
+        mov cx, xPosition
+        DrawHorizontalLine edgeColor, 1
+        DrawHorizontalLine fillColor, sideLength-2
+        ; add cx, gridStep-2
+        DrawHorizontalLine edgeColor, 1
+        dec si
+        jnz drawFill
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine edgeColor, sideLength
+endm DrawSquare
+
 ;------------------------------------------------------------------------------------------------------------------------------------------
 
 .model medium 
@@ -252,8 +372,6 @@ endm DrawPacman
 .data
 	player1Name     db  15 , ? , 30 dup("$")                                                                	;variable holding player 1 name
 	player2Name     db  15 , ? , 30 dup("$")                                                                	;variable holding player 2 name
-	player1Color    equ 0eh                                                                                 	;yellow
-	player2Color    equ 06h                                                                                 	;brown
 	nameMessage     db  'Please Enter Your Name: $'                                                         	;Message displayed to prompt the user to enter his name
 	enterMessage    db  'Press Enter to Continue$'
 	welcomeMessage1 db  'Welcome To Our Game, Player 1!$'
@@ -274,6 +392,21 @@ endm DrawPacman
 	player2lives    dw  3h
 	scanF2          equ 3Ch                                                                                 	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC	        equ 1Bh	  ;Scan code for ESC - the same for emu8086 as vscode no need to change
+    grid db 560 dup(?)
+    black   equ 00h
+    blue    equ 01h
+    green   equ 02h
+    red     equ 04h
+    yellow  equ 0eh
+    white   equ 0fh
+	player1Color    equ 0eh                                                                                 	;yellow
+	player2Color    equ 06h                                                                                 	;brown
+	ghostColor equ 0dh
+    gridStartX equ 10
+    gridStartY equ 20
+    gridStep equ 10
+    gridXCount equ 30
+    gridYCount equ 16
 .code
 main proc far
 	                    mov                    ax, @data
@@ -374,7 +507,9 @@ main proc far
 	                    DisplayNumberVideoMode 37, 1, player2Score
 	                    DisplayNumberVideoMode 12, 23, player1Lives
 	                    DisplayNumberVideoMode 34, 23, player2Lives
+						DrawGrid
 	                    DrawPacman             50,50,player1Color
+						DrawGhost 60,60
 
 	dummy:              jmp                    dummy
 	Terminate2:         

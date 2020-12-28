@@ -24,9 +24,6 @@ DrawPacmanOpen macro xPosition, yPosition, playerColor
     DrawHorizontalLine red, 2
     DrawHorizontalLine green, 2
     DrawHorizontalLine playerColor, 4
-    jmp dontclose
-    closeplz: jmp closed
-    dontclose:
     ;row 3
     inc dx
     mov cx, xPosition
@@ -139,6 +136,9 @@ main proc far
     mov ds, ax
     lea si, isOpen
     start:
+        jmp dontjmp
+        closeplz: jmp closed
+        dontjmp:
         mov ah, 0h
         mov al, 13h
         int 10h
