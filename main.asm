@@ -177,12 +177,64 @@ endm ValidateName
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
 
+DrawHorizontalLine macro xPosition, yPosition, color, count
+local DrawLoop
+		mov ah, 0ch
+		mov dx, yPosition
+		mov cx, xPosition
+		mov al, color
+		mov bx, count
+	DrawLoop:
+		int 10h
+		inc cx
+		dec bx
+		jnz DrawLoop
+endm DrawHorizontalLine
+
+DrawPacman macro xPosition, yPosition, color
+		mov ah, 0ch
+
+		mov dx, yPosition
+		mov cx, xPosition
+		DrawHorizontalLine 0fh, 1
+		DrawHorizontalLine 04h, 2
+		DrawHorizontalLine 02h, 1
+		DrawHorizontalLine color, 3
+
+		inc dx
+		mov cx, xPosition
+		DrawHorizontalLine 04h, 2
+		DrawHorizontalLine 02h, 1
+		DrawHorizontalLine color, 5
+
+		inc dx
+		mov cx, xPosition
+		DrawHorizontalLine 04h, 1
+		DrawHorizontalLine 02h, 1
+		DrawHorizontalLine color, 2
+		DrawHorizontalLine 00h, 1
+		DrawHorizontalLine color, 4
+
+		inc dx
+		mov cx, xPosition
+		DrawHorizontalLine 02h, 1
+		DrawHorizontalLine color, 7
+
+		inc dx
+		mov cx, xPosition
+		DrawHorizontalLine color, 7
+endm DrawPacman
+
+;------------------------------------------------------------------------------------------------------------------------------------------
+
 .model medium 
 .stack 64
 .data
-	player1Name     db  15 , ? , 30 dup("$")                                                                	;variable holding player 1 name
-	player2Name     db  15 , ? , 30 dup("$")                                                                	;variable holding player 2 name
-	nameMessage     db  'Please Enter Your Name: $'                                                         	;Message displayed to prompt the user to enter his name
+	player1Name     db  15 , ? , 30 dup("$")          ;variable holding player 1 name
+	player2Name     db  15 , ? , 30 dup("$")          ;variable holding player 2 name
+	player1Color    equ  0eh                          ;yellow
+	player2Color    equ  06h                          ;brown
+	nameMessage     db  'Please Enter Your Name: $'   ;Message displayed to prompt the user to enter his name
 	enterMessage    db  'Press Enter to Continue$'
 	welcomeMessage1 db  'Welcome To Our Game, Player 1!$'
 	welcomeMessage2 db  'Welcome To Our Game, Player 2!$'
@@ -200,8 +252,8 @@ endm ValidateName
 	livesMessage2   db  'Lives #2: $'
 	player1Lives    dw  3h
 	player2lives    dw  3h
-	scanF2          equ 3Ch                                                                                 	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
-	scanESC			equ 1Bh				;Scan code for ESC - the same for emu8086 as vscode no need to change
+	scanF2          equ 3Ch   ;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanESC	        equ 1Bh	  ;Scan code for ESC - the same for emu8086 as vscode no need to change
 .code
 main proc far
 	                    mov                    ax, @data
