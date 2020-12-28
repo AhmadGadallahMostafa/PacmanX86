@@ -10,88 +10,7 @@ local DrawLoop
 		jnz DrawLoop
 endm DrawHorizontalLine
 
-.model medium
-.stack 64
-.data
-    black   equ 00h
-    green   equ 02h
-    red     equ 04h
-    yellow  equ 0eh
-    white   equ 0fh
-    isOpen  db  1
-    playerColor equ 0eh
-    grid db 560 dup(?)
-    gridstartX equ 0
-    gridstartY equ 36
-    gridStep equ 10
-.code
-main proc far
-    mov ax, @data
-    mov ds, ax
-    lea si, isOpen
-    start:
-        mov ah, 0h
-        mov al, 13h
-        int 10h
-        DrawSquare gridstartX, gridstartY
-main endp
-
-DrawSquare macro xPosition, yPosition
-    mov dx, yPosition
-    mov cx, xPosition
-    DrawHorizontalLine white, gridStep
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, 1
-    DrawHorizontalLine black, gridStep-2
-    DrawHorizontalLine white, 1
-    inc dx
-    mov cx, xPosition
-    DrawHorizontalLine white, gridStep
-endm DrawSquare
-
-;DrawPacmanOpen proc xPosition, yPosition, playerColor
-DrawPacmanOpen proc xPosition, yPosition
+DrawPacmanOpen macro xPosition, yPosition, playerColor
     ;row 1
     mov dx, yPosition
     mov cx, xPosition
@@ -105,6 +24,9 @@ DrawPacmanOpen proc xPosition, yPosition
     DrawHorizontalLine red, 2
     DrawHorizontalLine green, 2
     DrawHorizontalLine playerColor, 4
+    jmp dontclose
+    closeplz: jmp closed
+    dontclose:
     ;row 3
     inc dx
     mov cx, xPosition
@@ -145,11 +67,9 @@ DrawPacmanOpen proc xPosition, yPosition
     inc dx
     mov cx, xPosition+2
     DrawHorizontalLine playerColor, 6
-    ret
-endp DrawPacmanOpen
+endm DrawPacmanOpen
 
-;DrawPacmanClose proc xPosition, yPosition, playerColor
-DrawPacmanClose proc xPosition, yPosition
+DrawPacmanClose macro xPosition, yPosition, playerColor
     ;row 1
     mov dx, yPosition
     mov cx, xPosition
@@ -203,6 +123,41 @@ DrawPacmanClose proc xPosition, yPosition
     inc dx
     mov cx, xPosition+2
     DrawHorizontalLine playerColor, 5
-    ret
-endp DrawPacmanClose
+endm DrawPacmanClose
+
+.model small
+.data
+    black   equ 00h
+    green   equ 02h
+    red     equ 04h
+    yellow  equ 0eh
+    white   equ 0fh
+    isOpen  db  1
+.code
+main proc far
+    mov ax, @data
+    mov ds, ax
+    lea si, isOpen
+    start:
+        mov ah, 0h
+        mov al, 13h
+        int 10h
+        mov di, [si]
+        cmp di, 0
+        je closeplz
+        DrawPacmanOpen 50, 50, yellow
+        mov [si], 0
+        jmp end
+        closed:
+        DrawPacmanClose 50, 50, yellow
+        mov [si], 1
+        end:
+        mov dx, 20
+        supermeh:
+        mov cx, 0ffffh
+        meh: loop meh
+        dec dx
+        jnz supermeh
+        jmp start
+main endp
 end main
