@@ -189,90 +189,102 @@ local DrawLoop
 		jnz DrawLoop
 endm DrawHorizontalLine
 
-DrawPacman macro xPosition, yPosition, color
-	
-		mov dx, yPosition
-		mov cx, xPosition
-		DrawHorizontalLine 0fh, 1
-		DrawHorizontalLine 04h, 2
-		DrawHorizontalLine 02h, 1
-		DrawHorizontalLine color, 3
+DrawPacmanOpen macro xPosition, yPosition, playerColor, backgroundColor
+    ;row 1
+    mov dx, yPosition
+    mov cx, xPosition
+    DrawHorizontalLine white, 1
+    DrawHorizontalLine red, 2
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine backgroundColor, 3
+    ;row 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine red, 2
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 4
+    DrawHorizontalLine backgroundColor, 2
+    ;row 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine red, 1
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 1
+    DrawHorizontalLine black, 2
+    DrawHorizontalLine playerColor, 3
+    DrawHorizontalLine backgroundColor, 1
+    ;row 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine black, 1
+    DrawHorizontalLine playerColor, 3
+    DrawHorizontalLine backgroundColor, 2
+    ;row 5
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine green, 1
+    DrawHorizontalLine playerColor, 5
+    DrawHorizontalLine backgroundColor, 4
+    ;row 6
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine playerColor, 4
+    DrawHorizontalLine backgroundColor, 6
+    ;row 7
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine playerColor, 6
+    DrawHorizontalLine backgroundColor, 4
+    ;row 8
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine playerColor, 8
+    DrawHorizontalLine backgroundColor, 2
+    ;row 9
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 8
+    DrawHorizontalLine backgroundColor, 1
+    ;row 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 6
+    DrawHorizontalLine backgroundColor, 2
+endm DrawPacmanOpen
 
-		inc dx
-		mov cx, xPosition
-		DrawHorizontalLine 04h, 2
-		DrawHorizontalLine 02h, 1
-		DrawHorizontalLine color, 5
-
-		inc dx
-		mov cx, xPosition
-		DrawHorizontalLine 04h, 1
-		DrawHorizontalLine 02h, 1
-		DrawHorizontalLine color, 2
-		DrawHorizontalLine 00h, 1
-		DrawHorizontalLine color, 4
-
-		inc dx
-		mov cx, xPosition
-		DrawHorizontalLine 02h, 1
-		DrawHorizontalLine color, 7
-
-		inc dx
-		mov cx, xPosition
-		DrawHorizontalLine color, 7
-
-		inc dx
-		mov cx, xPosition
-		DrawHorizontalLine color, 7
-
-		inc dx
-		mov cx, xPosition
-		DrawHorizontalLine color, 8
-
-		inc dx
-		mov cx, xPosition
-		add cx, 1
-		DrawHorizontalLine color, 8
-
-		inc dx
-		mov cx, xPosition
-		add cx, 2
-		DrawHorizontalLine color, 6
-
-		inc dx
-		mov cx, xPosition
-		add cx, 3
-		DrawHorizontalLine color, 4
-endm DrawPacman
-
-DrawGhost macro ghostXStart, ghostYStart
+DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 	    mov                cx, ghostXStart
-	    mov                dx, ghostYStart
-	    DrawHorizontalLine black, 4
+	    mov                dx, ghostystart
+	    DrawHorizontalLine backgroundColor, 4
 		DrawHorizontalLine ghostColor, 2
-	    DrawHorizontalLine black, 4
+	    DrawHorizontalLine backgroundColor, 4
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 3
+		DrawHorizontalLine backgroundColor, 3
 		DrawHorizontalLine ghostColor, 4
-		DrawHorizontalLine black, 3
+		DrawHorizontalLine backgroundColor, 3
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 		DrawHorizontalLine ghostColor, 6
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 8
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 1
 		DrawHorizontalLine black, 1
 		DrawHorizontalLine White, 1
@@ -280,53 +292,54 @@ DrawGhost macro ghostXStart, ghostYStart
 		DrawHorizontalLine black, 1
 		DrawHorizontalLine White, 1
 		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine backgroundColor, 1
+
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 1
 		DrawHorizontalLine black, 2
 		DrawHorizontalLine ghostColor, 2
 		DrawHorizontalLine black, 2
 		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 8
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 8
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 1
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 		DrawHorizontalLine ghostColor, 1
-		DrawHorizontalLine black, 2
-		DrawHorizontalLine black, 1
-
+		DrawHorizontalLine backgroundColor, 1
 endm DrawGhost
 
 
-DrawGrid macro
+DrawGrid macro edgeColor, fillColor
     mov ch, gridYCount
     currentX dw gridStartX
     currentY dw gridStartY
@@ -335,7 +348,7 @@ DrawGrid macro
         mov cl, gridXCount
         drawcell:
             push cx
-            DrawSquare currentX, currentY, gridStep, blue, black
+            DrawSquare currentX, currentY, gridStep, edgeColor, fillColor
             pop cx
             add currentX, gridStep
             dec cl
@@ -392,21 +405,33 @@ endm DrawSquare
 	player2lives    dw  3h
 	scanF2          equ 3Ch                                                                                 	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC	        equ 1Bh	  ;Scan code for ESC - the same for emu8086 as vscode no need to change
-    grid db 560 dup(?)
-    black   equ 00h
-    blue    equ 01h
-    green   equ 02h
-    red     equ 04h
-    yellow  equ 0eh
-    white   equ 0fh
-	player1Color    equ 0eh                                                                                 	;yellow
-	player2Color    equ 06h                                                                                 	;brown
-	ghostColor equ 0dh
-    gridStartX equ 10
-    gridStartY equ 20
-    gridStep equ 10
-    gridXCount equ 30
-    gridYCount equ 16
+    grid 			db 560 dup(?)
+    black  			equ 00h
+    blue    		equ 01h
+    green   		equ 02h
+	cyan			equ 03h
+    red     		equ 04h
+	magenta 		equ 05h	
+	brown   		equ 06h
+	lightGray 		equ 07h
+	darkGray 		equ 08h
+    lightBlue		equ 09h
+	lightGreen  	equ 0ah
+	lightCyan   	equ 0bh
+	lightRed    	equ 0ch
+	lightMagenta 	equ 0dh
+    yellow  		equ 0eh
+    white   		equ 0fh
+	player1Color    equ yellow
+	player2Color    equ brown
+	borderColor		equ lightGray
+	backgroundColor equ darkGray
+	ghostColor 		equ 0dh
+    gridStartX 		equ 10
+    gridStartY 		equ 20
+    gridStep 		equ 10
+    gridXCount 		equ 30
+    gridYCount 		equ 16
 .code
 main proc far
 	                    mov                    ax, @data
@@ -507,9 +532,9 @@ main proc far
 	                    DisplayNumberVideoMode 37, 1, player2Score
 	                    DisplayNumberVideoMode 12, 23, player1Lives
 	                    DisplayNumberVideoMode 34, 23, player2Lives
-						DrawGrid
-	                    DrawPacman             50,50,player1Color
-						DrawGhost 60,60
+						DrawGrid			   borderColor, backgroundColor
+	                    DrawPacmanOpen         50, 50, player1Color, backgroundColor
+						DrawGhost			   100, 100, ghostColor, backgroundColor
 
 	dummy:              jmp                    dummy
 	Terminate2:         

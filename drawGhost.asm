@@ -16,34 +16,34 @@ SetVideoMode macro   ;320x200 pixel supporting 256 colors , 40x25 , (40 -> col -
 		int 10h
 endm SetVideoMode
 
-DrawGhost macro ghostXStart, ghostYStart
+DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 	    mov                cx, ghostXStart
-	    mov                dx, ghostYStart
-	    DrawHorizontalLine black, 4
+	    mov                dx, ghostystart
+	    DrawHorizontalLine backgroundColor, 4
 		DrawHorizontalLine ghostColor, 2
-	    DrawHorizontalLine black, 4
+	    DrawHorizontalLine backgroundColor, 4
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 3
+		DrawHorizontalLine backgroundColor, 3
 		DrawHorizontalLine ghostColor, 4
-		DrawHorizontalLine black, 3
+		DrawHorizontalLine backgroundColor, 3
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 		DrawHorizontalLine ghostColor, 6
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 8
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 1
 		DrawHorizontalLine black, 1
 		DrawHorizontalLine White, 1
@@ -51,49 +51,50 @@ DrawGhost macro ghostXStart, ghostYStart
 		DrawHorizontalLine black, 1
 		DrawHorizontalLine White, 1
 		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine backgroundColor, 1
+
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 1
 		DrawHorizontalLine black, 2
 		DrawHorizontalLine ghostColor, 2
 		DrawHorizontalLine black, 2
 		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 8
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 8
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 
 		inc dx
 		mov cx, ghostXStart
-		DrawHorizontalLine black, 1
+		DrawHorizontalLine backgroundColor, 1
 		DrawHorizontalLine ghostColor, 1
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 		DrawHorizontalLine ghostColor, 2
-		DrawHorizontalLine black, 2
+		DrawHorizontalLine backgroundColor, 2
 		DrawHorizontalLine ghostColor, 1
-		DrawHorizontalLine black, 2
-		DrawHorizontalLine black, 1
-
+		DrawHorizontalLine backgroundColor, 1
 endm DrawGhost
 
 .model small
@@ -117,7 +118,7 @@ main proc FAR
 	;row1
 	    SetVideoMode
 
-		DrawGhost 100,150
+		DrawGhost 100,150, lightMagenta, red
 
 	    mov                cx, ghostXStart
 	    mov                dx, ghostystart
@@ -153,6 +154,7 @@ main proc FAR
 		DrawHorizontalLine black, 1
 		DrawHorizontalLine White, 1
 		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 1
 
 
 		inc dx
@@ -163,6 +165,7 @@ main proc FAR
 		DrawHorizontalLine ghostColor, 2
 		DrawHorizontalLine black, 2
 		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 1
 
 		inc dx
 		mov cx, ghostXStart
@@ -194,7 +197,6 @@ main proc FAR
 		DrawHorizontalLine ghostColor, 2
 		DrawHorizontalLine black, 2
 		DrawHorizontalLine ghostColor, 1
-		DrawHorizontalLine black, 2
 		DrawHorizontalLine black, 1
 	lbl: jmp                lbl
 main endp
