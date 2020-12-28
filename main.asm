@@ -190,8 +190,7 @@ local DrawLoop
 endm DrawHorizontalLine
 
 DrawPacman macro xPosition, yPosition, color
-		mov ah, 0ch
-
+	
 		mov dx, yPosition
 		mov cx, xPosition
 		DrawHorizontalLine 0fh, 1
@@ -221,6 +220,29 @@ DrawPacman macro xPosition, yPosition, color
 		inc dx
 		mov cx, xPosition
 		DrawHorizontalLine color, 7
+
+		inc dx
+		mov cx, xPosition
+		DrawHorizontalLine color, 7
+
+		inc dx
+		mov cx, xPosition
+		DrawHorizontalLine color, 8
+
+		inc dx
+		mov cx, xPosition
+		add cx, 1
+		DrawHorizontalLine color, 8
+
+		inc dx
+		mov cx, xPosition
+		add cx, 2
+		DrawHorizontalLine color, 6
+
+		inc dx
+		mov cx, xPosition
+		add cx, 3
+		DrawHorizontalLine color, 4
 endm DrawPacman
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,11 +250,11 @@ endm DrawPacman
 .model medium 
 .stack 64
 .data
-	player1Name     db  15 , ? , 30 dup("$")          ;variable holding player 1 name
-	player2Name     db  15 , ? , 30 dup("$")          ;variable holding player 2 name
-	player1Color    equ  0eh                          ;yellow
-	player2Color    equ  06h                          ;brown
-	nameMessage     db  'Please Enter Your Name: $'   ;Message displayed to prompt the user to enter his name
+	player1Name     db  15 , ? , 30 dup("$")                                                                	;variable holding player 1 name
+	player2Name     db  15 , ? , 30 dup("$")                                                                	;variable holding player 2 name
+	player1Color    equ 0eh                                                                                 	;yellow
+	player2Color    equ 06h                                                                                 	;brown
+	nameMessage     db  'Please Enter Your Name: $'                                                         	;Message displayed to prompt the user to enter his name
 	enterMessage    db  'Press Enter to Continue$'
 	welcomeMessage1 db  'Welcome To Our Game, Player 1!$'
 	welcomeMessage2 db  'Welcome To Our Game, Player 2!$'
@@ -250,7 +272,7 @@ endm DrawPacman
 	livesMessage2   db  'Lives #2: $'
 	player1Lives    dw  3h
 	player2lives    dw  3h
-	scanF2          equ 3Ch   ;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanF2          equ 3Ch                                                                                 	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC	        equ 1Bh	  ;Scan code for ESC - the same for emu8086 as vscode no need to change
 .code
 main proc far
@@ -352,6 +374,7 @@ main proc far
 	                    DisplayNumberVideoMode 37, 1, player2Score
 	                    DisplayNumberVideoMode 12, 23, player1Lives
 	                    DisplayNumberVideoMode 34, 23, player2Lives
+	                    DrawPacman             50,50,player1Color
 
 	dummy:              jmp                    dummy
 	Terminate2:         
