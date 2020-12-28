@@ -10,96 +10,192 @@ local DrawLoop
 		jnz DrawLoop
 endm DrawHorizontalLine
 
+SetVideoMode macro   ;320x200 pixel supporting 256 colors , 40x25 , (40 -> col - > x - > dl) , (25 -> row -> y -> dh)
+		mov ah,0
+		mov al,13h
+		int 10h
+endm SetVideoMode
+
+DrawGhost macro ghostXStart, ghostYStart
+	    mov                cx, ghostXStart
+	    mov                dx, ghostYStart
+	    DrawHorizontalLine black, 4
+		DrawHorizontalLine ghostColor, 2
+	    DrawHorizontalLine black, 4
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 3
+		DrawHorizontalLine ghostColor, 4
+		DrawHorizontalLine black, 3
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 6
+		DrawHorizontalLine black, 2
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine White, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine White, 1
+		DrawHorizontalLine ghostColor, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine black, 1
+
+endm DrawGhost
+
 .model small
 .stack 64
 .data
-	ghostXStart dw 50
-ghostYStart dw 20
+	ghostXStart dw  50
+	ghostYStart dw  20
+	ghostColor  equ 0Dh
+	black       equ 00h
+	blue        equ 01h
+	green       equ 02h
+	red         equ 04h
+	lightMagenta equ 0Dh
+	yellow      equ 0eh
+    white   equ 0fh
 .CODE
 
 main proc FAR
-	     mov                ax,@data
-	     mov                ds,ax
+	    mov                ax, @data
+	    mov                ds, ax
 	;row1
-	     mov                ah,0
-	     mov                al,13h
-	     int                10h
+	    SetVideoMode
 
-	     mov                cx,50
-	     mov                dx,20
-	     DrawHorizontalLine 1,2
+		DrawGhost 100,150
 
-	     inc                dx
-	     mov                cx,ghostXStart
-	     dec                cx
-	     DrawHorizontalLine 1 ,4
+	    mov                cx, ghostXStart
+	    mov                dx, ghostystart
+	    DrawHorizontalLine black, 4
+		DrawHorizontalLine ghostColor, 2
+	    DrawHorizontalLine black, 4
 
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,2
-	     DrawHorizontalLine 1 ,6
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 3
+		DrawHorizontalLine ghostColor, 4
+		DrawHorizontalLine black, 3
 
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1 , 8
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 6
+		DrawHorizontalLine black, 2
 
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1 ,8
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
 
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1 ,8
-
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1 ,8
-
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1 ,8
-
-	     inc                dx
-	     mov                cx,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1,2
-
-	     add                cx,4
-	     DrawHorizontalLine 1,2
-
-	     mov                cx,50
-	     DrawHorizontalLine 1,2
-
-	     inc                dx
-	     mov                cx,50
-	     DrawHorizontalLine 1,2
-
-	     mov                cx ,ghostXStart
-	     sub                cx,3
-	     DrawHorizontalLine 1,1
-
-	     mov                cx ,ghostXStart
-	     add                cx,4
-	     DrawHorizontalLine 1,1
-
-	;eyes:
-	     mov                dx,24
-	     mov                cx
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine White, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine White, 1
+		DrawHorizontalLine ghostColor, 1
 
 
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 1
 
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
 
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 8
+		DrawHorizontalLine black, 1
 
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 1
+
+		inc dx
+		mov cx, ghostXStart
+		DrawHorizontalLine black, 1
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 2
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine ghostColor, 1
+		DrawHorizontalLine black, 2
+		DrawHorizontalLine black, 1
 	lbl: jmp                lbl
-
-
-	     
-	     
-
 main endp
 end main
