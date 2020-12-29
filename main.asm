@@ -338,6 +338,107 @@ DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 		DrawHorizontalLine backgroundColor, 1
 endm DrawGhost
 
+;------------------------------------------------------------------------------------------------------------------------
+DrawSnowFlake  macro    xPosition,yPosition,backGcolor,color
+	mov cx, xPosition
+	mov dx, yPosition
+	mov si, 8
+	;row1 and row 10
+    DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 4
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    add dx, si
+    DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 4
+    DrawHorizontalLine color, 1
+    sub si, 2
+    sub dx, si
+    dec dx
+
+    ;row 2 and row 9 
+    mov cx, xPosition
+    DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 2
+    DrawHorizontalLine color, 1
+    mov cx, xPosition 
+    add cx, 4
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    add cx, 6
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    add dx, si
+    DrawHorizontalLine backGcolor, 9
+     mov cx, xPosition
+    add cx, 2
+    DrawHorizontalLine color, 1
+    mov cx, xPosition 
+    add cx, 4
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    add cx, 6
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    sub si, 2
+    sub dx, si
+    dec dx
+
+    ;row 3 and row 8 
+    mov cx, xPosition
+    DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 1
+    DrawHorizontalLine color, 2
+    mov cx, xPosition
+    add cx, 4
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    add cx, 6
+    DrawHorizontalLine color, 2
+    mov cx, xPosition
+    add dx, si
+    DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 1
+    DrawHorizontalLine color, 2
+    mov cx, xPosition
+    add cx, 4
+    DrawHorizontalLine color, 1
+    mov cx, xPosition
+    add cx, 6
+    DrawHorizontalLine color, 2
+     sub si, 2
+    sub dx, si
+    dec dx
+
+    ;row 4 and row 7
+    mov cx, xPosition
+    DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 3
+    DrawHorizontalLine color, 3
+    mov cx, xPosition
+    add dx, si
+     DrawHorizontalLine backGcolor, 9
+    mov cx, xPosition
+    add cx, 3
+    DrawHorizontalLine color, 3
+    sub si, 2
+    sub dx, si
+    dec dx
+	;row5
+    mov cx, xPosition
+    DrawHorizontalLine color, 9
+    mov cx, xPosition
+    add cx, 4
+
+	DrawHorizontalLine backGcolor, 1
+ endm DrawSnowFlake
+;------------------------------------------------------------------------------------------------------------------------
 
 DrawGrid macro edgeColor, fillColor
     mov ch, gridYCount
@@ -404,39 +505,39 @@ endm DrawSquare
 	player1Lives    dw  3h
 	player2lives    dw  3h
 	scanF2          equ 3Ch                                                                                 	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
-	scanESC	        equ 1Bh	  ;Scan code for ESC - the same for emu8086 as vscode no need to change
-    grid 			db 560 dup(?)
-    black  			equ 00h
-    blue    		equ 01h
-    green   		equ 02h
-	cyan			equ 03h
-    red     		equ 04h
-	magenta 		equ 05h	
-	brown   		equ 06h
-	lightGray 		equ 07h
-	darkGray 		equ 08h
-    lightBlue		equ 09h
-	lightGreen  	equ 0ah
-	lightCyan   	equ 0bh
-	lightRed    	equ 0ch
-	lightMagenta 	equ 0dh
-    yellow  		equ 0eh
-    white   		equ 0fh
+	scanESC         equ 1Bh                                                                                 	;Scan code for ESC - the same for emu8086 as vscode no need to change
+	grid            db  560 dup(?)
+	black           equ 00h
+	blue            equ 01h
+	green           equ 02h
+	cyan            equ 03h
+	red             equ 04h
+	magenta         equ 05h
+	brown           equ 06h
+	lightGray       equ 07h
+	darkGray        equ 08h
+	lightBlue       equ 09h
+	lightGreen      equ 0ah
+	lightCyan       equ 0bh
+	lightRed        equ 0ch
+	lightMagenta    equ 0dh
+	yellow          equ 0eh
+	white           equ 0fh
 	player1Color    equ yellow
 	player2Color    equ brown
-	borderColor		equ lightGray
-	backgroundColor equ darkGray
-	ghostColor 		equ 0dh
-    gridStartX 		equ 10
-    gridStartY 		equ 20
-    gridStep 		equ 10
-    gridXCount 		equ 30
+	borderColor     equ blue
+	backgroundColor equ black
+	ghostColor      equ 0dh
+	gridStartX      equ 10
+	gridStartY      equ 20
+	gridStep        equ 10
+	gridXCount      equ 30
     gridYCount 		equ 16
 .code
 main proc far
 	                    mov                    ax, @data
 	                    mov                    ds, ax
-	Player1:                                                                	;Reading first player name and saving it to player1name
+	Player1:                                                                        	;Reading first player name and saving it to player1name
 	                    SetTextMode
 	                    mov                    dx, 0000
 	                    MoveCursor
@@ -461,7 +562,7 @@ main proc far
 	                    lea                    si, warningMessage
 	                    mov                    [si], 0
 	                    jmp                    player1
-	Player2:                                                                	;Reading second player name and saving it to player2name
+	Player2:                                                                        	;Reading second player name and saving it to player2name
 	                    SetTextMode
 	                    mov                    dx, 0000
 	                    MoveCursor
@@ -487,7 +588,7 @@ main proc far
 	                    mov                    [si], 0
 	                    jmp                    player2
 
-	mainMenu:                                                               	;displaying main menu and provided functions and how to use them
+	mainMenu:                                                                       	;displaying main menu and provided functions and how to use them
 	                    SetTextMode
 	                    mov                    dx,080dh
 	                    mov                    dl ,25d
@@ -505,19 +606,19 @@ main proc far
 	                    mov                    dh,22d
 	                    MoveCursor
 	                    Displaystring          notifactionBar
-	againTillKeyPressed:                                                    	;checking if a key is pressed on the main menu
-	                    mov                    ah,08h                       	;these two line are used to flush the keyboard buffer
+	againTillKeyPressed:                                                            	;checking if a key is pressed on the main menu
+	                    mov                    ah,08h                               	;these two line are used to flush the keyboard buffer
 	                    int                    21h
 	                    mov                    ah,1
 	                    int                    16h
-	                    cmp                    al, scanESC                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                    cmp                    al, scanESC                          	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                    je                     Terminate1
-	                    cmp                    al, scanF2                   	;comparing ah with the f2 scan code if equal go to game loading menu
+	                    cmp                    al, scanF2                           	;comparing ah with the f2 scan code if equal go to game loading menu
 	                    je                     LoadingMenu
 	                    jmp                    AgainTillKeyPressed
 
 	Terminate1:         jmp                    Terminate2
-	LoadingMenu:        SetTextMode                                         	;Just to ensure that the F2 check key is working is to later changed to the loading screen
+	LoadingMenu:        SetTextMode                                                 	;Just to ensure that the F2 check key is working is to later changed to the loading screen
 	                    displaystring          welcomeMessage1
 	                    SetVideoMode
 	Temp:               
@@ -532,9 +633,10 @@ main proc far
 	                    DisplayNumberVideoMode 37, 1, player2Score
 	                    DisplayNumberVideoMode 12, 23, player1Lives
 	                    DisplayNumberVideoMode 34, 23, player2Lives
-						DrawGrid			   borderColor, backgroundColor
+	                    DrawGrid               borderColor, backgroundColor
 	                    DrawPacmanOpen         50, 50, player1Color, backgroundColor
-						DrawGhost			   100, 100, ghostColor, backgroundColor
+	                    DrawGhost              100, 100, ghostColor, backgroundColor
+	                    DrawSnowFlake          150, 150, backgroundColor, lightCyan
 
 	dummy:              jmp                    dummy
 	Terminate2:         
