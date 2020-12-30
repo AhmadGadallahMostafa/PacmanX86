@@ -12,9 +12,9 @@ DrawHorizontalLine macro color, count                                     		; pu
 
 
 DrawSnowFlake  macro    xPosition,yPosition,backGcolor,color
-mov                cx,xPosition
-mov                dx,yPosition
-mov                si,8
+    mov cx,xPosition
+    mov dx,yPosition
+    mov si,8
 	;row1 and row 10
     DrawHorizontalLine backGcolor,9
     mov cx,xPosition

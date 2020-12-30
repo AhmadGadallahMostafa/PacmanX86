@@ -42,25 +42,19 @@ Endm	HitNote
 .model small
 .stack 64
 .data
-	startx      dw 10
-	starty      dw 10
-	step        dw 10
-	Frequencies dw 7239, 7239, 7239, 7239,7239,7239,7239,6087,9121,8126 ,7239, 6833,6833,6833,6833,6833,7239,7239
-	stop db ?
+	startx dw 10
+	starty dw 10
+	step   dw 10
+	Frequencies dw 7239,7239,7239,7239,7239,7239, 7239 , 6087,9121,8126,7239 ,6833,6833,6833,6833,6833,7239 ,7239 ,7239 ,7239,8126,8126,7239,8126,6087,7239,7239,7239 ,7239,7239,7239,7239,6087,9121,8126,7239,6833,6833,6833,6833,6833,7239,7239,7239,6087,6087,6833,8126,9121,
 .code
 main proc far
 	
 	        mov     ax,@data
 	        mov     ds,ax
 	        mov     si,0
-	        mov     ax,offset stop
-	        mov     bx , offset Frequencies
-	        sub     ax,bx
-	        mov     bx,2
-	        mul     bx
 	dummy:  HitNote Frequencies[si],80
 	        add     si,2
-	        cmp     si,ax
+	        cmp     si,102
 	        jz      resetsi
 	        jmp     dummy
 
