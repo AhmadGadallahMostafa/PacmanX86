@@ -197,6 +197,25 @@ local DrawLoop
 		jnz DrawLoop
 endm DrawHorizontalLine
 
+DrawBigHorizontalLine macro color, count, width
+local DrawLoop
+local DrawColumn
+        mov ah, 0ch
+        mov al, color
+        mov bx, count
+    DrawLoop:
+        mov si, width
+        DrawColumn:
+            int 10h
+            inc dx
+            dec si
+            jnz DrawColumn
+        inc cx
+        sub dx, width
+        dec bx
+        jnz DrawLoop
+endm DrawHorizontalLine
+
 ;---------------------------------------------------------------------------------------
 ; SQUARE
 ;---------------------------------------------------------------------------------------
@@ -482,6 +501,360 @@ DrawSnowflake macro xPosition, yPosition, snowflakeColor, backgroundColor
 endm DrawSnowflake
 
 ;---------------------------------------------------------------------------------------
+;Cherry
+;---------------------------------------------------------------------------------------
+
+DrawCherry macro xPosition,yPosition,rootColor,cherryColor,backGroundColor
+	;row1
+	mov cx,xPosition
+	mov dx,yPosition
+	DrawHorizontalLine backgroundColor,10
+	;row2
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,5
+	DrawHorizontalLine rootColor,1
+	DrawHorizontalLine backgroundColor,4
+	;row3
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,4
+	DrawHorizontalLine rootColor,2
+	DrawHorizontalLine backgroundColor,4
+	;row4
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,3
+	DrawHorizontalLine rootColor,1
+	DrawHorizontalLine backgroundColor,2
+	DrawHorizontalLine rootColor,1
+	DrawHorizontalLine backgroundColor,3
+	;row5
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,2
+	DrawHorizontalLine rootColor,1
+	DrawHorizontalLine backgroundColor,4
+	DrawHorizontalLine rootColor,1
+	DrawHorizontalLine backgroundColor,2
+	;row6
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,2
+	DrawHorizontalLine backgroundColor,3
+	DrawHorizontalLine cherryColor,3
+	DrawHorizontalLine backgroundColor,1
+	;row7
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine cherryColor,2
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,1
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,2
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,2
+	;row8
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine cherryColor,4
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,3
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,1
+	;row9
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,1
+	DrawHorizontalLine cherryColor,2
+	DrawHorizontalLine backgroundColor,3
+	DrawHorizontalLine cherryColor,3
+	DrawHorizontalLine backgroundColor,1
+	;row10
+	inc dx
+	mov cx,xPosition
+	DrawHorizontalLine backgroundColor,10
+endm DrawCherry
+
+;---------------------------------------------------------------------------------------
+;LOADING SCREEN
+;---------------------------------------------------------------------------------------
+DrawLoadingScreen macro backgroundColor,foregroundColor1,foregroundColor2
+	mov cx,0
+	mov dx,0
+	;Area Above P
+	DrawBigHorizontalLine backgroundColor,320,25
+	;Row 1 P
+	add dx,25
+	mov cx,0
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,10*5,5
+	DrawBigHorizontalLine backgroundColor,21*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 2 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,10*5,5
+	DrawBigHorizontalLine backgroundColor,21*5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor ,11*5,5
+	;Row 3 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,5*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,23*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor ,11*5,5
+	;Row 4 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,5*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,24*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,4*5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 5 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,23*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row  6 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,21*5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 7 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,21*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5*5,5
+	DrawBigHorizontalLine foregroundColor2,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor2,3*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 8 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,10*5,5
+	DrawBigHorizontalLine backgroundColor,45*5,5
+	;Row 9 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,52*5,5
+	;Row 10 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,6*5,5
+	DrawBigHorizontalLine backgroundColor,4*5,5
+	DrawBigHorizontalLine foregroundColor1,4*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,10*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,6*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,7*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 11 P
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,6*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,10*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,6*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,7*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 12 p aka awel sater fady fe a 
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 13 P AKA tany sater fady fe a
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,4*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 14 aka talt satr fady fe a
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Row 15 P aka a5r satr gadallah ha yktbo fe el 2araf dah 
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	DrawBigHorizontalLine foregroundColor1,3*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,8*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,4*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,2*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,8*5,5
+	DrawBigHorizontalLine backgroundColor,5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,3*5,5
+	DrawBigHorizontalLine foregroundColor1,2*5,5
+	DrawBigHorizontalLine backgroundColor,9*5,5
+	;Rest Of Main Menu
+	mov cx,0
+	add dx,5
+	DrawBigHorizontalLine backgroundColor,320,100
+endm DrawLoadingScreen
+;---------------------------------------------------------------------------------------
 
 .model huge
 .386 
@@ -527,9 +900,9 @@ endm DrawSnowflake
 	yellow          equ 0eh
 	white           equ 0fh
 	player1Color    equ yellow
-	player2Color    equ lightGreen
-	borderColor     equ lightGray
-	backgroundColor equ darkGray
+	player2Color    equ green
+	borderColor     equ blue
+	backgroundColor equ black
 	ghostColor      equ lightMagenta
 	gridStartX      equ 10
 	gridStartY      equ 20
@@ -558,6 +931,8 @@ DrawGrid proc
 	                    je                     Ghost
 	                    cmp                    grid[si], 4
 	                    je                     Snowflake
+	                    cmp                    grid[si], 5
+	                    je                     Cherry
 	ContinueDraw:       
 	                    pop                    si
 	                    pop                    cx
@@ -583,10 +958,13 @@ DrawGrid proc
 	                    jmp                    ContinueDraw
 	Snowflake:          DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
 	                    jmp                    ContinueDraw
+	Cherry:             DrawCherry             currentX, currentY, green, red, backGroundColor
+	                    jmp                    ContinueDraw
 	EndDraw:            
 	                    ret
 DrawGrid endp
 main proc far
+
 	                    mov                    ax, @data
 	                    mov                    ds, ax
 	GetPlayer1Name:                                                                                      	;Reading first player name and saving it to player1name
@@ -669,10 +1047,18 @@ main proc far
 	                    jmp                    AgainTillKeyPressed
 
 	Terminate1:         jmp                    Terminate2
-	LoadingMenu:        SetTextMode                                                                      	;Just to ensure that the F2 check key is working is to later changed to the loading screen
-	                    displaystring          welcomeMessage1
+	LoadingMenu:        
 	                    SetVideoMode
+
+	                    DrawLoadingScreen      black,yellow,cyan                                         	;The next code snippet is ofr the delay
+	                    MOV                    CX, 3fH
+	                    MOV                    DX, 4240H
+	                    MOV                    AH, 86H
+	                    INT                    15H
+						
+	                  
 	Temp:               
+	                    SetVideoMode
 	                    mov                    si, @data
 	                    DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
 	                    DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14
@@ -693,6 +1079,7 @@ main proc far
 	                    mov                    grid[390], 4
 	                    mov                    grid[280], 4
 	                    mov                    grid[18], 4
+	                    mov                    grid[200],5
 	                    call                   DrawGrid
 	EndLoop:            jmp                    EndLoop
 	Terminate2:         
