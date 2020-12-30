@@ -294,34 +294,34 @@ endm DrawPacmanOpen
 ;---------------------------------------------------------------------------------------
 ; GHOST
 ;---------------------------------------------------------------------------------------
-DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
+DrawGhost macro xPosition, yPosition, ghostColor, backgroundColor
 	;row 1
-	mov cx, ghostXStart
-	mov dx, ghostystart
+	mov cx, xPosition
+	mov dx, yPosition
 	DrawHorizontalLine backgroundColor, 4
 	DrawHorizontalLine ghostColor, 2
 	DrawHorizontalLine backgroundColor, 4
 	;row 2
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 3
 	DrawHorizontalLine ghostColor, 4
 	DrawHorizontalLine backgroundColor, 3
 	;row 3
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 2
 	DrawHorizontalLine ghostColor, 6
 	DrawHorizontalLine backgroundColor, 2
 	;row 4
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 8
 	DrawHorizontalLine backgroundColor, 1
 	;row 5
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 1
 	DrawHorizontalLine black, 1
@@ -333,7 +333,7 @@ DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 	DrawHorizontalLine backgroundColor, 1
 	;row 6
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 1
 	DrawHorizontalLine black, 2
@@ -343,19 +343,19 @@ DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 	DrawHorizontalLine backgroundColor, 1
 	;row 7
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 8
 	DrawHorizontalLine backgroundColor, 1
 	;row 8
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 8
 	DrawHorizontalLine backgroundColor, 1
 	;row 9
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 2
 	DrawHorizontalLine backgroundColor, 1
@@ -365,7 +365,7 @@ DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 	DrawHorizontalLine backgroundColor, 1
 	;row 10
 	inc dx
-	mov cx, ghostXStart
+	mov cx, xPosition
 	DrawHorizontalLine backgroundColor, 1
 	DrawHorizontalLine ghostColor, 1
 	DrawHorizontalLine backgroundColor, 2
@@ -375,107 +375,111 @@ DrawGhost macro ghostXStart, ghostYStart, ghostColor, backgroundColor
 	DrawHorizontalLine backgroundColor, 1
 endm DrawGhost
 
-;------------------------------------------------------------------------------------------------------------------------
-DrawSnowFlake  macro    xPosition,yPosition,backGcolor,color
-	mov cx, xPosition
+;---------------------------------------------------------------------------------------
+; SNOWFLAKE
+;---------------------------------------------------------------------------------------
+DrawSnowflake macro xPosition, yPosition, snowflakeColor, backgroundColor
+	;row 1
 	mov dx, yPosition
-	mov si, 8
-	;row1 and row 10
-    DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 4
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    add dx, si
-    DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 4
-    DrawHorizontalLine color, 1
-    sub si, 2
-    sub dx, si
-    dec dx
-
-    ;row 2 and row 9 
-    mov cx, xPosition
-    DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 2
-    DrawHorizontalLine color, 1
-    mov cx, xPosition 
-    add cx, 4
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    add cx, 6
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    add dx, si
-    DrawHorizontalLine backGcolor, 9
-     mov cx, xPosition
-    add cx, 2
-    DrawHorizontalLine color, 1
-    mov cx, xPosition 
-    add cx, 4
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    add cx, 6
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    sub si, 2
-    sub dx, si
-    dec dx
-
-    ;row 3 and row 8 
-    mov cx, xPosition
-    DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 1
-    DrawHorizontalLine color, 2
-    mov cx, xPosition
-    add cx, 4
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    add cx, 6
-    DrawHorizontalLine color, 2
-    mov cx, xPosition
-    add dx, si
-    DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 1
-    DrawHorizontalLine color, 2
-    mov cx, xPosition
-    add cx, 4
-    DrawHorizontalLine color, 1
-    mov cx, xPosition
-    add cx, 6
-    DrawHorizontalLine color, 2
-     sub si, 2
-    sub dx, si
-    dec dx
-
-    ;row 4 and row 7
-    mov cx, xPosition
-    DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 3
-    DrawHorizontalLine color, 3
-    mov cx, xPosition
-    add dx, si
-     DrawHorizontalLine backGcolor, 9
-    mov cx, xPosition
-    add cx, 3
-    DrawHorizontalLine color, 3
-    sub si, 2
-    sub dx, si
-    dec dx
-	;row5
-    mov cx, xPosition
-    DrawHorizontalLine color, 9
-    mov cx, xPosition
-    add cx, 4
-
-	DrawHorizontalLine backGcolor, 1
- endm DrawSnowFlake
-;------------------------------------------------------------------------------------------------------------------------
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor,6
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	;row 2
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine snowflakeColor, 2
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 2
+	;row 3
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 2
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	;row 4
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	;row 5
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 2
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	;row 6
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 2
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	;row 7
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	;row 8
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 2
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	;row 9
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine snowflakeColor, 2
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 2
+	;row 10
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor,6
+	DrawHorizontalLine snowflakeColor, 1
+	DrawHorizontalLine backgroundColor, 1
+endm DrawSnowflake
 
 ;---------------------------------------------------------------------------------------
 
@@ -536,25 +540,29 @@ DrawSnowFlake  macro    xPosition,yPosition,backGcolor,color
 DrawGrid proc
 	currentX            dw                     gridStartX
 	currentY            dw                     gridStartY
-	                    mov                    di, 0
+	                    mov                    si, 0
 	                    mov                    ch, gridYCount
 	DrawRow:            
 	                    mov                    currentX, gridStartX
 	                    mov                    cl, gridXCount
 	DrawCell:           
 	                    push                   cx
-	                    cmp                    grid[di], 0
+	                    push                   si
+	                    cmp                    grid[si], 0
 	                    je                     Square
-	                    cmp                    grid[di], 1
+	                    cmp                    grid[si], 1
 	                    je                     Player1
-	                    cmp                    grid[di], 2
+	                    cmp                    grid[si], 2
 	                    je                     Player2
-	                    cmp                    grid[di], 3
+	                    cmp                    grid[si], 3
 	                    je                     Ghost
+	                    cmp                    grid[si], 4
+	                    je                     Snowflake
 	ContinueDraw:       
+	                    pop                    si
 	                    pop                    cx
 	                    add                    currentX, gridStep
-	                    inc                    di
+	                    inc                    si
 	                    dec                    cl
 	                    jnz                    DrawCell
 	                    add                    currentY, gridStep
@@ -573,6 +581,8 @@ DrawGrid proc
 	Ghost:              
 	                    DrawGhost              currentX, currentY, ghostColor, backgroundColor
 	                    jmp                    ContinueDraw
+	Snowflake:          DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
+	                    jmp                    ContinueDraw
 	EndDraw:            
 	                    ret
 DrawGrid endp
@@ -585,15 +595,15 @@ main proc far
 	                    MoveCursor
 	                    Displaystring          welcomeMessage1
 	                    mov                    dx, 0d0dh
-	                    mov                    dl,25d
+	                    mov                    dl, 25d
 	                    MoveCursor
 	                    Displaystring          enterMessage
 	                    mov                    dx, 0f0dh
-	                    mov                    dl,23d
+	                    mov                    dl, 23d
 	                    MoveCursor
 	                    Displaystring          warningMessage
 	                    mov                    dx, 0a0dh
-	                    mov                    dl,25d
+	                    mov                    dl, 25d
 	                    MoveCursor
 	                    ReadString             nameMessage, player1Name
 	                    ValidateName           player1Name
@@ -610,15 +620,15 @@ main proc far
 	                    MoveCursor
 	                    Displaystring          welcomeMessage2
 	                    mov                    dx, 0d0dh
-	                    mov                    dl,25d
+	                    mov                    dl, 25d
 	                    MoveCursor
 	                    displaystring          enterMessage
 	                    mov                    dx, 0f0dh
-	                    mov                    dl,23d
+	                    mov                    dl, 23d
 	                    MoveCursor
 	                    displaystring          warningMessage
 	                    mov                    dx, 0A0dh
-	                    mov                    dl,25d
+	                    mov                    dl, 25d
 	                    MoveCursor
 	                    ReadString             nameMessage, player2Name
 	                    ValidateName           player2name
@@ -677,6 +687,12 @@ main proc far
 	                    mov                    grid[32], 1
 	                    mov                    grid[128], 2
 	                    mov                    grid[256], 3
+	                    mov                    grid[200], 3
+	                    mov                    grid[400], 3
+	                    mov                    grid[50], 4
+	                    mov                    grid[390], 4
+	                    mov                    grid[280], 4
+	                    mov                    grid[18], 4
 	                    call                   DrawGrid
 	EndLoop:            jmp                    EndLoop
 	Terminate2:         
