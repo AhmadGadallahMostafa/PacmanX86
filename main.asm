@@ -240,6 +240,23 @@ local drawFill
 endm DrawSquare
 
 ;---------------------------------------------------------------------------------------
+; Draw Dot
+;---------------------------------------------------------------------------------------
+DrawDot macro xPosition, yPosition,dotColor, backgroundColor
+local drawFill
+	mov dx, yPosition
+	mov cx, xPosition
+	DrawBigHorizontalLine backgroundColor,10,4
+	add dx,4
+	mov cx,xPosition
+	DrawBigHorizontalLine backGroundColor,4,2
+	DrawBigHorizontalLine dotColor,2,2
+	DrawBigHorizontalLine backGroundColor,4,2
+	add dx,4
+	mov cx,xPosition
+	DrawBigHorizontalLine backgroundColor,10,4
+endm DrawDot
+;---------------------------------------------------------------------------------------
 ;LOADING SCREEN
 ;---------------------------------------------------------------------------------------
 DrawLoadingScreen macro backgroundColor,foregroundColor1,foregroundColor2
@@ -903,15 +920,29 @@ endm DrawCherry
 	borderColor     equ blue
 	backgroundColor equ black
 	ghostColor      equ lightMagenta
+	dotColor        equ white
 	gridStartX      equ 10
 	gridStartY      equ 20
 	gridStep        equ 10
 	gridXCount      equ 30
 	gridYCount      equ 16
+	player1Code     equ 16
+	player2Code     equ 17
+	ghostCode       equ 18
+	snowflakeCode   equ 19
+	cherryCode      equ 20
+	dotCode         equ 21
+	ghostAndDotCode equ 22
+	currentXPlayer1 db  1
+	currentYPlayer1 db  1
+	currentXPlayer2 db  28
+	currentYPlayer2 db  14
+
 .code
 DrawGrid proc
 	currentX            dw                     gridStartX
 	currentY            dw                     gridStartY
+
 	                    mov                    si, 0
 	                    mov                    ch, gridYCount
 	DrawRow:            
@@ -922,16 +953,20 @@ DrawGrid proc
 	                    push                   si
 	                    cmp                    grid[si], 0
 	                    je                     Square
-	                    cmp                    grid[si], 1
+	                    cmp                    grid[si],player1Code
 	                    je                     Player1
-	                    cmp                    grid[si], 2
+	                    cmp                    grid[si], player2Code
 	                    je                     Player2
-	                    cmp                    grid[si], 3
+	                    cmp                    grid[si], ghostCode
 	                    je                     Ghost
-	                    cmp                    grid[si], 4
+	                    cmp                    grid[si], ghostAndDotCode
+	                    je                     Ghost
+	                    cmp                    grid[si], snowflakeCode
 	                    je                     Snowflake
-	                    cmp                    grid[si], 5
+	                    cmp                    grid[si], cherryCode
 	                    je                     Cherry
+	                    cmp                    grid[si], dotCode
+	                    je                     Dot
 	ContinueDraw:       
 	                    pop                    si
 	                    pop                    cx
@@ -957,15 +992,62 @@ DrawGrid proc
 	                    jmp                    ContinueDraw
 	Snowflake:          DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
 	                    jmp                    ContinueDraw
-	Cherry:             DrawCherry             currentX, currentY, red, green, backGroundColor
+	Cherry:             DrawCherry             currentX, currentY, red, green, backgroundColor
+	                    jmp                    ContinueDraw
+	Dot:                DrawDot                currentX, currentY, white, backgroundColor
 	                    jmp                    ContinueDraw
 	EndDraw:            
 	                    ret
 DrawGrid endp
+
+MoveGhosts proc
+
+	ghostX              dw                     0
+	ghostY              dw                     0
+	delta1X             dw                     0
+	delta1Y             dw                     0
+	delta2X             dw                     0
+	delta2Y             dw                     0
+	   
+	                    mov                    si, 0
+	                    mov                    ch, gridYCount
+	LoopOverRow:        
+	                    mov                    ghostX, 0
+	                    mov                    cl, gridXCount
+	LoopOverCell:       
+	                    push                   cx
+	                    push                   si
+	                    cmp                    grid[si],3
+	                    je                     MoveGhost
+	                    cmp                    grid[si],7
+	                    je                     MoveGhost
+
+	Continue:           
+	                    pop                    si
+	                    pop                    cx
+	                    add                    ghostX, 1
+	                    inc                    si
+	                    dec                    cl
+	                    jnz                    LoopOverCell
+	                    add                    ghostY, 1
+	                    dec                    ch
+	                    jnz                    LoopOverRow
+	                    jmp                    EndMoveGhost
+	MoveGhost:          
+	;GHOSTX AND GHOSTY ARE THE POSITION OF THE CELL THAT WE HAVE JUST FOUND A   IN, AT ALL TIMES WE HAVE THE POSITIONS OF BOTH PACMAN1 AND PACMAN2
+		 				     
+	                    jmp                    continue
+	                   
+
+	EndMoveGhost:       ret
+MoveGhosts endp
+
+
 main proc far
 
 	                    mov                    ax, @data
 	                    mov                    ds, ax
+	                    jmp                    Temp
 	GetPlayer1Name:                                                                                      	;Reading first player name and saving it to player1name
 	                    SetTextMode
 	                    mov                    dx, 0000
@@ -1069,19 +1151,21 @@ main proc far
 	                    DisplayNumberVideoMode 37, 1, player2Score
 	                    DisplayNumberVideoMode 12, 23, player1Lives
 	                    DisplayNumberVideoMode 34, 23, player2Lives
-	                    mov                    grid[32], 1
-	                    mov                    grid[128], 2
-	                    mov                    grid[256], 3
-	                    mov                    grid[200], 3
-	                    mov                    grid[400], 3
-	                    mov                    grid[50], 4
-	                    mov                    grid[390], 4
-	                    mov                    grid[280], 4
-	                    mov                    grid[18], 4
-	                    mov                    grid[240], 5
-	                    mov                    grid[30], 5
-	                    mov                    grid[160], 5
-	                    mov                    grid[415], 5
+	                    mov                    grid[31], player1Code
+	                    mov                    grid[448], player2Code
+	                    mov                    grid[256], ghostCode
+	                    mov                    grid[200], ghostCode
+	                    mov                    grid[150], ghostCode
+	                    mov                    grid[400], ghostCode
+	                    mov                    grid[50], snowflakeCode
+	                    mov                    grid[390], snowflakeCode
+	                    mov                    grid[280], snowflakeCode
+	                    mov                    grid[18], snowflakeCode
+	                    mov                    grid[240], cherryCode
+	                    mov                    grid[30], cherryCode
+	                    mov                    grid[160], cherryCode
+	                    mov                    grid[415], dotCode
+	                    mov                    grid[70], dotCode
 	                    call                   DrawGrid
 	EndLoop:            jmp                    EndLoop
 	Terminate2:         
