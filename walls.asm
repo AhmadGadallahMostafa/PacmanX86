@@ -402,7 +402,7 @@ DrawWallVertical macro xPosition, yPosition, borderColor, fillColor, backgroundC
     DrawHorizontalLine backgroundColor, 2
 endm DrawWallVertical
 
-DrawEndWallHorizontalLeft macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+DrawEndWallRight macro xPosition, yPosition, borderColor, fillColor, backgroundColor
     mov cx, xPosition
     mov dx, yPosition
     DrawHorizontalLine backgroundColor, 10
@@ -447,9 +447,9 @@ DrawEndWallHorizontalLeft macro xPosition, yPosition, borderColor, fillColor, ba
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 10
-endm DrawEndWallHorizontalLeft
+endm DrawEndWallRight
 
-DrawEndWallVerticalUp macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+DrawEndWallDown macro xPosition, yPosition, borderColor, fillColor, backgroundColor
     mov cx, xPosition
     mov dx, yPosition
     DrawHorizontalLine backgroundColor, 2
@@ -518,8 +518,7 @@ DrawEndWallVerticalUp macro xPosition, yPosition, borderColor, fillColor, backgr
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 10
-endm DrawEndWallVerticalUp
-
+endm DrawEndWallDown
 
 .model small
 .stack 64
@@ -529,14 +528,22 @@ main proc far
 mov ax,@data
 mov ds,ax
 SetVideoMode
-DrawCornerLeftUp 20,20,0,0fh,14
-DrawWallHorizontal 60,60,0,0fh,14
-DrawWallVertical 40,40,0,0fh,14
-DrawEndWallVerticalUp 80,80,0,0fh,14
-DrawEndWallHorizontalLeft 100,100,0,0fh,14
-DrawCornerRightUp 120,120,0,0fh,14
-DrawCornerLeftDown 140,140,0,0fh,14
-DrawCornerRightDown 160,160,0,0fh,14
+DrawCornerLeftUp 10, 10, 0, 0fh, 14
+DrawWallHorizontal 20, 10, 0, 0fh, 14
+DrawWallHorizontal 30, 10, 0, 0fh, 14
+DrawCornerRightUp 40, 10, 0, 0fh, 14
+DrawWallVertical 10, 20, 0, 0fh, 14
+DrawWallVertical 10, 30, 0, 0fh, 14
+DrawCornerLeftDown 10, 40, 0, 0fh, 14
+DrawWallHorizontal 20, 40, 0, 0fh, 14
+DrawWallHorizontal 30, 40, 0, 0fh, 14
+DrawCornerRightDown 40, 40, 0, 0fh, 14
+DrawWallVertical 40, 20, 0, 0fh, 14
+DrawWallVertical 40, 30, 0, 0fh, 14
+DrawCornerLeftUp 20, 20, 0, 0fh, 14
+DrawEndWallRight 30, 20, 0, 0fh, 14
+DrawEndWallDown 20, 30, 0, 0fh, 14
+
 lbl:jmp lbl
 main endp
 end main
