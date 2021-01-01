@@ -181,18 +181,6 @@ ValidateName macro name    ;valdiating that the first char of the letter is a al
 endm ValidateName
 
 ;---------------------------------------------------------------------------------------
-AbslouteValue macro number
-mov ax,number
-cmp ax,0
-je PositiveAndTerminate
-jg PositiveAndTerminate
-neg ax
-mov number,ax
-PositiveAndTerminate:
-endm AbslouteValue
-;---------------------------------------------------------------------------------------
-
-;---------------------------------------------------------------------------------------
 
 ;---------------------------------------------------------------------------------------
 ; DRAWING
@@ -208,6 +196,18 @@ local DrawLoop
 		dec bx
 		jnz DrawLoop
 endm DrawHorizontalLine
+
+DrawVerticalLine macro color, count ; put xPosition in cx, and yPosition in dx before calling
+local DrawLoop
+		mov ah, 0ch
+		mov al, color
+		mov bx, count
+	DrawLoop:
+		int 10h
+		inc dx
+		dec bx
+		jnz DrawLoop
+endm DrawVerticalLine
 
 DrawBigHorizontalLine macro color, count, width ; put xPosition in cx, and yPosition in dx before calling
 local DrawLoop
@@ -261,13 +261,14 @@ local drawFill
 	DrawBigHorizontalLine backgroundColor,10,4
 	add dx,4
 	mov cx,xPosition
-	DrawBigHorizontalLine backGroundColor,4,2
+	DrawBigHorizontalLine backgroundColor,4,2
 	DrawBigHorizontalLine dotColor,2,2
-	DrawBigHorizontalLine backGroundColor,4,2
-	add dx,4
+	DrawBigHorizontalLine backgroundColor,4,2
+	add dx,2
 	mov cx,xPosition
 	DrawBigHorizontalLine backgroundColor,10,4
 endm DrawDot
+
 ;---------------------------------------------------------------------------------------
 ;LOADING SCREEN
 ;---------------------------------------------------------------------------------------
@@ -548,7 +549,7 @@ endm DrawLoadingScreen
 ;---------------------------------------------------------------------------------------
 ; PACMAN
 ;---------------------------------------------------------------------------------------
-DrawPacmanOpen macro xPosition, yPosition, playerColor, backgroundColor
+DrawPacmanRightOpened macro xPosition, yPosition, playerColor, backgroundColor
 	;row 1
 	mov dx, yPosition
 	mov cx, xPosition
@@ -614,7 +615,542 @@ DrawPacmanOpen macro xPosition, yPosition, playerColor, backgroundColor
 	DrawHorizontalLine backgroundColor, 2
 	DrawHorizontalLine playerColor, 6
 	DrawHorizontalLine backgroundColor, 2
-endm DrawPacmanOpen
+endm DrawPacmanRightOpened
+
+DrawPacmanLeftOpened macro xPosition, yPosition, playerColor, backgroundColor
+    ;row 1
+    mov dx, yPosition
+    mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 3
+	DrawHorizontalLine playerColor, 2
+	DrawHorizontalLine green, 2
+	DrawHorizontalLine red, 2
+	DrawHorizontalLine white, 1
+    ;row 2
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine playerColor, 4
+	DrawHorizontalLine green, 2
+	DrawHorizontalLine red, 2
+	;row 3
+	inc dx
+	mov cx, xPosition
+	DrawHorizontalLine backgroundColor, 1
+	DrawHorizontalLine playerColor, 3
+	DrawHorizontalLine black, 2
+	drawhorizontalline playercolor, 1
+	drawhorizontalline green, 2
+	drawhorizontalline red, 1
+    ;row 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 3
+    DrawHorizontalLine black, 1
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine green, 2
+    ;row 5
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 4
+    DrawHorizontalLine playerColor, 5
+    DrawHorizontalLine green, 1
+    ;row 6
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 6
+    DrawHorizontalLine playerColor, 4
+    ;row 7
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 4
+    DrawHorizontalLine playerColor, 6
+    ;row 8
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 8
+    ;row 9
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 8
+    DrawHorizontalLine backgroundColor, 1
+    ;row 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 6
+    DrawHorizontalLine backgroundColor, 2
+endm DrawPacmanLeftOpened
+
+DrawPacmanUpOpened macro xPosition, yPosition, playerColor, backgroundColor
+    ;col 1
+    mov dx, yPosition
+    mov cx, xPosition
+	DrawVerticalLine backgroundColor, 3
+	DrawVerticalLine playerColor, 2
+	DrawVerticalLine green, 2
+	DrawVerticalLine red, 2
+	DrawVerticalLine white, 1
+    ;col 2
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine backgroundColor, 2
+	DrawVerticalLine playerColor, 4
+	DrawVerticalLine green, 2
+	DrawVerticalLine red, 2
+	;col 3
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine backgroundColor, 1
+	DrawVerticalLine playerColor, 3
+	DrawVerticalLine black, 2
+	DrawVerticalLine playercolor, 1
+	DrawVerticalLine green, 2
+	DrawVerticalLine red, 1
+    ;row 4
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 2
+    DrawVerticalLine playerColor, 3
+    DrawVerticalLine black, 1
+    DrawVerticalLine playerColor, 2
+    DrawVerticalLine green, 2
+    ;col 5
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 4
+    DrawVerticalLine playerColor, 5
+    DrawVerticalLine green, 1
+    ;col 6
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 6
+    DrawVerticalLine playerColor, 4
+    ;col 7
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 4
+    DrawVerticalLine playerColor, 6
+    ;col 8
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 2
+    DrawVerticalLine playerColor, 8
+    ;col 9
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 8
+    DrawVerticalLine backgroundColor, 1
+    ;col 10
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 2
+    DrawVerticalLine playerColor, 6
+    DrawVerticalLine backgroundColor, 2
+endm DrawPacmanUpOpened
+
+DrawPacmanDownOpened macro xPosition, yPosition, playerColor, backgroundColor
+	;col 1
+	mov dx, yPosition
+	mov cx, xPosition
+	DrawVerticalLine white, 1
+	DrawVerticalLine red, 2
+	DrawVerticalLine green, 2
+	DrawVerticalLine playerColor, 2
+	DrawVerticalLine backgroundColor, 3
+	;col 2
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine red, 2
+	DrawVerticalLine green, 2
+	DrawVerticalLine playerColor, 4
+	DrawVerticalLine backgroundColor, 2
+	;col 3
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine red, 1
+	DrawVerticalLine green, 2
+	DrawVerticalLine playerColor, 1
+	DrawVerticalLine black, 2
+	DrawVerticalLine playerColor, 3
+	DrawVerticalLine backgroundColor, 1
+	;col 4
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine green, 2
+	DrawVerticalLine playerColor, 2
+	DrawVerticalLine black, 1
+	DrawVerticalLine playerColor, 3
+	DrawVerticalLine backgroundColor, 2
+	;col 5
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine green, 1
+	DrawVerticalLine playerColor, 5
+	DrawVerticalLine backgroundColor, 4
+	;col 6
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine playerColor, 4
+	DrawVerticalLine backgroundColor, 6
+	;col 7
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine playerColor, 6
+	DrawVerticalLine backgroundColor, 4
+	;col 8
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine playerColor, 8
+	DrawVerticalLine backgroundColor, 2
+	;col 9
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine backgroundColor, 1
+	DrawVerticalLine playerColor, 8
+	DrawVerticalLine backgroundColor, 1
+	;col 10
+	inc cx
+	mov dx, yPosition
+	DrawVerticalLine backgroundColor, 2
+	DrawVerticalLine playerColor, 6
+	DrawVerticalLine backgroundColor, 2
+endm DrawPacmanDownOpened
+
+DrawPacmanRightClosed macro xPosition, yPosition, playerColor, backgroundColor
+    ;row 1
+    mov dx, yPosition
+    mov cx, xPosition
+    DrawHorizontalLine white, 1
+    DrawHorizontalLine red, 2
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine backgroundColor, 3
+    ;row 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine red, 2
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 4
+    DrawHorizontalLine backgroundColor, 2
+    ;row 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine red, 1
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 1
+    DrawHorizontalLine black, 2
+    DrawHorizontalLine playerColor, 3
+    DrawHorizontalLine backgroundColor, 1
+    ;row 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine black, 1
+    DrawHorizontalLine playerColor, 4
+    DrawHorizontalLine backgroundColor, 1
+    ;row 5
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine green, 1
+    DrawHorizontalLine playerColor, 8
+    DrawHorizontalLine backgroundColor, 1
+    ;row 6
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine playerColor, 9
+    DrawHorizontalLine backgroundColor, 1
+    ;row 7
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine playerColor, 9
+    DrawHorizontalLine backgroundColor, 1
+    ;row 8
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine playerColor, 9
+    DrawHorizontalLine backgroundColor, 1
+    ;row 9
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 7
+    DrawHorizontalLine backgroundColor, 2
+    ;row 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 5
+    DrawHorizontalLine backgroundColor, 3
+endm DrawPacmanRightClosed
+
+DrawPacmanLeftClosed macro xPosition, yPosition, playerColor, backgroundColor
+    ;row 1
+    mov dx, yPosition
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine red, 2
+    DrawHorizontalLine white, 1
+    ;row 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 4
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine red, 2
+    ;row 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 3
+    DrawHorizontalLine black, 2
+    DrawHorizontalLine playerColor, 1
+    DrawHorizontalLine green, 2
+    DrawHorizontalLine red, 1
+    ;row 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 4
+    DrawHorizontalLine black, 1
+    DrawHorizontalLine playerColor, 2
+    DrawHorizontalLine green, 2
+    ;row 5
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 8
+    DrawHorizontalLine green, 1
+    ;row 6
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 9
+    ;row 7
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 9
+    ;row 8
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine playerColor, 9
+    ;row 9
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine playerColor, 7
+    DrawHorizontalLine backgroundColor, 1
+    ;row 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine playerColor, 5
+    DrawHorizontalLine backgroundColor, 2
+endm DrawPacmanLeftClosed
+
+DrawPacmanUpClosed macro xPosition, yPosition, playerColor, backgroundColor
+    ;col 1
+    mov dx, yPosition
+    mov cx, xPosition
+    DrawVerticalLine backgroundColor, 3
+    DrawVerticalLine playerColor, 2
+    DrawVerticalLine green, 2
+    DrawVerticalLine red, 2
+    DrawVerticalLine white, 1
+    ;col 2
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 2
+    DrawVerticalLine playerColor, 4
+    DrawVerticalLine green, 2
+    DrawVerticalLine red, 2
+    ;col 3
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 3
+    DrawVerticalLine black, 2
+    DrawVerticalLine playerColor, 1
+    DrawVerticalLine green, 2
+    DrawVerticalLine red, 1
+    ;col 4
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 4
+    DrawVerticalLine black, 1
+    DrawVerticalLine playerColor, 2
+    DrawVerticalLine green, 2
+    ;col 5
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 8
+    DrawVerticalLine green, 1
+    ;col 6
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 9
+    ;col 7
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 9
+    ;col 8
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 9
+    ;col 9
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 2
+    DrawVerticalLine playerColor, 7
+    DrawVerticalLine backgroundColor, 1
+    ;col 10
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 3
+    DrawVerticalLine playerColor, 5
+    DrawVerticalLine backgroundColor, 2
+endm DrawPacmanUpClosed
+
+DrawPacmanDownClosed macro xPosition, yPosition, playerColor, backgroundColor
+    ;col 1
+    mov dx, yPosition
+    mov cx, xPosition
+    DrawVerticalLine white, 1
+    DrawVerticalLine red, 2
+    DrawVerticalLine green, 2
+    DrawVerticalLine playerColor, 2
+    DrawVerticalLine backgroundColor, 3
+    ;col 2
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine red, 2
+    DrawVerticalLine green, 2
+    DrawVerticalLine playerColor, 4
+    DrawVerticalLine backgroundColor, 2
+    ;col 3
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine red, 1
+    DrawVerticalLine green, 2
+    DrawVerticalLine playerColor, 1
+    DrawVerticalLine black, 2
+    DrawVerticalLine playerColor, 3
+    DrawVerticalLine backgroundColor, 1
+    ;col 4
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine green, 2
+    DrawVerticalLine playerColor, 2
+    DrawVerticalLine black, 1
+    DrawVerticalLine playerColor, 4
+    DrawVerticalLine backgroundColor, 1
+    ;col 5
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine green, 1
+    DrawVerticalLine playerColor, 8
+    DrawVerticalLine backgroundColor, 1
+    ;col 6
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine playerColor, 9
+    DrawVerticalLine backgroundColor, 1
+    ;col 7
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine playerColor, 9
+    DrawVerticalLine backgroundColor, 1
+    ;col 8
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine playerColor, 9
+    DrawVerticalLine backgroundColor, 1
+    ;col 9
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 1
+    DrawVerticalLine playerColor, 7
+    DrawVerticalLine backgroundColor, 2
+    ;col 10
+    inc cx
+    mov dx, yPosition
+    DrawVerticalLine backgroundColor, 2
+    DrawVerticalLine playerColor, 5
+    DrawVerticalLine backgroundColor, 3
+endm DrawPacmanDownClosed
+
+DrawPlayer macro xPosition, yPosition, playerColor, backgroundColor, isOpen, orientation
+local ExitMacro
+local IsClosed
+local RightOpened
+local LeftOpened
+local UpOpened
+local DownOpened
+local RightClosed
+local LeftClosed
+local UpClosed
+local DowntClosed
+	cmp isOpen, 0
+	je IsClosed
+		cmp orientation, 'R'
+		je RightOpened
+		cmp orientation, 'L'
+		je LeftOpened
+		cmp orientation, 'U'
+		je UpOpened
+		cmp orientation, 'D'
+		je DownOpened
+		jmp ExitMacro
+	IsClosed:
+		cmp orientation, 'R'
+		je RightClosed
+		cmp orientation, 'L'
+		je LeftClosed
+		cmp orientation, 'U'
+		je UpClosed
+		cmp orientation, 'D'
+		je DowntClosed
+		jmp ExitMacro
+	RightOpened:
+		DrawPacmanRightOpened xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	LeftOpened:
+		DrawPacmanLeftOpened xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	UpOpened:
+		DrawPacmanUpOpened xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	DownOpened:
+		DrawPacmanDownOpened xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	RightClosed:
+		DrawPacmanRightClosed xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	LeftClosed:
+		DrawPacmanLeftClosed xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	UpClosed:
+		DrawPacmanUpClosed xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	DowntClosed:
+		DrawPacmanDownClosed xPosition, yPosition, playerColor, backgroundColor
+		jmp ExitMacro
+	ExitMacro:
+endm DrawPlayer
 
 ;---------------------------------------------------------------------------------------
 ; GHOST
@@ -807,7 +1343,7 @@ DrawSnowflake macro xPosition, yPosition, snowflakeColor, backgroundColor
 endm DrawSnowflake
 
 ;---------------------------------------------------------------------------------------
-;Cherry
+; CHERRY
 ;---------------------------------------------------------------------------------------
 DrawCherry macro xPosition, yPosition, cherryColor, rootColor, backgroundColor
 	;row 1
@@ -888,86 +1424,89 @@ endm DrawCherry
 .386 
 .stack 0ffffh
 .data
-	player1Name     db  15 , ? , 30 dup("$")                                                              	;variable holding player 1 name
-	player2Name     db  15 , ? , 30 dup("$")                                                              	;variable holding player 2 name
-	nameMessage     db  'Please Enter Your Name: $'                                                       	;Message displayed to prompt the user to enter his name
-	enterMessage    db  'Press Enter to Continue$'
-	welcomeMessage1 db  'Welcome To Our Game, Player 1!$'
-	welcomeMessage2 db  'Welcome To Our Game, Player 2!$'
-	warningMessage  db  '$$Please Enter a Valid Name!$'
-	chattingInfo    db  '*To start chatting press F1$'
-	gameStartInfo   db  '*To Start the Game press F2$'
-	endgameInfo     db  '*To end the game press ESC$'
-	notifactionBar  db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
-	welcomePosition dw  0h
-	scoreMessage1   db  'Score #1: $'
-	scoreMessage2   db  'Score #2: $'
-	player1Score    db  0h
-	player2Score    dw  0h
-	livesMessage1   db  'Lives #1: $'
-	livesMessage2   db  'Lives #2: $'
-	player1Lives    dw  3h
-	player2lives    dw  3h
-	scanF2          equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
-	scanESC         equ 1Bh
-	grid            db  480 dup(0)
-	black           equ 00h
-	blue            equ 01h
-	green           equ 02h
-	cyan            equ 03h
-	red             equ 04h
-	magenta         equ 05h
-	brown           equ 06h
-	lightGray       equ 07h
-	darkGray        equ 08h
-	lightBlue       equ 09h
-	lightGreen      equ 0ah
-	lightCyan       equ 0bh
-	lightRed        equ 0ch
-	lightMagenta    equ 0dh
-	yellow          equ 0eh
-	white           equ 0fh
-	player1Color    equ yellow
-	player2Color    equ green
-	borderColor     equ blue
-	backgroundColor equ black
-	ghostColor      equ lightMagenta
-	dotColor        equ white
-	gridStartX      equ 10
-	gridStartY      equ 20
-	gridStep        equ 10
-	gridXCount      equ 30
-	gridYCount      equ 16
-	player1Code     equ 16
-	player2Code     equ 17
-	ghostCode       equ 18
-	snowflakeCode   equ 19
-	cherryCode      equ 20
-	dotCode         equ 21
-	ghostAndDotCode equ 22
-	currentXPlayer1 dw  1
-	currentYPlayer1 dw  1
-	currentXPlayer2 dw  28
-	currentYPlayer2 dw  14
-	rightArrowScan  equ 4dh
-	leftArrowScan   equ 4bh
-	upArrowScan     equ 48h
-	downArrowScan   equ 50h
-	currentX        dw  gridStartX
-	currentY        dw  gridStartY
-	player1Moved    db  0
-	player2Moved    db  0
-	wScanCode       equ 11h
-	aSCanCode       equ 1eh
-	sSCanCode       equ 1fh
-	dScanCode       equ 20h
-
+	player1Name        db  15 , ? , 30 dup("$")                                                              	;variable holding player 1 name
+	player2Name        db  15 , ? , 30 dup("$")                                                              	;variable holding player 2 name
+	nameMessage        db  'Please Enter Your Name: $'                                                       	;Message displayed to prompt the user to enter his name
+	enterMessage       db  'Press Enter to Continue$'
+	welcomeMessage1    db  'Welcome To Our Game, Player 1!$'
+	welcomeMessage2    db  'Welcome To Our Game, Player 2!$'
+	warningMessage     db  '$$Please Enter a Valid Name!$'
+	chattingInfo       db  '*To start chatting press F1$'
+	gameStartInfo      db  '*To Start the Game press F2$'
+	endgameInfo        db  '*To end the game press ESC$'
+	notifactionBar     db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
+	welcomePosition    dw  0h
+	scoreMessage1      db  'Score #1: $'
+	scoreMessage2      db  'Score #2: $'
+	player1Score       db  0h
+	player2Score       dw  0h
+	livesMessage1      db  'Lives #1: $'
+	livesMessage2      db  'Lives #2: $'
+	player1Lives       dw  3h
+	player2lives       dw  3h
+	scanF2             equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanESC            equ 1Bh
+	grid               db  480 dup(0)
+	black              equ 00h
+	blue               equ 01h
+	green              equ 02h
+	cyan               equ 03h
+	red                equ 04h
+	magenta            equ 05h
+	brown              equ 06h
+	lightGray          equ 07h
+	darkGray           equ 08h
+	lightBlue          equ 09h
+	lightGreen         equ 0ah
+	lightCyan          equ 0bh
+	lightRed           equ 0ch
+	lightMagenta       equ 0dh
+	yellow             equ 0eh
+	white              equ 0fh
+	player1Color       equ yellow
+	player2Color       equ lightGreen
+	borderColor        equ blue
+	backgroundColor    equ 151d
+	ghostColor         equ lightMagenta
+	dotColor           equ white
+	gridStartX         equ 10
+	gridStartY         equ 20
+	gridStep           equ 10
+	gridXCount         equ 30
+	gridYCount         equ 16
+	player1Code        equ 16
+	player2Code        equ 17
+	ghostCode          equ 18
+	snowflakeCode      equ 19
+	cherryCode         equ 20
+	dotCode            equ 21
+	ghostAndDotCode    equ 22
+	currentXPlayer1    dw  1
+	currentYPlayer1    dw  1
+	currentXPlayer2    dw  28
+	currentYPlayer2    dw  14
+	player1Orientation db  'R'
+	player2Orientation db  'L'
+	isOpen             db  1
+	rightArrowScan     equ 4dh
+	leftArrowScan      equ 4bh
+	upArrowScan        equ 48h
+	downArrowScan      equ 50h
+	currentX           dw  gridStartX
+	currentY           dw  gridStartY
+	player1Moved       db  0
+	player2Moved       db  0
+	wScanCode          equ 11h
+	aSCanCode          equ 1eh
+	sSCanCode          equ 1fh
+	dScanCode          equ 20h
+	gridColor          db  0
 
 .code
 MovePacman proc
 	                    mov                    player1Moved,0
 	                    mov                    player2Moved,0
-	moveLoop:           
+	MoveLoop:           
 	                    mov                    ah,1
 	                    int                    16h
 	                    jz                     endMovePacMan
@@ -989,10 +1528,11 @@ MovePacman proc
 	                    je                     MovePlayer2Up
 	                    cmp                    ah,sSCanCode
 	                    je                     MovePlayer2Down
-	                    jmp                    moveloop
-
-	MovePlayer1Right:   cmp                    player1Moved,0
-	                    jne                    moveLoop
+	                    jmp                    MoveLoop
+	MovePlayer1Right:   
+	                    cmp                    player1Moved,0
+	                    jne                    MoveLoop
+	                    mov                    player1Orientation, 'R'
 	                    mov                    ax, currentYPlayer1
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1000,10 +1540,11 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    add                    currentXPlayer1,1
-	                    jmp                    changePlayer1Pacman
+	                    jmp                    ChangePlayer1Pacman
 	MovePlayer1Left:    
 	                    cmp                    player1Moved,0
-	                    jne                    moveLoop
+	                    jne                    MoveLoop
+	                    mov                    player1Orientation, 'L'
 	                    mov                    ax, currentYPlayer1
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1011,10 +1552,11 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    sub                    currentXPlayer1,1
-	                    jmp                    changePlayer1Pacman
+	                    jmp                    ChangePlayer1Pacman
 	MovePlayer1Up:      
 	                    cmp                    player1Moved,0
-	                    jne                    moveLoop
+	                    jne                    MoveLoop
+	                    mov                    player1Orientation, 'U'
 	                    mov                    ax, currentYPlayer1
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1022,10 +1564,11 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    sub                    currentYPlayer1,1
-	                    jmp                    changePlayer1Pacman
+	                    jmp                    ChangePlayer1Pacman
 	MovePlayer1Down:    
 	                    cmp                    player1Moved,0
-	                    jne                    moveLoop
+	                    jne                    MoveLoop
+	                    mov                    player1Orientation, 'D'
 	                    mov                    ax, currentYPlayer1
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1033,10 +1576,8 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    add                    currentYPlayer1,1
-	                    jmp                    changePlayer1Pacman
-
-	
-	changePlayer1Pacman:
+	                    jmp                    ChangePlayer1Pacman
+	ChangePlayer1Pacman:
 	                    mov                    ax, currentYPlayer1
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1044,12 +1585,14 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],player1Code
 	                    mov                    player1Moved,1
-	                    jmp                    moveLoop
+	                    jmp                    MoveLoop
 
 	;--------------------------------------------------------------------------------------
 
-	MovePlayer2Right:   cmp                    player2Moved,0
-	                    jne                    moveLoop
+	MovePlayer2Right:   
+	                    cmp                    player2Moved,0
+	                    jne                    MoveLoop
+	                    mov                    player2Orientation, 'R'
 	                    mov                    ax, currentYPlayer2
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1057,10 +1600,11 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    add                    currentXPlayer2,1
-	                    jmp                    changePlayer2Pacman
+	                    jmp                    ChangePlayer2Pacman
 	MovePlayer2Left:    
 	                    cmp                    player2Moved,0
-	                    jne                    moveLoop
+	                    jne                    MoveLoop
+	                    mov                    player2Orientation, 'L'
 	                    mov                    ax, currentYPlayer2
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1068,10 +1612,11 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    sub                    currentXPlayer2,1
-	                    jmp                    changePlayer2Pacman
+	                    jmp                    ChangePlayer2Pacman
 	MovePlayer2Up:      
 	                    cmp                    player2Moved,0
-	                    jne                    moveLoop
+	                    jne                    MoveLoop
+	                    mov                    player2Orientation, 'U'
 	                    mov                    ax, currentYPlayer2
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1079,10 +1624,11 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    sub                    currentYPlayer2,1
-	                    jmp                    changePlayer2Pacman
+	                    jmp                    ChangePlayer2Pacman
 	MovePlayer2Down:    
 	                    cmp                    player2Moved,0
-	                    jne                    moveLoop
+	                    jne                    MoveLoop
+	                    mov                    player2Orientation, 'D'
 	                    mov                    ax, currentYPlayer2
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1090,10 +1636,8 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],0
 	                    add                    currentYPlayer2,1
-	                    jmp                    changePlayer2Pacman
-
-
-	changePlayer2Pacman:
+	                    jmp                    ChangePlayer2Pacman
+	ChangePlayer2Pacman:
 	                    mov                    ax, currentYPlayer2
 	                    mov                    bx, 30
 	                    mul                    bx
@@ -1101,16 +1645,15 @@ MovePacman proc
 	                    mov                    bx,ax
 	                    mov                    grid[bx],player2Code
 	                    mov                    player2Moved,1
-	                    jmp                    moveLoop
-	                   
-	endMovePacMan:      
+	                    jmp                    MoveLoop
+	EndMovePacMan:      
 	                    ret
 MovePacman endp
 
 DrawGrid proc
-	
 	                    mov                    currentX,gridStartX
 	                    mov                    currentY,gridStartY
+	                    mov                    gridColor, 0
 	                    mov                    si, 0
 	                    mov                    ch, gridYCount
 	DrawRow:            
@@ -1119,6 +1662,9 @@ DrawGrid proc
 	DrawCell:           
 	                    push                   cx
 	                    push                   si
+	                    ; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
+	                    ; inc                    gridColor
+	                    ; jmp                    ContinueDraw
 	                    cmp                    grid[si], 0
 	                    je                     Square
 	                    cmp                    grid[si],player1Code
@@ -1150,10 +1696,10 @@ DrawGrid proc
 	                    DrawSquare             currentX, currentY, gridStep, borderColor, backgroundColor
 	                    jmp                    ContinueDraw
 	Player1:            
-	                    DrawPacmanOpen         currentX, currentY, player1Color, backgroundColor
+	                    DrawPlayer             currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
 	                    jmp                    ContinueDraw
 	Player2:            
-	                    DrawPacmanOpen         currentX, currentY, player2Color, backgroundColor
+	                    DrawPlayer             currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
 	                    jmp                    ContinueDraw
 	Ghost:              
 	                    DrawGhost              currentX, currentY, ghostColor, backgroundColor
@@ -1189,8 +1735,8 @@ main proc far
 
 	                    mov                    ax, @data
 	                    mov                    ds, ax
-	;jmp                    Temp
-	GetPlayer1Name:                                                                                      	;Reading first player name and saving it to player1name
+	                    jmp                    StartGame
+	GetPlayer1Name:                                                                                                         	;Reading first player name and saving it to player1name
 	                    SetTextMode
 	                    mov                    dx, 0000
 	                    MoveCursor
@@ -1215,7 +1761,7 @@ main proc far
 	ShowWarning1:       
 	                    mov                    word ptr warningMessage, word ptr 0
 	                    jmp                    GetPlayer1Name
-	GetPlayer2Name:                                                                                      	;Reading second player name and saving it to player2name
+	GetPlayer2Name:                                                                                                         	;Reading second player name and saving it to player2name
 	                    SetTextMode
 	                    mov                    dx, 0000
 	                    MoveCursor
@@ -1240,7 +1786,7 @@ main proc far
 	                    mov                    word ptr warningMessage, word ptr 0
 	                    jmp                    GetPlayer2Name
 
-	MainMenu:                                                                                            	;displaying main menu and provided functions and how to use them
+	MainMenu:                                                                                                               	;displaying main menu and provided functions and how to use them
 	                    SetTextMode
 	                    mov                    dx, 080dh
 	                    mov                    dl, 25d
@@ -1258,14 +1804,14 @@ main proc far
 	                    mov                    dh, 22d
 	                    MoveCursor
 	                    Displaystring          notifactionBar
-	AgainTillKeyPressed:                                                                                 	;checking if a key is pressed on the main menu
-	                    mov                    ah, 08h                                                   	;these two line are used to flush the keyboard buffer
+	AgainTillKeyPressed:                                                                                                    	;checking if a key is pressed on the main menu
+	                    mov                    ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
 	                    int                    21h
 	                    mov                    ah, 1
 	                    int                    16h
-	                    cmp                    al, scanESC                                               	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                    cmp                    al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                    je                     Terminate1
-	                    cmp                    al, scanF2                                                	;comparing ah with the f2 scan code if equal go to game loading menu
+	                    cmp                    al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
 	                    je                     LoadingMenu
 	                    jmp                    AgainTillKeyPressed
 
@@ -1273,16 +1819,13 @@ main proc far
 	LoadingMenu:        
 	                    SetVideoMode
 
-	                    DrawLoadingScreen      black,yellow,cyan                                         	;The next code snippet is ofr the delay
+	                    DrawLoadingScreen      black,yellow,cyan                                                            	;The next code snippet is ofr the delay
 	                    MOV                    CX, 3fH
 	                    MOV                    DX, 4240H
 	                    MOV                    AH, 86H
 	                    INT                    15H
-						
-	                  
-	Temp:               
+	StartGame:          
 	                    SetVideoMode
-	           
 	                    mov                    grid[31], player1Code
 	                    mov                    grid[448], player2Code
 	                    mov                    grid[256], ghostCode
@@ -1298,20 +1841,19 @@ main proc far
 	                    mov                    grid[160], cherryCode
 	                    mov                    grid[415], dotCode
 	                    mov                    grid[70], dotCode
-						
 	
 	gameLoop:           
 	                    call                   MovePacman
 	                    call                   DrawGrid
 	                    call                   DrawScoreAndLives
-	                    MOV                    CX, 2H
+	                    MOV                    CX, 1H                                                                       	; delay
 	                    MOV                    DX, 4240H
 	                    MOV                    AH, 86H
 	                    INT                    15H
+	                    xor                    isOpen, 1
 	                    jmp                    gameLoop
-	                
-	                    
-	EndLoop:            jmp                    EndLoop
+	EndLoop:            
+	                    jmp                    EndLoop
 	Terminate2:         
 	                    mov                    ah, 4ch
 	                    int                    21h
