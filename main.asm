@@ -181,6 +181,18 @@ ValidateName macro name    ;valdiating that the first char of the letter is a al
 endm ValidateName
 
 ;---------------------------------------------------------------------------------------
+AbslouteValue macro number
+mov ax,number
+cmp ax,0
+je PositiveAndTerminate
+jg PositiveAndTerminate
+neg ax
+mov number,ax
+PositiveAndTerminate:
+endm AbslouteValue
+;---------------------------------------------------------------------------------------
+
+;---------------------------------------------------------------------------------------
 
 ;---------------------------------------------------------------------------------------
 ; DRAWING
@@ -933,16 +945,172 @@ endm DrawCherry
 	cherryCode      equ 20
 	dotCode         equ 21
 	ghostAndDotCode equ 22
-	currentXPlayer1 db  1
-	currentYPlayer1 db  1
-	currentXPlayer2 db  28
-	currentYPlayer2 db  14
+	currentXPlayer1 dw  1
+	currentYPlayer1 dw  1
+	currentXPlayer2 dw  28
+	currentYPlayer2 dw  14
+	rightArrowScan  equ 4dh
+	leftArrowScan   equ 4bh
+	upArrowScan     equ 48h
+	downArrowScan   equ 50h
+	currentX        dw  gridStartX
+	currentY        dw  gridStartY
+	player1Moved    db  0
+	player2Moved    db  0
+	wScanCode       equ 11h
+	aSCanCode       equ 1eh
+	sSCanCode       equ 1fh
+	dScanCode       equ 20h
+
 
 .code
-DrawGrid proc
-	currentX            dw                     gridStartX
-	currentY            dw                     gridStartY
+MovePacman proc
+	                    mov                    player1Moved,0
+	                    mov                    player2Moved,0
+	moveLoop:           
+	                    mov                    ah,1
+	                    int                    16h
+	                    jz                     endMovePacMan
+	                    mov                    ah,0
+	                    int                    16h
+	                    cmp                    ah,rightArrowScan
+	                    je                     MovePlayer1Right
+	                    cmp                    ah,leftArrowScan
+	                    je                     MovePlayer1Left
+	                    cmp                    ah,upArrowScan
+	                    je                     MovePlayer1Up
+	                    cmp                    ah,downArrowScan
+	                    je                     MovePlayer1Down
+	                    cmp                    ah,dScanCode
+	                    je                     MovePlayer2Right
+	                    cmp                    ah,aSCanCode
+	                    je                     MovePlayer2Left
+	                    cmp                    ah,wScanCode
+	                    je                     MovePlayer2Up
+	                    cmp                    ah,sSCanCode
+	                    je                     MovePlayer2Down
+	                    jmp                    moveloop
 
+	MovePlayer1Right:   cmp                    player1Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer1
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer1
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    add                    currentXPlayer1,1
+	                    jmp                    changePlayer1Pacman
+	MovePlayer1Left:    
+	                    cmp                    player1Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer1
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer1
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    sub                    currentXPlayer1,1
+	                    jmp                    changePlayer1Pacman
+	MovePlayer1Up:      
+	                    cmp                    player1Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer1
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer1
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    sub                    currentYPlayer1,1
+	                    jmp                    changePlayer1Pacman
+	MovePlayer1Down:    
+	                    cmp                    player1Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer1
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer1
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    add                    currentYPlayer1,1
+	                    jmp                    changePlayer1Pacman
+
+	
+	changePlayer1Pacman:
+	                    mov                    ax, currentYPlayer1
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer1
+	                    mov                    bx,ax
+	                    mov                    grid[bx],player1Code
+	                    mov                    player1Moved,1
+	                    jmp                    moveLoop
+
+	;--------------------------------------------------------------------------------------
+
+	MovePlayer2Right:   cmp                    player2Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer2
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer2
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    add                    currentXPlayer2,1
+	                    jmp                    changePlayer2Pacman
+	MovePlayer2Left:    
+	                    cmp                    player2Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer2
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer2
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    sub                    currentXPlayer2,1
+	                    jmp                    changePlayer2Pacman
+	MovePlayer2Up:      
+	                    cmp                    player2Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer2
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer2
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    sub                    currentYPlayer2,1
+	                    jmp                    changePlayer2Pacman
+	MovePlayer2Down:    
+	                    cmp                    player2Moved,0
+	                    jne                    moveLoop
+	                    mov                    ax, currentYPlayer2
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer2
+	                    mov                    bx,ax
+	                    mov                    grid[bx],0
+	                    add                    currentYPlayer2,1
+	                    jmp                    changePlayer2Pacman
+
+
+	changePlayer2Pacman:
+	                    mov                    ax, currentYPlayer2
+	                    mov                    bx, 30
+	                    mul                    bx
+	                    add                    ax,currentXPlayer2
+	                    mov                    bx,ax
+	                    mov                    grid[bx],player2Code
+	                    mov                    player2Moved,1
+	                    jmp                    moveLoop
+	                   
+	endMovePacMan:      
+	                    ret
+MovePacman endp
+
+DrawGrid proc
+	
+	                    mov                    currentX,gridStartX
+	                    mov                    currentY,gridStartY
 	                    mov                    si, 0
 	                    mov                    ch, gridYCount
 	DrawRow:            
@@ -1000,54 +1168,28 @@ DrawGrid proc
 	                    ret
 DrawGrid endp
 
-MoveGhosts proc
 
-	ghostX              dw                     0
-	ghostY              dw                     0
-	delta1X             dw                     0
-	delta1Y             dw                     0
-	delta2X             dw                     0
-	delta2Y             dw                     0
-	   
-	                    mov                    si, 0
-	                    mov                    ch, gridYCount
-	LoopOverRow:        
-	                    mov                    ghostX, 0
-	                    mov                    cl, gridXCount
-	LoopOverCell:       
-	                    push                   cx
-	                    push                   si
-	                    cmp                    grid[si],3
-	                    je                     MoveGhost
-	                    cmp                    grid[si],7
-	                    je                     MoveGhost
-
-	Continue:           
-	                    pop                    si
-	                    pop                    cx
-	                    add                    ghostX, 1
-	                    inc                    si
-	                    dec                    cl
-	                    jnz                    LoopOverCell
-	                    add                    ghostY, 1
-	                    dec                    ch
-	                    jnz                    LoopOverRow
-	                    jmp                    EndMoveGhost
-	MoveGhost:          
-	;GHOSTX AND GHOSTY ARE THE POSITION OF THE CELL THAT WE HAVE JUST FOUND A   IN, AT ALL TIMES WE HAVE THE POSITIONS OF BOTH PACMAN1 AND PACMAN2
-		 				     
-	                    jmp                    continue
-	                   
-
-	EndMoveGhost:       ret
-MoveGhosts endp
+DrawScoreAndLives proc
+	                    mov                    si, @data
+	                    DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
+	                    DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14
+	                    DisplayTextVideoMode   10, 2, 23, livesMessage1, 14
+	                    DisplayTextVideoMode   10, 24, 23, livesMessage2, 14
+	DrawScores:         
+	                    mov                    si,@data
+	                    DisplayNumberVideoMode 15, 1, player1Score
+	                    DisplayNumberVideoMode 37, 1, player2Score
+	                    DisplayNumberVideoMode 12, 23, player1Lives
+	                    DisplayNumberVideoMode 34, 23, player2Lives
+	                    ret
+DrawScoreAndLives endp
 
 
 main proc far
 
 	                    mov                    ax, @data
 	                    mov                    ds, ax
-	                    jmp                    Temp
+	;jmp                    Temp
 	GetPlayer1Name:                                                                                      	;Reading first player name and saving it to player1name
 	                    SetTextMode
 	                    mov                    dx, 0000
@@ -1140,17 +1282,7 @@ main proc far
 	                  
 	Temp:               
 	                    SetVideoMode
-	                    mov                    si, @data
-	                    DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
-	                    DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14
-	                    DisplayTextVideoMode   10, 2, 23, livesMessage1, 14
-	                    DisplayTextVideoMode   10, 24, 23, livesMessage2, 14
-	DrawScores:         
-	                    mov                    si,@data
-	                    DisplayNumberVideoMode 15, 1, player1Score
-	                    DisplayNumberVideoMode 37, 1, player2Score
-	                    DisplayNumberVideoMode 12, 23, player1Lives
-	                    DisplayNumberVideoMode 34, 23, player2Lives
+	           
 	                    mov                    grid[31], player1Code
 	                    mov                    grid[448], player2Code
 	                    mov                    grid[256], ghostCode
@@ -1166,7 +1298,19 @@ main proc far
 	                    mov                    grid[160], cherryCode
 	                    mov                    grid[415], dotCode
 	                    mov                    grid[70], dotCode
+						
+	
+	gameLoop:           
+	                    call                   MovePacman
 	                    call                   DrawGrid
+	                    call                   DrawScoreAndLives
+	                    MOV                    CX, 2H
+	                    MOV                    DX, 4240H
+	                    MOV                    AH, 86H
+	                    INT                    15H
+	                    jmp                    gameLoop
+	                
+	                    
 	EndLoop:            jmp                    EndLoop
 	Terminate2:         
 	                    mov                    ah, 4ch
