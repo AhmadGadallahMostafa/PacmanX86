@@ -1651,8 +1651,8 @@ MovePacman proc
 MovePacman endp
 
 DrawGrid proc
-	                    mov                    currentX,gridStartX
-	                    mov                    currentY,gridStartY
+	                    mov                    currentX, gridStartX
+	                    mov                    currentY, gridStartY
 	                    mov                    gridColor, 0
 	                    mov                    si, 0
 	                    mov                    ch, gridYCount
@@ -1662,12 +1662,12 @@ DrawGrid proc
 	DrawCell:           
 	                    push                   cx
 	                    push                   si
-	                    ; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
-	                    ; inc                    gridColor
-	                    ; jmp                    ContinueDraw
+	; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
+	; inc                    gridColor
+	; jmp                    ContinueDraw
 	                    cmp                    grid[si], 0
 	                    je                     Square
-	                    cmp                    grid[si],player1Code
+	                    cmp                    grid[si], player1Code
 	                    je                     Player1
 	                    cmp                    grid[si], player2Code
 	                    je                     Player2
@@ -1704,11 +1704,14 @@ DrawGrid proc
 	Ghost:              
 	                    DrawGhost              currentX, currentY, ghostColor, backgroundColor
 	                    jmp                    ContinueDraw
-	Snowflake:          DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
+	Snowflake:          
+	                    DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
 	                    jmp                    ContinueDraw
-	Cherry:             DrawCherry             currentX, currentY, red, green, backgroundColor
+	Cherry:             
+	                    DrawCherry             currentX, currentY, red, green, backgroundColor
 	                    jmp                    ContinueDraw
-	Dot:                DrawDot                currentX, currentY, white, backgroundColor
+	Dot:                
+	                    DrawDot                currentX, currentY, white, backgroundColor
 	                    jmp                    ContinueDraw
 	EndDraw:            
 	                    ret
