@@ -2454,670 +2454,895 @@ endm FindPath
 .386 
 .stack 0ffffh
 .data
-	player1Name        db  15 , ? , 30 dup("$")                                                              	;variable holding player 1 name
-	player2Name        db  15 , ? , 30 dup("$")                                                              	;variable holding player 2 name
-	nameMessage        db  'Please Enter Your Name: $'                                                       	;Message displayed to prompt the user to enter his name
-	enterMessage       db  'Press Enter to Continue$'
-	welcomeMessage1    db  'Welcome To Our Game, Player 1!$'
-	welcomeMessage2    db  'Welcome To Our Game, Player 2!$'
-	warningMessage     db  '$$Please Enter a Valid Name!$'
-	chattingInfo       db  '*To start chatting press F1$'
-	gameStartInfo      db  '*To Start the Game press F2$'
-	endgameInfo        db  '*To end the game press ESC$'
-	notifactionBar     db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
-	welcomePosition    dw  0h
-	scoreMessage1      db  'Score #1: $'
-	scoreMessage2      db  'Score #2: $'
-	player1Score       dw  0h
-	player2Score       dw  0h
-	livesMessage1      db  'Lives #1: $'
-	livesMessage2      db  'Lives #2: $'
-	player1Lives       dw  3h
-	player2Lives       dw  3h
-	scanF2             equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
-	scanESC            equ 1Bh
-	grid               db  480 dup(0)
-	black              equ 00h
-	blue               equ 01h
-	green              equ 02h
-	cyan               equ 03h
-	red                equ 04h
-	magenta            equ 05h
-	brown              equ 06h
-	lightGray          equ 07h
-	darkGray           equ 08h
-	lightBlue          equ 09h
-	lightGreen         equ 0ah
-	lightCyan          equ 0bh
-	lightRed           equ 0ch
-	lightMagenta       equ 0dh
-	yellow             equ 0eh
-	white              equ 0fh
-	player1Color       equ yellow
-	player2Color       equ lightGreen
-	borderColor        equ blue
-	backgroundColor    equ 151d
-	ghostColor         equ lightMagenta
-	dotColor           equ white
-	gridStartX         equ 10
-	gridStartY         equ 20
-	gridStep           equ 10
-	gridXCount         equ 30
-	gridYCount         equ 16
-	player1Code        equ 16
-	player2Code        equ 17
-	snowflakeCode      equ 18
-	cherryCode         equ 19
-	dotCode            equ 20
-	bigDotCode         equ 21
-	greenDotCode       equ 22
-	extraLifeCode      equ 23
-	decLifeCode        equ 24
-	ghostCode          equ 128
-	currentXPlayer1    dw  1
-	currentYPlayer1    dw  1
-	currentXPlayer2    dw  28
-	currentYPlayer2    dw  14
-	player1Orientation db  'R'
-	player2Orientation db  'L'
-	isOpen             db  1
-	rightArrowScan     equ 4dh
-	leftArrowScan      equ 4bh
-	upArrowScan        equ 48h
-	downArrowScan      equ 50h
-	currentX           dw  gridStartX
-	currentY           dw  gridStartY
-	player1Moved       db  0
-	player2Moved       db  0
-	wScanCode          equ 11h
-	aSCanCode          equ 1eh
-	sSCanCode          equ 1fh
-	dScanCode          equ 20h
-	gridColor          db  0
-	ghostsIsFrozen     db  0
-	player2IsFrozen    db  0
-	player1IsFrozen    db  0
-	freezeDuration     equ 25
-	player1FreezeDur   db  freezeDuration
-	player2FreezeDur   db  freezeDuration
-	ghostFreezeDur     db  freezeDuration
-	ghostX             db  0
-	ghostY             db  0
-	searchX            db  0
-	searchY            db  0
-	nodeX              db  0
-	nodeY              db  0
-	searchCount        dw  0
-	gridChecked        db  480 dup(0)
-	nodesToSearch      dw  480 dup(0)
-	zeros              dw  480 dup(0)
-	rightValue         dw  0ffh
-	leftValue          dw  0ffh
-	upValue            dw  0ffh
-	downValue          dw  0ffh
-	maxValue           dw  0ffh
-	nextMove           db  0
+	player1Name         db  15 , ? , 30 dup("$")                                                              	;variable holding player 1 name
+	player2Name         db  15 , ? , 30 dup("$")                                                              	;variable holding player 2 name
+	nameMessage         db  'Please Enter Your Name: $'                                                       	;Message displayed to prompt the user to enter his name
+	enterMessage        db  'Press Enter to Continue$'
+	welcomeMessage1     db  'Welcome To Our Game, Player 1!$'
+	welcomeMessage2     db  'Welcome To Our Game, Player 2!$'
+	warningMessage      db  '$$Please Enter a Valid Name!$'
+	chattingInfo        db  '*To start chatting press F1$'
+	gameStartInfo       db  '*To Start the Game press F2$'
+	endgameInfo         db  '*To end the game press ESC$'
+	notifactionBar      db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
+	welcomePosition     dw  0h
+	scoreMessage1       db  'Score #1: $'
+	scoreMessage2       db  'Score #2: $'
+	player1Score        dw  0h
+	player2Score        dw  0h
+	livesMessage1       db  'Lives #1: $'
+	livesMessage2       db  'Lives #2: $'
+	player1Lives        dw  3h
+	player2Lives        dw  3h
+	scanF2              equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanESC             equ 1Bh
+	grid                db  480 dup(0)
+	black               equ 00h
+	blue                equ 01h
+	green               equ 02h
+	cyan                equ 03h
+	red                 equ 04h
+	magenta             equ 05h
+	brown               equ 06h
+	lightGray           equ 07h
+	darkGray            equ 08h
+	lightBlue           equ 09h
+	lightGreen          equ 0ah
+	lightCyan           equ 0bh
+	lightRed            equ 0ch
+	lightMagenta        equ 0dh
+	yellow              equ 0eh
+	white               equ 0fh
+	player1InitialColor equ yellow
+	player1Color        db  player1InitialColor
+	player2InitialColor equ lightGreen
+	player2Color        db  player2InitialColor
+	borderColor         equ blue
+	;backgroundColor     equ 151d
+	backgroundColor     equ black
+	ghostInitialColor   equ lightMagenta
+	ghostColor          db  ghostInitialColor
+	dotColor            equ white
+	gridStartX          equ 10
+	gridStartY          equ 20
+	gridStep            equ 10
+	gridXCount          equ 30
+	gridYCount          equ 16
+	player1Code         equ 16
+	player2Code         equ 17
+	snowflakeCode       equ 18
+	cherryCode          equ 19
+	dotCode             equ 20
+	bigDotCode          equ 21
+	greenDotCode        equ 22
+	extraLifeCode       equ 23
+	decLifeCode         equ 24
+	cornerLeftUpCode    equ 25
+	cornerLeftDownCode  equ 26
+	cornerRightUpCode   equ 27
+	cornerRightDownCode equ 28
+	horizontalWallCode  equ 29
+	verticalWallCode    equ 30
+	quadWallCode        equ 31
+	triWallDownCode     equ 32
+	triWallUpCode       equ 33
+	triWallLeftCode     equ 34
+	triWallRightCode    equ 35
+	endWallDownCode     equ 36
+	endWallUpCode       equ 37
+	endWallLeftCode     equ 38
+	endWallRightCode    equ 39
+	ghostCode           equ 128
+	currentXPlayer1     dw  1
+	currentYPlayer1     dw  1
+	currentXPlayer2     dw  28
+	currentYPlayer2     dw  14
+	player1Orientation  db  'R'
+	player2Orientation  db  'L'
+	isOpen              db  1
+	rightArrowScan      equ 4dh
+	leftArrowScan       equ 4bh
+	upArrowScan         equ 48h
+	downArrowScan       equ 50h
+	currentX            dw  gridStartX
+	currentY            dw  gridStartY
+	player1Moved        db  0
+	player2Moved        db  0
+	wScanCode           equ 11h
+	aSCanCode           equ 1eh
+	sSCanCode           equ 1fh
+	dScanCode           equ 20h
+	gridColor           db  0
+	ghostsIsFrozen      db  0
+	player2IsFrozen     db  0
+	player1IsFrozen     db  0
+	freezeDuration      equ 25
+	player1FreezeDur    db  freezeDuration
+	player2FreezeDur    db  freezeDuration
+	ghostFreezeDur      db  freezeDuration
+	ghostX              db  0
+	ghostY              db  0
+	searchX             db  0
+	searchY             db  0
+	nodeX               db  0
+	nodeY               db  0
+	searchCount         dw  0
+	gridChecked         db  480 dup(0)
+	nodesToSearch       dw  480 dup(0)
+	zeros               dw  480 dup(0)
+	rightValue          dw  0ffh
+	leftValue           dw  0ffh
+	upValue             dw  0ffh
+	downValue           dw  0ffh
+	maxValue            dw  0ffh
+	nextMove            db  0
 
 .code
 MoveGhosts proc
-	                       mov                    ghostX, 0
-	                       mov                    ghostY, 0
-	                       mov                    si, 0
-	                       mov                    ch, gridYCount
+	                       mov                     ghostX, 0
+	                       mov                     ghostY, 0
+	                       mov                     si, 0
+	                       mov                     ch, gridYCount
 	LoopRow:               
-	                       mov                    ghostX, 0
-	                       mov                    cl, gridXCount
+	                       mov                     ghostX, 0
+	                       mov                     cl, gridXCount
 	LoopCell:              
-	                       push                   cx
-	                       push                   si
-	                       mov                    cl, grid[si]
-	                       and                    cl, 128d
-	                       push                   si
-	                       jnz                    IsGhost
-	                       jmp                    EndMoveGhost
+	                       push                    cx
+	                       push                    si
+	                       mov                     cl, grid[si]
+	                       and                     cl, 128d
+	                       push                    si
+	                       jnz                     IsGhost
+	                       jmp                     EndMoveGhost
 	FindNextMove:          
-	                       pop                    si
-	                       and                    grid[si], 255d
-	                       mov                    cx, maxValue
-	                       cmp                    cx, rightValue
-	                       jl                     NextMoveIsRight
-	                       cmp                    cx, leftValue
-	                       jl                     NextMoveIsLeft
-	                       cmp                    cx, upValue
-	                       jl                     NextMoveIsUp
-	                       cmp                    cx, downValue
-	                       jl                     NextMoveIsDown
+	                       pop                     si
+	                       and                     grid[si], 255d
+	                       mov                     cx, maxValue
+	                       cmp                     cx, rightValue
+	                       jl                      NextMoveIsRight
+	                       cmp                     cx, leftValue
+	                       jl                      NextMoveIsLeft
+	                       cmp                     cx, upValue
+	                       jl                      NextMoveIsUp
+	                       cmp                     cx, downValue
+	                       jl                      NextMoveIsDown
 	ContinueMoveGhost:     
-	                       pop                    si
-	                       pop                    cx
-	                       add                    ghostX, gridStep
-	                       inc                    si
-	                       dec                    cl
-	                       jnz                    LoopCell
-	                       add                    ghostY, gridStep
-	                       dec                    ch
-	                       jnz                    LoopRow
-	                       jmp                    EndMoveGhost
+	                       pop                     si
+	                       pop                     cx
+	                       add                     ghostX, gridStep
+	                       inc                     si
+	                       dec                     cl
+	                       jnz                     LoopCell
+	                       add                     ghostY, gridStep
+	                       dec                     ch
+	                       jnz                     LoopRow
+	                       jmp                     EndMoveGhost
 	IsGhost:               
-	                       mov                    rightValue, 0ffh
-	                       mov                    leftValue, 0ffh
-	                       mov                    upValue, 0ffh
-	                       mov                    downValue, 0ffh
-	                       mov                    maxValue, 0ffh
-	                       mov                    nextMove, 0
-	                       mov                    bh, searchX
-	                       mov                    bl, searchY
-	                       mov                    searchX, bh
-	                       mov                    searchY, bl
+	                       mov                     rightValue, 0ffh
+	                       mov                     leftValue, 0ffh
+	                       mov                     upValue, 0ffh
+	                       mov                     downValue, 0ffh
+	                       mov                     maxValue, 0ffh
+	                       mov                     nextMove, 0
+	                       mov                     bh, searchX
+	                       mov                     bl, searchY
+	                       mov                     searchX, bh
+	                       mov                     searchY, bl
 	SearchRight:           
-	                       inc                    searchX
-	                       cmp                    searchX, gridXCount
-	                       jge                    SearchLeft
-	                       GridToCell             searchX, searchY
-	                       cmp                    grid[bx], 16
-	                       jb                     SearchLeft
+	                       inc                     searchX
+	                       cmp                     searchX, gridXCount
+	                       jge                     SearchLeft
+	                       GridToCell              searchX, searchY
+	                       cmp                     grid[bx], 16
+	                       jb                      SearchLeft
 	;FindPath               searchX, searchY
-	                       mov                    rightValue, ax
+	                       mov                     rightValue, ax
 	SearchLeft:            
-	                       dec                    searchX
-	                       cmp                    searchX, 0
-	                       jle                    SearchUp
-	                       GridToCell             searchX, searchY
-	                       cmp                    grid[bx], 16
-	                       jb                     SearchUp
+	                       dec                     searchX
+	                       cmp                     searchX, 0
+	                       jle                     SearchUp
+	                       GridToCell              searchX, searchY
+	                       cmp                     grid[bx], 16
+	                       jb                      SearchUp
 	;FindPath               searchX, searchY
-	                       mov                    leftValue, ax
+	                       mov                     leftValue, ax
 	SearchUp:              
-	                       inc                    searchY
-	                       cmp                    searchX, gridYCount
-	                       jge                    SearchDown
-	                       GridToCell             searchX, searchY
-	                       cmp                    grid[bx], 16
-	                       jb                     SearchDown
+	                       inc                     searchY
+	                       cmp                     searchX, gridYCount
+	                       jge                     SearchDown
+	                       GridToCell              searchX, searchY
+	                       cmp                     grid[bx], 16
+	                       jb                      SearchDown
 	;FindPath               searchX, searchY
-	                       mov                    upValue, ax
+	                       mov                     upValue, ax
 	SearchDown:            
-	                       dec                    searchY
-	                       cmp                    searchY, gridYCount
-	                       jle                    FindNextMove
-	                       GridToCell             searchX, searchY
-	                       cmp                    grid[bx], 16
-	                       jb                     FindNextMove
+	                       dec                     searchY
+	                       cmp                     searchY, gridYCount
+	                       jle                     FindNextMove
+	                       GridToCell              searchX, searchY
+	                       cmp                     grid[bx], 16
+	                       jb                      FindNextMove
 	;FindPath               searchX, searchY
-	                       mov                    downValue, ax
-	                       jmp                    FindNextMove
+	                       mov                     downValue, ax
+	                       jmp                     FindNextMove
 	NextMoveIsRight:       
-	                       inc                    ghostX
-	                       GridToCell             ghostX, ghostY
-	                       or                     grid[si], 128d
-	                       jmp                    ContinueMoveGhost
+	                       inc                     ghostX
+	                       GridToCell              ghostX, ghostY
+	                       or                      grid[si], 128d
+	                       jmp                     ContinueMoveGhost
 	NextMoveIsLeft:        
-	                       dec                    ghostX
-	                       GridToCell             ghostX, ghostY
-	                       or                     grid[si], 128d
-	                       jmp                    ContinueMoveGhost
+	                       dec                     ghostX
+	                       GridToCell              ghostX, ghostY
+	                       or                      grid[si], 128d
+	                       jmp                     ContinueMoveGhost
 	NextMoveIsUp:          
-	                       dec                    ghostY
-	                       GridToCell             ghostX, ghostY
-	                       or                     grid[si], 128d
-	                       jmp                    ContinueMoveGhost
+	                       dec                     ghostY
+	                       GridToCell              ghostX, ghostY
+	                       or                      grid[si], 128d
+	                       jmp                     ContinueMoveGhost
 	NextMoveIsDown:        
-	                       inc                    ghostY
-	                       GridToCell             ghostX, ghostY
-	                       or                     grid[si], 128d
-	                       jmp                    ContinueMoveGhost
+	                       inc                     ghostY
+	                       GridToCell              ghostX, ghostY
+	                       or                      grid[si], 128d
+	                       jmp                     ContinueMoveGhost
 	EndMoveGhost:          
 	                       ret
 MoveGhosts endp
 
 MovePacman proc
-	                       mov                    player1Moved,0
-	                       mov                    player2Moved,0
+	                       mov                     player1Moved,0
+	                       mov                     player2Moved,0
 	MoveLoop:              
-	                       mov                    ah,1
-	                       int                    16h
-	                       jz                     endMovePacMan
-	                       mov                    ah,0
-	                       int                    16h
+	                       mov                     ah,1
+	                       int                     16h
+	                       jz                      endMovePacMan
+	                       mov                     ah,0
+	                       int                     16h
 	; Added part for Freeze effect:
 	; The dec of FreezeDuration and setting it to zero when the Duration = 0 is in the IsFrozen proc.
 	; If Player 1 is frozen we will jmp straight to the part of the code that reads the scancodes responsible for the movement of player2
-	                       cmp                    player1IsFrozen,1
-	                       je                     Player2MovmentCodes
+	                       cmp                     player1IsFrozen,1
+	                       je                      Player2MovmentCodes
 
-	                       cmp                    ah,rightArrowScan
-	                       je                     MovePlayer1Right
-	                       cmp                    ah,leftArrowScan
-	                       je                     MovePlayer1Left
-	                       cmp                    ah,upArrowScan
-	                       je                     MovePlayer1Up
-	                       cmp                    ah,downArrowScan
-	                       je                     MovePlayer1Down
+	                       cmp                     ah,rightArrowScan
+	                       je                      MovePlayer1Right
+	                       cmp                     ah,leftArrowScan
+	                       je                      MovePlayer1Left
+	                       cmp                     ah,upArrowScan
+	                       je                      MovePlayer1Up
+	                       cmp                     ah,downArrowScan
+	                       je                      MovePlayer1Down
 	; If Player2 is frozen we will skip the part where it moves him and we will continue the rest of the movement procedure.
-	                       cmp                    player2IsFrozen,1
-	                       je                     MoveLoop
+	                       cmp                     player2IsFrozen,1
+	                       je                      MoveLoop
 	Player2MovmentCodes:   
-	                       cmp                    ah,dScanCode
-	                       je                     MovePlayer2Right
-	                       cmp                    ah,aSCanCode
-	                       je                     MovePlayer2Left
-	                       cmp                    ah,wScanCode
-	                       je                     MovePlayer2Up
-	                       cmp                    ah,sSCanCode
-	                       je                     MovePlayer2Down
-	                       jmp                    MoveLoop
+	                       cmp                     ah,dScanCode
+	                       je                      MovePlayer2Right
+	                       cmp                     ah,aSCanCode
+	                       je                      MovePlayer2Left
+	                       cmp                     ah,wScanCode
+	                       je                      MovePlayer2Up
+	                       cmp                     ah,sSCanCode
+	                       je                      MovePlayer2Down
+	                       jmp                     MoveLoop
 	MovePlayer1Right:      
-	                       cmp                    player1Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player1Orientation, 'R'
-	                       GridToCell             currentXPlayer1, currentYPlayer1
-	                       mov                    grid[bx],0
-	                       add                    currentXPlayer1,1
-	                       jmp                    ChangePlayer1Pacman
+	                       cmp                     player1Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player1Orientation, 'R'
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       mov                     grid[bx],0
+	                       add                     currentXPlayer1,1
+	                       jmp                     ChangePlayer1Pacman
 	MovePlayer1Left:       
-	                       cmp                    player1Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player1Orientation, 'L'
-	                       GridToCell             currentXPlayer1, currentYPlayer1
-	                       mov                    grid[bx],0
-	                       sub                    currentXPlayer1,1
-	                       jmp                    ChangePlayer1Pacman
+	                       cmp                     player1Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player1Orientation, 'L'
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       mov                     grid[bx],0
+	                       sub                     currentXPlayer1,1
+	                       jmp                     ChangePlayer1Pacman
 	MovePlayer1Up:         
-	                       cmp                    player1Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player1Orientation, 'U'
-	                       GridToCell             currentXPlayer1, currentYPlayer1
-	                       mov                    grid[bx],0
-	                       sub                    currentYPlayer1,1
-	                       jmp                    ChangePlayer1Pacman
+	                       cmp                     player1Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player1Orientation, 'U'
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       mov                     grid[bx],0
+	                       sub                     currentYPlayer1,1
+	                       jmp                     ChangePlayer1Pacman
 	MovePlayer1Down:       
-	                       cmp                    player1Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player1Orientation, 'D'
-	                       GridToCell             currentXPlayer1, currentYPlayer1
-	                       mov                    grid[bx],0
-	                       add                    currentYPlayer1,1
-	                       jmp                    ChangePlayer1Pacman
+	                       cmp                     player1Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player1Orientation, 'D'
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       mov                     grid[bx],0
+	                       add                     currentYPlayer1,1
+	                       jmp                     ChangePlayer1Pacman
 	ChangePlayer1Pacman:   
-	                       GridToCell             currentXPlayer1, currentYPlayer1
-	                       jmp                    CheckPowerUpsPlayer1
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       jmp                     CheckPowerUpsPlayer1
 	AfterPowerUp1:         
-	                       mov                    grid[bx],player1Code
-	                       mov                    player1Moved,1
-	                       jmp                    MoveLoop
+	                       mov                     grid[bx],player1Code
+	                       mov                     player1Moved,1
+	                       jmp                     MoveLoop
 	CheckPowerUpsPlayer1:  
-	                       push                   bx
-	                       cmp                    grid[bx], dotCode
-	                       je                     ApplyDot1
-	                       cmp                    grid[bx], snowflakeCode
-	                       je                     ApplyFreeze1
-	                       cmp                    grid[bx], cherryCode
-	                       je                     ApplyCherry1
-	                       cmp                    grid[bx], bigDotCode
+	                       push                    bx
+	                       cmp                     grid[bx], dotCode
+	                       je                      ApplyDot1
+	                       cmp                     grid[bx], snowflakeCode
+	                       je                      ApplyFreeze1
+	                       cmp                     grid[bx], cherryCode
+	                       je                      ApplyCherry1
+	                       cmp                     grid[bx], bigDotCode
 	; je                     ApplyBigDot1
-	                       cmp                    grid[bx], greenDotCode
+	                       cmp                     grid[bx], greenDotCode
 	; je                     ApplyGreenDot1
-	                       cmp                    grid[bx], extraLifeCode
-	                       je                     ApplyPacmanLife1
-	                       cmp                    grid[bx], decLifeCode
-	                       je                     ApplyPacmanUnLife1
+	                       cmp                     grid[bx], extraLifeCode
+	                       je                      ApplyPacmanLife1
+	                       cmp                     grid[bx], decLifeCode
+	                       je                      ApplyPacmanUnLife1
 	ReturningToMovePlayer1:
-	                       pop                    bx
-	                       jmp                    AfterPowerUp1
+	                       pop                     bx
+	                       jmp                     AfterPowerUp1
 	ApplyDot1:             
-	                       add                    player1Score, 1
-	                       jmp                    ReturningToMovePlayer1
+	                       add                     player1Score, 1
+	                       jmp                     ReturningToMovePlayer1
 	ApplyFreeze1:          
-	                       mov                    player2FreezeDur, freezeDuration
-	                       mov                    ghostFreezeDur, freezeDuration
-	                       mov                    player2IsFrozen, 1
-	                       mov                    ghostsIsFrozen, 1
-	                       jmp                    ReturningToMovePlayer1
+	                       mov                     player2FreezeDur, freezeDuration
+	                       mov                     ghostFreezeDur, freezeDuration
+	                       mov                     player2IsFrozen, 1
+	                       mov                     ghostsIsFrozen, 1
+	                       jmp                     ReturningToMovePlayer1
 	ApplyCherry1:          
-	                       add                    player1Score,10
-	                       jmp                    ReturningToMovePlayer1
+	                       add                     player1Score,10
+	                       jmp                     ReturningToMovePlayer1
 	;ApplyBigDot1:
 
 	;ApplyGreenDot1:
 
 	ApplyPacmanLife1:      
-	                       add                    player1Lives, 1
-	                       jmp                    ReturningToMovePlayer1
+	                       add                     player1Lives, 1
+	                       jmp                     ReturningToMovePlayer1
 	ApplyPacmanUnLife1:    
-	                       sub                    player1Lives, 1
-	                       jmp                    ReturningToMovePlayer1
+	                       sub                     player1Lives, 1
+	                       jmp                     ReturningToMovePlayer1
 
 	;--------------------------------------------------------------------------------------
 
 	MovePlayer2Right:      
-	                       cmp                    player2Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player2Orientation, 'R'
-	                       GridToCell             currentXPlayer2, currentYPlayer2
-	                       mov                    grid[bx],0
-	                       add                    currentXPlayer2,1
-	                       jmp                    ChangePlayer2Pacman
+	                       cmp                     player2Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player2Orientation, 'R'
+	                       GridToCell              currentXPlayer2, currentYPlayer2
+	                       mov                     grid[bx],0
+	                       add                     currentXPlayer2,1
+	                       jmp                     ChangePlayer2Pacman
 	MovePlayer2Left:       
-	                       cmp                    player2Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player2Orientation, 'L'
-	                       GridToCell             currentXPlayer2, currentYPlayer2
-	                       mov                    grid[bx],0
-	                       sub                    currentXPlayer2,1
-	                       jmp                    ChangePlayer2Pacman
+	                       cmp                     player2Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player2Orientation, 'L'
+	                       GridToCell              currentXPlayer2, currentYPlayer2
+	                       mov                     grid[bx],0
+	                       sub                     currentXPlayer2,1
+	                       jmp                     ChangePlayer2Pacman
 	MovePlayer2Up:         
-	                       cmp                    player2Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player2Orientation, 'U'
-	                       GridToCell             currentXPlayer2, currentYPlayer2
-	                       mov                    grid[bx],0
-	                       sub                    currentYPlayer2,1
-	                       jmp                    ChangePlayer2Pacman
+	                       cmp                     player2Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player2Orientation, 'U'
+	                       GridToCell              currentXPlayer2, currentYPlayer2
+	                       mov                     grid[bx],0
+	                       sub                     currentYPlayer2,1
+	                       jmp                     ChangePlayer2Pacman
 	MovePlayer2Down:       
-	                       cmp                    player2Moved,0
-	                       jne                    MoveLoop
-	                       mov                    player2Orientation, 'D'
-	                       GridToCell             currentXPlayer2, currentYPlayer2
-	                       mov                    grid[bx], 0
-	                       add                    currentYPlayer2, 1
-	                       jmp                    ChangePlayer2Pacman
+	                       cmp                     player2Moved,0
+	                       jne                     MoveLoop
+	                       mov                     player2Orientation, 'D'
+	                       GridToCell              currentXPlayer2, currentYPlayer2
+	                       mov                     grid[bx], 0
+	                       add                     currentYPlayer2, 1
+	                       jmp                     ChangePlayer2Pacman
 	ChangePlayer2Pacman:   
-	                       GridToCell             currentXPlayer2, currentYPlayer2
-	                       jmp                    CheckPowerUpsPlayer2
+	                       GridToCell              currentXPlayer2, currentYPlayer2
+	                       jmp                     CheckPowerUpsPlayer2
 	AfterPowerUp2:         
-	                       mov                    grid[bx], player2Code
-	                       mov                    player2Moved, 1
-	                       jmp                    MoveLoop
+	                       mov                     grid[bx], player2Code
+	                       mov                     player2Moved, 1
+	                       jmp                     MoveLoop
 
 	;--------------------------------------------------------------------------------------
 
 	CheckPowerUpsPlayer2:  
-	                       push                   bx
-	                       cmp                    grid[bx], dotCode
-	                       je                     ApplyDot2
-	                       cmp                    grid[bx], snowflakeCode
-	                       je                     ApplyFreeze2
-	                       cmp                    grid[bx], cherryCode
-	                       je                     ApplyCherry2
-	                       cmp                    grid[bx], bigDotCode
+	                       push                    bx
+	                       cmp                     grid[bx], dotCode
+	                       je                      ApplyDot2
+	                       cmp                     grid[bx], snowflakeCode
+	                       je                      ApplyFreeze2
+	                       cmp                     grid[bx], cherryCode
+	                       je                      ApplyCherry2
+	                       cmp                     grid[bx], bigDotCode
 	; je                     ApplyBigDot2
-	                       cmp                    grid[bx], greenDotCode
+	                       cmp                     grid[bx], greenDotCode
 	; je                     ApplyGreenDot2
-	                       cmp                    grid[bx], extraLifeCode
-	                       je                     ApplyPacmanLife2
-	                       cmp                    grid[bx], decLifeCode
-	                       je                     ApplyPacmanUnLife2
+	                       cmp                     grid[bx], extraLifeCode
+	                       je                      ApplyPacmanLife2
+	                       cmp                     grid[bx], decLifeCode
+	                       je                      ApplyPacmanUnLife2
 	ReturningToMovePlayer2:
-	                       pop                    bx
-	                       jmp                    AfterPowerUp2
+	                       pop                     bx
+	                       jmp                     AfterPowerUp2
 	ApplyDot2:             
-	                       add                    player2Score, 1
-	                       jmp                    ReturningToMovePlayer2
+	                       add                     player2Score, 1
+	                       jmp                     ReturningToMovePlayer2
 	ApplyFreeze2:          
-	                       mov                    player1FreezeDur, freezeDuration
-	                       mov                    ghostFreezeDur, freezeDuration
-	                       mov                    player1IsFrozen, 1
-	                       mov                    ghostsIsFrozen, 1
-	                       jmp                    ReturningToMovePlayer2
+	                       mov                     player1FreezeDur, freezeDuration
+	                       mov                     ghostFreezeDur, freezeDuration
+	                       mov                     player1IsFrozen, 1
+	                       mov                     ghostsIsFrozen, 1
+	                       jmp                     ReturningToMovePlayer2
 	ApplyCherry2:          
-	                       add                    player2Score,10
-	                       jmp                    ReturningToMovePlayer2
+	                       add                     player2Score,10
+	                       jmp                     ReturningToMovePlayer2
 	;ApplyBigDot2:
 
 	;ApplyGreenDot2:
 
 	ApplyPacmanLife2:      
-	                       add                    player2Lives, 1
-	                       jmp                    ReturningToMovePlayer2
+	                       add                     player2Lives, 1
+	                       jmp                     ReturningToMovePlayer2
 	ApplyPacmanUnLife2:    
-	                       sub                    player2Lives, 1
-	                       jmp                    ReturningToMovePlayer2
+	                       sub                     player2Lives, 1
+	                       jmp                     ReturningToMovePlayer2
 MovePacman endp
 
 IsFrozen proc
 	CheckPlayer1Freeze:    
-	                       cmp                    player1IsFrozen,1
-	                       je                     DecPlayer1FreezeEffect
+	                       cmp                     player1IsFrozen,1
+	                       je                      DecPlayer1FreezeEffect
 	CheckPlayer2Freeze:    
-	                       cmp                    player2IsFrozen, 1
-	                       je                     DecPlayer2FreezeEffect
+	                       cmp                     player2IsFrozen, 1
+	                       je                      DecPlayer2FreezeEffect
 	CheckGhostFreeze:      
-	                       cmp                    ghostsIsFrozen,1
-	                       je                     DecGhoshtFreezeEffect
+	                       cmp                     ghostsIsFrozen,1
+	                       je                      DecGhoshtFreezeEffect
 	ReturnFreeze:          
 	                       ret
 	DecPlayer1FreezeEffect:
-	                       sub                    player1FreezeDur,1
-	                       jz                     SetFreeze1
-	                       jmp                    CheckPlayer2Freeze
+	                       sub                     player1FreezeDur,1
+	                       jz                      SetFreeze1
+	                       jmp                     CheckPlayer2Freeze
 	SetFreeze1:            
-	                       mov                    player1IsFrozen,0
-	                       jmp                    CheckPlayer2Freeze
+	                       mov                     player1IsFrozen,0
+	                       jmp                     CheckPlayer2Freeze
 	DecPlayer2FreezeEffect:
-	                       sub                    player2FreezeDur,1
-	                       jz                     SetFreeze2
-	                       jmp                    CheckGhostFreeze
+	                       sub                     player2FreezeDur,1
+	                       jz                      SetFreeze2
+	                       jmp                     CheckGhostFreeze
 	SetFreeze2:            
-	                       mov                    player2IsFrozen,0
-	                       jmp                    CheckGhostFreeze
+	                       mov                     player2IsFrozen,0
+	                       jmp                     CheckGhostFreeze
 	DecGhoshtFreezeEffect: 
-	                       sub                    ghostFreezeDur,1
-	                       jz                     SetFreezeGhost
-	                       jmp                    ReturnFreeze
+	                       sub                     ghostFreezeDur,1
+	                       jz                      SetFreezeGhost
+	                       jmp                     ReturnFreeze
 	SetFreezeGhost:        
-	                       mov                    ghostsIsFrozen,0
-	                       jmp                    ReturnFreeze
+	                       mov                     ghostsIsFrozen,0
+	                       jmp                     ReturnFreeze
 	EndMovePacMan:         
 	                       ret
 IsFrozen endp
 
 DrawGrid proc
-	                       mov                    currentX, gridStartX
-	                       mov                    currentY, gridStartY
-	                       mov                    gridColor, 0
-	                       mov                    si, 0
-	                       mov                    ch, gridYCount
+	                       mov                     currentX, gridStartX
+	                       mov                     currentY, gridStartY
+	                       mov                     gridColor, 0
+	                       mov                     si, 0
+	                       mov                     ch, gridYCount
 	DrawRow:               
-	                       mov                    currentX, gridStartX
-	                       mov                    cl, gridXCount
+	                       mov                     currentX, gridStartX
+	                       mov                     cl, gridXCount
 	DrawCell:              
-	                       push                   cx
-	                       push                   si
+	                       push                    cx
+	                       push                    si
 	; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
 	; inc                    gridColor
 	; jmp                    ContinueDraw
-	                       mov                    cl, grid[si]
-	                       and                    cl, 128d
-	                       jnz                    Ghost
-	                       cmp                    grid[si], 0
-	                       je                     Square
-	                       cmp                    grid[si], player1Code
-	                       je                     Player1
-	                       cmp                    grid[si], player2Code
-	                       je                     Player2
-	                       cmp                    grid[si], snowflakeCode
-	                       je                     Snowflake
-	                       cmp                    grid[si], cherryCode
-	                       je                     Cherry
-	                       cmp                    grid[si], dotCode
-	                       je                     Dot
+	                       mov                     cl, grid[si]
+	                       and                     cl, 128d
+	                       jnz                     Ghost
+	                       cmp                     grid[si], 0
+	                       je                      Square
+	                       cmp                     grid[si], player1Code
+	                       je                      Player1
+	                       cmp                     grid[si], player2Code
+	                       je                      Player2
+	                       cmp                     grid[si], snowflakeCode
+	                       je                      Snowflake
+	                       cmp                     grid[si], cherryCode
+	                       je                      Cherry
+	                       cmp                     grid[si], dotCode
+	                       je                      Dot
+	                       cmp                     grid[si], bigDotCode
+	                       je                      BigDot
+	                       cmp                     grid[si], cornerLeftDownCode
+	                       je                      CornerLeftDown
+	                       cmp                     grid[si], cornerLeftUpCode
+	                       je                      CornerLeftUp
+	                       cmp                     grid[si], cornerRightDownCode
+	                       je                      CornerRightDown
+	                       cmp                     grid[si], cornerRightUpCode
+	                       je                      CornerRightUp
+	                       cmp                     grid[si], quadWallCode
+	                       je                      QuadWall
+	                       cmp                     grid[si], triWallLeftCode
+	                       je                      TriWallLeft
+	                       cmp                     grid[si], triWallRightCode
+	                       je                      TriWallRight
+	                       cmp                     grid[si], triWallUpCode
+	                       je                      TriWallUp
+	                       cmp                     grid[si], triWallDownCode
+	                       je                      TriWallDown
+	                       cmp                     grid[si], horizontalWallCode
+	                       je                      HorizontalWall
+	                       cmp                     grid[si], verticalWallCode
+	                       je                      VerticalWall
+	                       cmp                     grid[si], endWallLeftCode
+	                       je                      EndWallLeft
+	                       cmp                     grid[si], endWallRightCode
+	                       je                      EndWallRight
+	                       cmp                     grid[si], endWallUpCode
+	                       je                      EndWallUp
+	                       cmp                     grid[si], endWallDownCode
+	                       je                      EndWallDown
 	ContinueDraw:          
-	                       pop                    si
-	                       pop                    cx
-	                       add                    currentX, gridStep
-	                       inc                    si
-	                       dec                    cl
-	                       jnz                    DrawCell
-	                       add                    currentY, gridStep
-	                       dec                    ch
-	                       jnz                    DrawRow
-	                       jmp                    EndDraw
+	                       pop                     si
+	                       pop                     cx
+	                       add                     currentX, gridStep
+	                       inc                     si
+	                       dec                     cl
+	                       jnz                     DrawCell
+	                       add                     currentY, gridStep
+	                       dec                     ch
+	                       jnz                     DrawRow
+	                       jmp                     EndDraw
 	Square:                
-	                       DrawSquare             currentX, currentY, gridStep, borderColor, backgroundColor
-	                       jmp                    ContinueDraw
+	                       DrawSquare              currentX, currentY, gridStep, black , backgroundColor                        	;borderColor, backgroundColor
+	                       jmp                     ContinueDraw
 	Player1:               
-	                       DrawPlayer             currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
-	                       jmp                    ContinueDraw
+	                       cmp                     player1IsFrozen, 1
+	                       je                      Player1Frozen
+	                       mov                     player1Color,player1InitialColor
+	DrawPlayer1:           
+	                       DrawPlayer              currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
+	                       jmp                     ContinueDraw
+	Player1Frozen:         
+	                       mov                     player1Color, lightBlue
+	                       jmp                     DrawPlayer1
 	Player2:               
-	                       DrawPlayer             currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
-	                       jmp                    ContinueDraw
+	                       cmp                     player2IsFrozen, 1
+	                       je                      Player2Frozen
+	                       mov                     player2Color, player2InitialColor
+	DrawPlayer2:           
+	                       DrawPlayer              currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
+	                       jmp                     ContinueDraw
+	Player2Frozen:         
+	                       mov                     player2Color,lightBlue
+	                       jmp                     DrawPlayer2
 	Ghost:                 
-	                       DrawGhost              currentX, currentY, ghostColor, backgroundColor
-	                       jmp                    ContinueDraw
+	                       cmp                     ghostsIsFrozen, 1
+	                       je                      GhostFrozen
+	                       mov                     ghostColor,ghostInitialColor
+	DrawGhostt:            
+	                       DrawGhost               currentX, currentY, ghostColor, backgroundColor
+	                       jmp                     ContinueDraw
+	GhostFrozen:           
+	                       mov                     ghostColor, lightblue
+	                       jmp                     DrawGhostt
 	Snowflake:             
-	                       DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
-	                       jmp                    ContinueDraw
+	                       DrawSnowflake           currentX, currentY, lightCyan, backgroundColor
+	                       jmp                     ContinueDraw
 	Cherry:                
-	                       DrawCherry             currentX, currentY, red, green, backgroundColor
-	                       jmp                    ContinueDraw
+	                       DrawCherry              currentX, currentY, red, green, backgroundColor
+	                       jmp                     ContinueDraw
 	Dot:                   
-	                       DrawDot                currentX, currentY, white, backgroundColor
-	                       jmp                    ContinueDraw
+	                       DrawDot                 currentX, currentY, white, backgroundColor
+	                       jmp                     ContinueDraw
+	BigDot:                
+	                       DrawBigDot              currentX, currentY, white, backgroundColor
+	                       jmp                     ContinueDraw
+	CornerLeftUp:          
+	                       DrawCornerWallLeftUp    currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	CornerLeftDown:        
+	                       DrawCornerWallLeftDown  currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	CornerRightUp:         
+	                       DrawCornerWallRightUp   currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	CornerRightDown:       
+	                       DrawCornerWallRightDown currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	QuadWall:              
+	                       DrawQuadWall            currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	TriWallLeft:           
+	                       DrawTriWallLeft         currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	TriWallRight:          
+	                       DrawTriWallRight        currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	TriWallUp:             
+	                       DrawTriWallUp           currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	TriWallDown:           
+	                       DrawTriWallDown         currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	HorizontalWall:        
+	                       DrawWallHorizontal      currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	VerticalWall:          
+	                       DrawWallVertical        currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	EndWallLeft:           
+	                       DrawEndWallLeft         currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	EndWallRight:          
+	                       DrawEndWallRight        currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	EndWallUp:             
+	                       DrawEndWallUp           currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
+	EndWallDown:           
+	                       DrawEndWallDown         currentX, currentY, black, white, backgroundColor
+	                       jmp                     ContinueDraw
 	EndDraw:               
 	                       ret
 DrawGrid endp
 
 DrawScoreAndLives proc
 	DrawScores:            
-	                       mov                    si,@data
-	                       DisplayNumberVideoMode 15, 1, player1Score
-	                       DisplayNumberVideoMode 37, 1, player2Score
-	                       DisplayNumberVideoMode 12, 23, player1Lives
-	                       DisplayNumberVideoMode 34, 23, player2Lives
+	                       mov                     si,@data
+	                       DisplayNumberVideoMode  15, 1, player1Score
+	                       DisplayNumberVideoMode  37, 1, player2Score
+	                       DisplayNumberVideoMode  12, 23, player1Lives
+	                       DisplayNumberVideoMode  34, 23, player2Lives
 	                       ret
 DrawScoreAndLives endp
 
 main proc far
 
-	                       mov                    ax, @data
-	                       mov                    ds, ax
-	                       jmp                    StartGame
-	GetPlayer1Name:                                                                                                            	;Reading first player name and saving it to player1name
+	                       mov                     ax, @data
+	                       mov                     ds, ax
+	                       jmp                     StartGame
+	GetPlayer1Name:                                                                                                             	;Reading first player name and saving it to player1name
 	                       SetTextMode
-	                       mov                    dx, 0000
+	                       mov                     dx, 0000
 	                       MoveCursor
-	                       Displaystring          welcomeMessage1
-	                       mov                    dx, 0d0dh
-	                       mov                    dl, 25d
+	                       Displaystring           welcomeMessage1
+	                       mov                     dx, 0d0dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       Displaystring          enterMessage
-	                       mov                    dx, 0f0dh
-	                       mov                    dl, 23d
+	                       Displaystring           enterMessage
+	                       mov                     dx, 0f0dh
+	                       mov                     dl, 23d
 	                       MoveCursor
-	                       Displaystring          warningMessage
-	                       mov                    dx, 0a0dh
-	                       mov                    dl, 25d
+	                       Displaystring           warningMessage
+	                       mov                     dx, 0a0dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       ReadString             nameMessage, player1Name
-	                       ValidateName           player1Name
-	                       cmp                    bl, 0
-	                       je                     showWarning1
-	                       mov                    word ptr warningMessage, byte ptr '$$'
-	                       jmp                    GetPlayer2Name
+	                       ReadString              nameMessage, player1Name
+	                       ValidateName            player1Name
+	                       cmp                     bl, 0
+	                       je                      showWarning1
+	                       mov                     word ptr warningMessage, byte ptr '$$'
+	                       jmp                     GetPlayer2Name
 	ShowWarning1:          
-	                       mov                    word ptr warningMessage, word ptr 0
-	                       jmp                    GetPlayer1Name
-	GetPlayer2Name:                                                                                                            	;Reading second player name and saving it to player2name
+	                       mov                     word ptr warningMessage, word ptr 0
+	                       jmp                     GetPlayer1Name
+	GetPlayer2Name:                                                                                                             	;Reading second player name and saving it to player2name
 	                       SetTextMode
-	                       mov                    dx, 0000
+	                       mov                     dx, 0000
 	                       MoveCursor
-	                       Displaystring          welcomeMessage2
-	                       mov                    dx, 0d0dh
-	                       mov                    dl, 25d
+	                       Displaystring           welcomeMessage2
+	                       mov                     dx, 0d0dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       displaystring          enterMessage
-	                       mov                    dx, 0f0dh
-	                       mov                    dl, 23d
+	                       displaystring           enterMessage
+	                       mov                     dx, 0f0dh
+	                       mov                     dl, 23d
 	                       MoveCursor
-	                       displaystring          warningMessage
-	                       mov                    dx, 0A0dh
-	                       mov                    dl, 25d
+	                       displaystring           warningMessage
+	                       mov                     dx, 0A0dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       ReadString             nameMessage, player2Name
-	                       ValidateName           player2name
-	                       cmp                    bl, 0
-	                       je                     ShowWarning2
-	                       jmp                    MainMenu
+	                       ReadString              nameMessage, player2Name
+	                       ValidateName            player2name
+	                       cmp                     bl, 0
+	                       je                      ShowWarning2
+	                       jmp                     MainMenu
 	ShowWarning2:          
-	                       mov                    word ptr warningMessage, word ptr 0
-	                       jmp                    GetPlayer2Name
+	                       mov                     word ptr warningMessage, word ptr 0
+	                       jmp                     GetPlayer2Name
 
-	MainMenu:                                                                                                                  	;displaying main menu and provided functions and how to use them
+	MainMenu:                                                                                                                   	;displaying main menu and provided functions and how to use them
 	                       SetTextMode
-	                       mov                    dx, 080dh
-	                       mov                    dl, 25d
+	                       mov                     dx, 080dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       DisplayString          chattingInfo
-	                       mov                    dx, 0a0dh
-	                       mov                    dl, 25d
+	                       DisplayString           chattingInfo
+	                       mov                     dx, 0a0dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       DisplayString          gameStartInfo
-	                       mov                    dx, 0c0dh
-	                       mov                    dl, 25d
+	                       DisplayString           gameStartInfo
+	                       mov                     dx, 0c0dh
+	                       mov                     dl, 25d
 	                       MoveCursor
-	                       DisplayString          endgameInfo
-	                       mov                    dl, 0
-	                       mov                    dh, 22d
+	                       DisplayString           endgameInfo
+	                       mov                     dl, 0
+	                       mov                     dh, 22d
 	                       MoveCursor
-	                       Displaystring          notifactionBar
-	AgainTillKeyPressed:                                                                                                       	;checking if a key is pressed on the main menu
-	                       mov                    ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
-	                       int                    21h
-	                       mov                    ah, 1
-	                       int                    16h
-	                       cmp                    al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
-	                       je                     Terminate1
-	                       cmp                    al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
-	                       je                     LoadingMenu
-	                       jmp                    AgainTillKeyPressed
+	                       Displaystring           notifactionBar
+	AgainTillKeyPressed:                                                                                                        	;checking if a key is pressed on the main menu
+	                       mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
+	                       int                     21h
+	                       mov                     ah, 1
+	                       int                     16h
+	                       cmp                     al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                       je                      Terminate1
+	                       cmp                     al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
+	                       je                      LoadingMenu
+	                       jmp                     AgainTillKeyPressed
 
-	Terminate1:            jmp                    Terminate2
+	Terminate1:            jmp                     Terminate2
 	LoadingMenu:           
 	                       SetVideoMode
 
-	                       DrawLoadingScreen      black,yellow,cyan                                                            	;The next code snippet is ofr the delay
-	                       MOV                    CX, 3fH
-	                       MOV                    DX, 4240H
-	                       MOV                    AH, 86H
-	                       INT                    15H
+	DrawLoadingScreen       black,yellow,cyan                                                            	;The next code snippet is ofr the delay
+	                       MOV                     CX, 3fH
+	                       MOV                     DX, 4240H
+	                       MOV                     AH, 86H
+	                       INT                     15H
 	StartGame:             
 	                       SetVideoMode
-	                       mov                    grid[31], player1Code
-	                       mov                    grid[448], player2Code
-	                       mov                    grid[256], ghostCode
-	                       mov                    grid[200], ghostCode
-	                       mov                    grid[150], ghostCode
-	                       mov                    grid[400], ghostCode
-	                       mov                    grid[50], snowflakeCode
-	                       mov                    grid[390], snowflakeCode
-	                       mov                    grid[280], snowflakeCode
-	                       mov                    grid[18], snowflakeCode
-	                       mov                    grid[240], cherryCode
-	                       mov                    grid[30], cherryCode
-	                       mov                    grid[160], cherryCode
-	                       mov                    grid[415], dotCode
-	                       mov                    grid[70], dotCode
+	Level1:                
+	                       mov                     grid[31], player1Code
+	                       mov                     grid[448], player2Code
+	                       mov                     grid[0], cornerLeftUpCode
+	                       mov                     grid[479], cornerRightDownCode
+	                       mov                     grid[29], cornerRightUpCode
+	                       mov                     grid[450], cornerLeftDownCode
+	                       mov                     grid[1], horizontalWallCode
+	                       mov                     grid[2], horizontalWallCode
+	                       mov                     grid[3], horizontalWallCode
+	                       mov                     grid[4], horizontalWallCode
+	                       mov                     grid[5], horizontalWallCode
+	                       mov                     grid[6], horizontalWallCode
+	                       mov                     grid[7], horizontalWallCode
+	                       mov                     grid[8], horizontalWallCode
+	                       mov                     grid[9], horizontalWallCode
+	                       mov                     grid[10], horizontalWallCode
+	                       mov                     grid[11], horizontalWallCode
+	                       mov                     grid[12], horizontalWallCode
+	                       mov                     grid[13], triWallUpCode
+	                       mov                     grid[14], horizontalWallCode
+	                       mov                     grid[15], triWallUpCode
+	                       mov                     grid[16], horizontalWallCode
+	                       mov                     grid[17], horizontalWallCode
+	                       mov                     grid[18], horizontalWallCode
+	                       mov                     grid[19], horizontalWallCode
+	                       mov                     grid[20], horizontalWallCode
+	                       mov                     grid[21], horizontalWallCode
+	                       mov                     grid[22], horizontalWallCode
+	                       mov                     grid[23], horizontalWallCode
+	                       mov                     grid[24], horizontalWallCode
+	                       mov                     grid[25], horizontalWallCode
+	                       mov                     grid[26], horizontalWallCode
+	                       mov                     grid[27], horizontalWallCode
+	                       mov                     grid[28], horizontalWallCode
+	                       mov                     grid[43], endWallDownCode
+	                       mov                     grid[44], bigDotCode
+	                       mov                     grid[32], dotCode
+	                       mov                     grid[45], endWallDownCode
+	                       mov                     grid[30], verticalWallCode
+	                       mov                     grid[60], verticalWallCode
+	                       mov                     grid[90], verticalWallCode
+	                       mov                     grid[120], verticalWallCode
+	                       mov                     grid[150], verticalWallCode
+	                       mov                     grid[180], cornerLeftDownCode
+	                       mov                     grid[181], cornerRightUpCode
+	                       mov                     grid[211], verticalWallCode
+	                       mov                     grid[241], verticalWallCode
+	                       mov                     grid[271], cornerRightDownCode
+	                       mov                     grid[270], cornerLeftUpCode
+	                       mov                     grid[300], verticalWallCode
+	                       mov                     grid[330], verticalWallCode
+	                       mov                     grid[360], verticalWallCode
+	                       mov                     grid[390], verticalWallCode
+	                       mov                     grid[420], verticalWallCode
+	                       mov                     grid[193], horizontalWallCode
+	                       mov                     grid[194], horizontalWallCode
+	                       mov                     grid[195], horizontalWallCode
+	                       mov                     grid[283], horizontalWallCode
+	                       mov                     grid[284], horizontalWallCode
+	                       mov                     grid[285], horizontalWallCode
+	                       mov                     grid[192], cornerLeftUpCode
+	                       mov                     grid[196], cornerRightUpCode
+	                       mov                     grid[282], cornerLeftDownCode
+	                       mov                     grid[286], cornerRightDownCode
+	                       mov                     grid[223], ghostCode
+	                       mov                     grid[225], ghostCode
+	                       mov                     grid[253], ghostCode
+	                       mov                     grid[255], ghostCode
+	                       mov                     grid[224], dotCode
+	                       mov                     grid[254], dotCode
+	                       mov                     grid[451], horizontalWallCode
+	                       mov                     grid[452], horizontalWallCode
+	                       mov                     grid[453], horizontalWallCode
+	                       mov                     grid[454], horizontalWallCode
+	                       mov                     grid[455], horizontalWallCode
+	                       mov                     grid[456], horizontalWallCode
+	                       mov                     grid[457], horizontalWallCode
+	                       mov                     grid[458], horizontalWallCode
+	                       mov                     grid[459], horizontalWallCode
+	                       mov                     grid[460], horizontalWallCode
+	                       mov                     grid[461], horizontalWallCode
+	                       mov                     grid[462], horizontalWallCode
+	                       mov                     grid[463], triWallDownCode
+	                       mov                     grid[464], horizontalWallCode
+	                       mov                     grid[465], triWallDownCode
+	                       mov                     grid[466], horizontalWallCode
+	                       mov                     grid[467], horizontalWallCode
+	                       mov                     grid[468], horizontalWallCode
+	                       mov                     grid[469], horizontalWallCode
+	                       mov                     grid[470], horizontalWallCode
+	                       mov                     grid[471], horizontalWallCode
+	                       mov                     grid[472], horizontalWallCode
+	                       mov                     grid[473], horizontalWallCode
+	                       mov                     grid[474], horizontalWallCode
+	                       mov                     grid[475], horizontalWallCode
+	                       mov                     grid[476], horizontalWallCode
+	                       mov                     grid[477], horizontalWallCode
+	                       mov                     grid[478], horizontalWallCode
+	                       mov                     grid[433], endWallUpCode
+	                       mov                     grid[434], bigDotCode
+	                       mov                     grid[447], dotCode
+	                       mov                     grid[435], endWallUpCode
+	                       mov                     grid[59], verticalWallCode
+	                       mov                     grid[89], verticalWallCode
+	                       mov                     grid[119], verticalWallCode
+	                       mov                     grid[149], verticalWallCode
+	                       mov                     grid[179], verticalWallCode
+	                       mov                     grid[209], cornerRightDownCode
+	                       mov                     grid[208], cornerLeftUpCode
+	                       mov                     grid[238], verticalWallCode
+	                       mov                     grid[268], verticalWallCode
+	                       mov                     grid[298], cornerLeftDownCode
+	                       mov                     grid[299], cornerRightUpCode
+	                       mov                     grid[329], verticalWallCode
+	                       mov                     grid[359], verticalWallCode
+	                       mov                     grid[389], verticalWallCode
+	                       mov                     grid[419], verticalWallCode
+	                       mov                     grid[449], verticalWallCode
+						   
 
-	                       mov                    si, @data
-	                       DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14                                                  	;Draw "Score#1"
-	                       DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14                                                 	;Draw "Score#2"
-	                       DisplayTextVideoMode   10, 2, 23, livesMessage1, 14                                                 	;Draw "Lives#1"
-	                       DisplayTextVideoMode   10, 24, 23, livesMessage2, 14                                                	;Draw "Lives#2"
+	                       mov                     si, @data
+	                       DisplayTextVideoMode    10, 2, 1, scoreMessage1, 14                                                  	;Draw "Score#1"
+	                       DisplayTextVideoMode    10, 24, 1, scoreMessage2, 14                                                 	;Draw "Score#2"
+	                       DisplayTextVideoMode    10, 2, 23, livesMessage1, 14                                                 	;Draw "Lives#1"
+	                       DisplayTextVideoMode    10, 24, 23, livesMessage2, 14                                                	;Draw "Lives#2"
 	gameLoop:              
-	                       call                   MovePacman
-	                       call                   DrawGrid
-	                       call                   DrawScoreAndLives
-	                       call                   IsFrozen
-	                       MOV                    CX, 1H                                                                       	; delay
-	                       MOV                    DX, 4240H
-	                       MOV                    AH, 86H
-	                       INT                    15H
-	                       xor                    isOpen, 1
-	                       jmp                    gameLoop
+	                       call                    MovePacman
+	                       call                    DrawGrid
+	                       call                    DrawScoreAndLives
+	                       call                    IsFrozen
+	                       MOV                     CX, 1H                                                                       	; delay
+	                       MOV                     DX, 4240H
+	                       MOV                     AH, 86H
+	                       INT                     15H
+	                       xor                     isOpen, 1
+	                       jmp                     gameLoop
 	EndLoop:               
-	                       jmp                    EndLoop
+	                       jmp                     EndLoop
 	Terminate2:            
-	                       mov                    ah, 4ch
-	                       int                    21h
+	                       mov                     ah, 4ch
+	                       int                     21h
 main endp
 end main
