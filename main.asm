@@ -2506,15 +2506,14 @@ endm FindPath
 	gridYCount         equ 16
 	player1Code        equ 16
 	player2Code        equ 17
-	ghostCode          equ 18
-	snowflakeCode      equ 19
-	cherryCode         equ 20
-	dotCode            equ 21
-	ghostAndDotCode    equ 22
-	bigDotCode         equ 23
-	greenDotCode       equ 24
-	extraLifeCode      equ 25
-	decLifeCode        equ 26
+	snowflakeCode      equ 18
+	cherryCode         equ 19
+	dotCode            equ 20
+	bigDotCode         equ 21
+	greenDotCode       equ 22
+	extraLifeCode      equ 23
+	decLifeCode        equ 24
+	ghostCode          equ 128
 	currentXPlayer1    dw  1
 	currentYPlayer1    dw  1
 	currentXPlayer2    dw  28
@@ -2552,10 +2551,12 @@ endm FindPath
 	gridChecked        db  480 dup(0)
 	nodesToSearch      dw  480 dup(0)
 	zeros              dw  480 dup(0)
-	rightValue         db  0ffh
-	leftValue          db  0ffh
-	upValue            db  0ffh
-	downValue          db  0ffh
+	rightValue         dw  0ffh
+	leftValue          dw  0ffh
+	upValue            dw  0ffh
+	downValue          dw  0ffh
+	maxValue           dw  0ffh
+	nextMove           db  0
 
 .code
 MoveGhosts proc
@@ -2569,12 +2570,24 @@ MoveGhosts proc
 	LoopCell:              
 	                       push                   cx
 	                       push                   si
-	                       cmp                    grid[si], ghostCode
-	                       je                     IsGhost
-	                       cmp                    grid[si], ghostAndDotCode
-	                       je                     IsGhost
+	                       mov                    cl, grid[si]
+	                       and                    cl, 128d
+	                       push                   si
+	                       jnz                    IsGhost
 	                       jmp                    EndMoveGhost
-	ContinueLoop:          
+	FindNextMove:          
+	                       pop                    si
+	                       and                    grid[si], 255d
+	                       mov                    cx, maxValue
+	                       cmp                    cx, rightValue
+	                       jl                     NextMoveIsRight
+	                       cmp                    cx, leftValue
+	                       jl                     NextMoveIsLeft
+	                       cmp                    cx, upValue
+	                       jl                     NextMoveIsUp
+	                       cmp                    cx, downValue
+	                       jl                     NextMoveIsDown
+	ContinueMoveGhost:     
 	                       pop                    si
 	                       pop                    cx
 	                       add                    ghostX, gridStep
@@ -2590,6 +2603,8 @@ MoveGhosts proc
 	                       mov                    leftValue, 0ffh
 	                       mov                    upValue, 0ffh
 	                       mov                    downValue, 0ffh
+	                       mov                    maxValue, 0ffh
+	                       mov                    nextMove, 0
 	                       mov                    bh, searchX
 	                       mov                    bl, searchY
 	                       mov                    searchX, bh
@@ -2599,33 +2614,58 @@ MoveGhosts proc
 	                       cmp                    searchX, gridXCount
 	                       jge                    SearchLeft
 	                       GridToCell             searchX, searchY
-	                       cmp                    bx, 16
+	                       cmp                    grid[bx], 16
 	                       jb                     SearchLeft
-	                       jmp                    ContinueLoop
+	;FindPath               searchX, searchY
+	                       mov                    rightValue, ax
 	SearchLeft:            
 	                       dec                    searchX
 	                       cmp                    searchX, 0
-	                       jle                    SearchLeft
+	                       jle                    SearchUp
 	                       GridToCell             searchX, searchY
-	                       cmp                    bx, 16
-	                       jb                     SearchLeft
-	                       jmp                    ContinueLoop
+	                       cmp                    grid[bx], 16
+	                       jb                     SearchUp
+	;FindPath               searchX, searchY
+	                       mov                    leftValue, ax
 	SearchUp:              
 	                       inc                    searchY
 	                       cmp                    searchX, gridYCount
-	                       jge                    SearchLeft
+	                       jge                    SearchDown
 	                       GridToCell             searchX, searchY
-	                       cmp                    bx, 16
-	                       jb                     SearchLeft
-	                       jmp                    ContinueLoop
+	                       cmp                    grid[bx], 16
+	                       jb                     SearchDown
+	;FindPath               searchX, searchY
+	                       mov                    upValue, ax
 	SearchDown:            
 	                       dec                    searchY
 	                       cmp                    searchY, gridYCount
-	                       jle                    SearchLeft
+	                       jle                    FindNextMove
 	                       GridToCell             searchX, searchY
-	                       cmp                    bx, 16
-	                       jb                     SearchLeft
-	                       jmp                    ContinueLoop
+	                       cmp                    grid[bx], 16
+	                       jb                     FindNextMove
+	;FindPath               searchX, searchY
+	                       mov                    downValue, ax
+	                       jmp                    FindNextMove
+	NextMoveIsRight:       
+	                       inc                    ghostX
+	                       GridToCell             ghostX, ghostY
+	                       or                     grid[si], 128d
+	                       jmp                    ContinueMoveGhost
+	NextMoveIsLeft:        
+	                       dec                    ghostX
+	                       GridToCell             ghostX, ghostY
+	                       or                     grid[si], 128d
+	                       jmp                    ContinueMoveGhost
+	NextMoveIsUp:          
+	                       dec                    ghostY
+	                       GridToCell             ghostX, ghostY
+	                       or                     grid[si], 128d
+	                       jmp                    ContinueMoveGhost
+	NextMoveIsDown:        
+	                       inc                    ghostY
+	                       GridToCell             ghostX, ghostY
+	                       or                     grid[si], 128d
+	                       jmp                    ContinueMoveGhost
 	EndMoveGhost:          
 	                       ret
 MoveGhosts endp
@@ -2886,16 +2926,15 @@ DrawGrid proc
 	; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
 	; inc                    gridColor
 	; jmp                    ContinueDraw
+	                       mov                    cl, grid[si]
+	                       and                    cl, 128d
+	                       jnz                    Ghost
 	                       cmp                    grid[si], 0
 	                       je                     Square
 	                       cmp                    grid[si], player1Code
 	                       je                     Player1
 	                       cmp                    grid[si], player2Code
 	                       je                     Player2
-	                       cmp                    grid[si], ghostCode
-	                       je                     Ghost
-	                       cmp                    grid[si], ghostAndDotCode
-	                       je                     Ghost
 	                       cmp                    grid[si], snowflakeCode
 	                       je                     Snowflake
 	                       cmp                    grid[si], cherryCode
