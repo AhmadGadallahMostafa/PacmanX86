@@ -1419,6 +1419,985 @@ DrawCherry macro xPosition, yPosition, cherryColor, rootColor, backgroundColor
 endm DrawCherry
 
 ;---------------------------------------------------------------------------------------
+; Walls
+;---------------------------------------------------------------------------------------
+DrawCornerWallLeftUp macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 4
+    DrawHorizontalLine borderColor, 6
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 5
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawCornerWallLeftUp
+
+DrawCornerWallRightUp macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 6
+    DrawHorizontalLine backgroundColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 5
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawCornerWallRightUp
+
+DrawCornerWallLeftDown macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 5
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 4
+    DrawHorizontalLine borderColor, 6
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawCornerWallLeftDown
+
+DrawCornerWallRightDown macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 5
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 6
+    DrawHorizontalLine backgroundColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawCornerWallRightDown
+
+DrawWallHorizontal macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 6
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 6
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawWallHorizontal
+
+DrawWallVertical macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+     DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawWallVertical
+
+DrawEndWallRight macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 7
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 6
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 6
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 7
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10 
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawEndWallRight
+
+DrawEndWallDown macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawEndWallDown
+
+DrawEndWallLeft macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 7
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 6
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 6
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 7
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawEndWallLeft
+
+DrawEndWallUp macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawEndWallUp 
+
+DrawQuadWall macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 5
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 5
+    DrawHorizontalLine fillColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawQuadWall
+
+DrawTriWallDown macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 8
+    DrawHorizontalLine fillColor, 1
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawTriWallDown
+
+DrawTriWallUp macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 8
+    DrawHorizontalLine fillColor, 1
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawTriWallUp
+
+DrawTriWallRight macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawTriWallRight
+
+DrawTriWallLeft macro xPosition, yPosition, borderColor, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 4
+    DrawHorizontalLine fillColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 1
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 2
+endm DrawTriWallLeft
+
+;---------------------------------------------------------------------------------------
+; BigDot
+;---------------------------------------------------------------------------------------
+DrawBigDot macro xPosition, yPosition, fillColor, backgroundColor
+    mov cx, xPosition
+    mov dx, yPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 4
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine backgroundColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine fillColor, 6
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine fillColor, 6
+    DrawHorizontalLine backgroundColor, 2
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 3
+    DrawHorizontalLine fillColor, 4
+    DrawHorizontalLine backgroundColor, 3
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 4
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine backgroundColor, 4
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+    inc dx
+    mov cx, xPosition
+    DrawHorizontalLine backgroundColor, 10
+endm DrawBigDot
+
+;----------------------------------------------------------------------------------------
+
 
 .model huge
 .386 
@@ -1438,12 +2417,12 @@ endm DrawCherry
 	welcomePosition    dw  0h
 	scoreMessage1      db  'Score #1: $'
 	scoreMessage2      db  'Score #2: $'
-	player1Score       db  0h
+	player1Score       dw  0h
 	player2Score       dw  0h
 	livesMessage1      db  'Lives #1: $'
 	livesMessage2      db  'Lives #2: $'
 	player1Lives       dw  3h
-	player2lives       dw  3h
+	player2Lives       dw  3h
 	scanF2             equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC            equ 1Bh
 	grid               db  480 dup(0)
@@ -1481,6 +2460,10 @@ endm DrawCherry
 	cherryCode         equ 20
 	dotCode            equ 21
 	ghostAndDotCode    equ 22
+	bigDotCode         equ 23
+	greenDotCode       equ 24
+	extraLifeCode      equ 25
+	decLifeCode        equ 26
 	currentXPlayer1    dw  1
 	currentYPlayer1    dw  1
 	currentXPlayer2    dw  28
@@ -1501,364 +2484,499 @@ endm DrawCherry
 	sSCanCode          equ 1fh
 	dScanCode          equ 20h
 	gridColor          db  0
+	ghostsIsFrozen     db  0
+	player2IsFrozen    db  0
+	player1IsFrozen    db  0
+	ghostFreezeDur     db  10
+	player1FreezeDur   db  10
+	player2FreezeDur   db  10
+	
 
 .code
 MovePacman proc
-	                    mov                    player1Moved,0
-	                    mov                    player2Moved,0
-	MoveLoop:           
-	                    mov                    ah,1
-	                    int                    16h
-	                    jz                     endMovePacMan
-	                    mov                    ah,0
-	                    int                    16h
-	                    cmp                    ah,rightArrowScan
-	                    je                     MovePlayer1Right
-	                    cmp                    ah,leftArrowScan
-	                    je                     MovePlayer1Left
-	                    cmp                    ah,upArrowScan
-	                    je                     MovePlayer1Up
-	                    cmp                    ah,downArrowScan
-	                    je                     MovePlayer1Down
-	                    cmp                    ah,dScanCode
-	                    je                     MovePlayer2Right
-	                    cmp                    ah,aSCanCode
-	                    je                     MovePlayer2Left
-	                    cmp                    ah,wScanCode
-	                    je                     MovePlayer2Up
-	                    cmp                    ah,sSCanCode
-	                    je                     MovePlayer2Down
-	                    jmp                    MoveLoop
-	MovePlayer1Right:   
-	                    cmp                    player1Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player1Orientation, 'R'
-	                    mov                    ax, currentYPlayer1
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer1
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    add                    currentXPlayer1,1
-	                    jmp                    ChangePlayer1Pacman
-	MovePlayer1Left:    
-	                    cmp                    player1Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player1Orientation, 'L'
-	                    mov                    ax, currentYPlayer1
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer1
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    sub                    currentXPlayer1,1
-	                    jmp                    ChangePlayer1Pacman
-	MovePlayer1Up:      
-	                    cmp                    player1Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player1Orientation, 'U'
-	                    mov                    ax, currentYPlayer1
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer1
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    sub                    currentYPlayer1,1
-	                    jmp                    ChangePlayer1Pacman
-	MovePlayer1Down:    
-	                    cmp                    player1Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player1Orientation, 'D'
-	                    mov                    ax, currentYPlayer1
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer1
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    add                    currentYPlayer1,1
-	                    jmp                    ChangePlayer1Pacman
-	ChangePlayer1Pacman:
-	                    mov                    ax, currentYPlayer1
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer1
-	                    mov                    bx,ax
-	                    mov                    grid[bx],player1Code
-	                    mov                    player1Moved,1
-	                    jmp                    MoveLoop
+	                       mov                    player1Moved,0
+	                       mov                    player2Moved,0
+	MoveLoop:              
+	                       mov                    ah,1
+	                       int                    16h
+	                       jz                     endMovePacMan
+	                       mov                    ah,0
+	                       int                    16h
+	; Added part for Freeze effect:
+	; The dec of FreezeDuration and setting it to zero when the Duration = 0 is in the IsFrozen proc.
+	; If Player 1 is frozen we will jmp straight to the part of the code that reads the scancodes responsible for the movement of player2
+	                       cmp                    player1IsFrozen,1
+	                       je                     Player2MovmentCodes
+
+	                       cmp                    ah,rightArrowScan
+	                       je                     MovePlayer1Right
+	                       cmp                    ah,leftArrowScan
+	                       je                     MovePlayer1Left
+	                       cmp                    ah,upArrowScan
+	                       je                     MovePlayer1Up
+	                       cmp                    ah,downArrowScan
+	                       je                     MovePlayer1Down
+	; If Player2 is frozen we will skip the part where it moves him and we will continue the rest of the movement procedure.
+	                       cmp                    player2IsFrozen,1
+	                       je                     MoveLoop
+	Player2MovmentCodes:   
+	                       cmp                    ah,dScanCode
+	                       je                     MovePlayer2Right
+	                       cmp                    ah,aSCanCode
+	                       je                     MovePlayer2Left
+	                       cmp                    ah,wScanCode
+	                       je                     MovePlayer2Up
+	                       cmp                    ah,sSCanCode
+	                       je                     MovePlayer2Down
+	                       jmp                    MoveLoop
+	MovePlayer1Right:      
+	                       cmp                    player1Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player1Orientation, 'R'
+	                       mov                    ax, currentYPlayer1
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer1
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       add                    currentXPlayer1,1
+	                       jmp                    ChangePlayer1Pacman
+	MovePlayer1Left:       
+	                       cmp                    player1Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player1Orientation, 'L'
+	                       mov                    ax, currentYPlayer1
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer1
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       sub                    currentXPlayer1,1
+	                       jmp                    ChangePlayer1Pacman
+	MovePlayer1Up:         
+	                       cmp                    player1Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player1Orientation, 'U'
+	                       mov                    ax, currentYPlayer1
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer1
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       sub                    currentYPlayer1,1
+	                       jmp                    ChangePlayer1Pacman
+	MovePlayer1Down:       
+	                       cmp                    player1Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player1Orientation, 'D'
+	                       mov                    ax, currentYPlayer1
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer1
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       add                    currentYPlayer1,1
+	                       jmp                    ChangePlayer1Pacman
+	ChangePlayer1Pacman:   
+	                       mov                    ax, currentYPlayer1
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer1
+	                       mov                    bx,ax
+	                       jmp                    CheckPowerUpsPlayer1
+	AfterPowerUp1:         
+	                       mov                    grid[bx],player1Code
+	                       mov                    player1Moved,1
+	                       jmp                    MoveLoop
+	CheckPowerUpsPlayer1:  
+	                       push                   bx
+	                       cmp                    grid[bx], dotCode
+	                       je                     ApplyDot1
+	                       cmp                    grid[bx], snowflakeCode
+	                       je                     ApplyFreeze1
+	                       cmp                    grid[bx], cherryCode
+	                       je                     ApplyCherry1
+	                       cmp                    grid[bx], bigDotCode
+	; je                     ApplyBigDot1
+	                       cmp                    grid[bx], greenDotCode
+	;je                     ApplyGreenDot1
+	                       cmp                    grid[bx], extraLifeCode
+	                       je                     ApplyPacmanLife1
+	                       cmp                    grid[bx], decLifeCode
+	                       je                     ApplyPacmanUnLife1
+	ReturningToMovePlayer1:
+	                       pop                    bx
+	                       jmp                    AfterPowerUp1
+	ApplyDot1:             
+	                       add                    player1Score, 1
+	                       jmp                    ReturningToMovePlayer1
+	ApplyFreeze1:          
+	                       mov                    player2IsFrozen, 1
+	                       mov                    ghostsIsFrozen, 1
+	                       jmp                    ReturningToMovePlayer1
+	ApplyCherry1:          
+	                       add                    player1Score,10
+	                       jmp                    ReturningToMovePlayer1
+	;ApplyBigDot1:
+
+	;ApplyGreenDot1:
+
+	ApplyPacmanLife1:      
+	                       add                    player1Lives, 1
+	                       jmp                    ReturningToMovePlayer1
+	ApplyPacmanUnLife1:    
+	                       sub                    player1Lives, 1
+	                       jmp                    ReturningToMovePlayer1
 
 	;--------------------------------------------------------------------------------------
 
-	MovePlayer2Right:   
-	                    cmp                    player2Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player2Orientation, 'R'
-	                    mov                    ax, currentYPlayer2
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer2
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    add                    currentXPlayer2,1
-	                    jmp                    ChangePlayer2Pacman
-	MovePlayer2Left:    
-	                    cmp                    player2Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player2Orientation, 'L'
-	                    mov                    ax, currentYPlayer2
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer2
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    sub                    currentXPlayer2,1
-	                    jmp                    ChangePlayer2Pacman
-	MovePlayer2Up:      
-	                    cmp                    player2Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player2Orientation, 'U'
-	                    mov                    ax, currentYPlayer2
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer2
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    sub                    currentYPlayer2,1
-	                    jmp                    ChangePlayer2Pacman
-	MovePlayer2Down:    
-	                    cmp                    player2Moved,0
-	                    jne                    MoveLoop
-	                    mov                    player2Orientation, 'D'
-	                    mov                    ax, currentYPlayer2
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer2
-	                    mov                    bx,ax
-	                    mov                    grid[bx],0
-	                    add                    currentYPlayer2,1
-	                    jmp                    ChangePlayer2Pacman
-	ChangePlayer2Pacman:
-	                    mov                    ax, currentYPlayer2
-	                    mov                    bx, 30
-	                    mul                    bx
-	                    add                    ax,currentXPlayer2
-	                    mov                    bx,ax
-	                    mov                    grid[bx],player2Code
-	                    mov                    player2Moved,1
-	                    jmp                    MoveLoop
-	EndMovePacMan:      
-	                    ret
+	MovePlayer2Right:      
+	                       cmp                    player2Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player2Orientation, 'R'
+	                       mov                    ax, currentYPlayer2
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer2
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       add                    currentXPlayer2,1
+	                       jmp                    ChangePlayer2Pacman
+	MovePlayer2Left:       
+	                       cmp                    player2Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player2Orientation, 'L'
+	                       mov                    ax, currentYPlayer2
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer2
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       sub                    currentXPlayer2,1
+	                       jmp                    ChangePlayer2Pacman
+	MovePlayer2Up:         
+	                       cmp                    player2Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player2Orientation, 'U'
+	                       mov                    ax, currentYPlayer2
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax,currentXPlayer2
+	                       mov                    bx,ax
+	                       mov                    grid[bx],0
+	                       sub                    currentYPlayer2,1
+	                       jmp                    ChangePlayer2Pacman
+	MovePlayer2Down:       
+	                       cmp                    player2Moved,0
+	                       jne                    MoveLoop
+	                       mov                    player2Orientation, 'D'
+	                       mov                    ax, currentYPlayer2
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax, currentXPlayer2
+	                       mov                    bx, ax
+	                       mov                    grid[bx], 0
+	                       add                    currentYPlayer2, 1
+	                       jmp                    ChangePlayer2Pacman
+	ChangePlayer2Pacman:   
+	                       mov                    ax, currentYPlayer2
+	                       mov                    bx, 30
+	                       mul                    bx
+	                       add                    ax, currentXPlayer2
+	                       mov                    bx, ax
+	                       jmp                    CheckPowerUpsPlayer2
+	AfterPowerUp2:         
+	                       mov                    grid[bx], player2Code
+	                       mov                    player2Moved, 1
+	                       jmp                    MoveLoop
+	EndMovePacMan:         
+	                       ret
+	CheckPowerUpsPlayer2:  
+	                       push                   bx
+	                       cmp                    grid[bx], dotCode
+	                       je                     ApplyDot2
+	                       cmp                    grid[bx], snowflakeCode
+	                       je                     ApplyFreeze2
+	                       cmp                    grid[bx], cherryCode
+	                       je                     ApplyCherry2
+	                       cmp                    grid[bx], bigDotCode
+	; je                     ApplyBigDot2
+	                       cmp                    grid[bx], greenDotCode
+	;je                     ApplyGreenDot2
+	                       cmp                    grid[bx], extraLifeCode
+	                       je                     ApplyPacmanLife2
+	                       cmp                    grid[bx], decLifeCode
+	                       je                     ApplyPacmanUnLife2
+	ReturningToMovePlayer2:
+	                       pop                    bx
+	                       jmp                    AfterPowerUp2
+	ApplyDot2:             
+	                       add                    player2Score, 1
+	                       jmp                    ReturningToMovePlayer2
+	ApplyFreeze2:          
+	                       mov                    player1IsFrozen, 1
+	                       mov                    ghostsIsFrozen, 1
+	                       jmp                    ReturningToMovePlayer2
+	ApplyCherry2:          
+	                       add                    player2Score,10
+	                       jmp                    ReturningToMovePlayer2
+	;ApplyBigDot2:
+
+	;ApplyGreenDot2:
+
+	ApplyPacmanLife2:      
+	                       add                    player2Lives, 1
+	                       jmp                    ReturningToMovePlayer2
+	ApplyPacmanUnLife2:    
+	                       sub                    player2Lives, 1
+	                       jmp                    ReturningToMovePlayer2
 MovePacman endp
 
+IsFrozen proc
+	CheckPlayer1Freeze:    
+	                       cmp                    player1IsFrozen,1
+	                       je                     DecPlayer1FreezeEffect
+	CheckPlayer2Freeze:    
+	                       cmp                    player2IsFrozen, 1
+	                       je                     DecPlayer2FreezeEffect
+	CheckGhostFreeze:      
+	                       cmp                    ghostsIsFrozen,1
+	                       je                     DecGhoshtFreezeEffect
+	ReturnFreeze:          
+	                       ret
+	DecPlayer1FreezeEffect:
+	                       sub                    player1FreezeDur,1
+	                       jz                     SetFreeze1
+	                       jmp                    CheckPlayer2Freeze
+	SetFreeze1:            
+	                       mov                    player1IsFrozen,0
+	                       jmp                    CheckPlayer2Freeze
+	DecPlayer2FreezeEffect:
+	                       sub                    player2FreezeDur,1
+	                       jz                     SetFreeze2
+	                       jmp                    CheckGhostFreeze
+	SetFreeze2:            
+	                       mov                    player2IsFrozen,0
+	                       jmp                    CheckGhostFreeze
+	DecGhoshtFreezeEffect: 
+	                       sub                    ghostFreezeDur,1
+	                       jz                     SetFreezeGhost
+	                       jmp                    ReturnFreeze
+	SetFreezeGhost:        
+	                       mov                    ghostsIsFrozen,0
+	                       jmp                    ReturnFreeze
+IsFrozen endp
+
 DrawGrid proc
-	                    mov                    currentX, gridStartX
-	                    mov                    currentY, gridStartY
-	                    mov                    gridColor, 0
-	                    mov                    si, 0
-	                    mov                    ch, gridYCount
-	DrawRow:            
-	                    mov                    currentX, gridStartX
-	                    mov                    cl, gridXCount
-	DrawCell:           
-	                    push                   cx
-	                    push                   si
+	                       mov                    currentX, gridStartX
+	                       mov                    currentY, gridStartY
+	                       mov                    gridColor, 0
+	                       mov                    si, 0
+	                       mov                    ch, gridYCount
+	DrawRow:               
+	                       mov                    currentX, gridStartX
+	                       mov                    cl, gridXCount
+	DrawCell:              
+	                       push                   cx
+	                       push                   si
 	; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
 	; inc                    gridColor
 	; jmp                    ContinueDraw
-	                    cmp                    grid[si], 0
-	                    je                     Square
-	                    cmp                    grid[si], player1Code
-	                    je                     Player1
-	                    cmp                    grid[si], player2Code
-	                    je                     Player2
-	                    cmp                    grid[si], ghostCode
-	                    je                     Ghost
-	                    cmp                    grid[si], ghostAndDotCode
-	                    je                     Ghost
-	                    cmp                    grid[si], snowflakeCode
-	                    je                     Snowflake
-	                    cmp                    grid[si], cherryCode
-	                    je                     Cherry
-	                    cmp                    grid[si], dotCode
-	                    je                     Dot
-	ContinueDraw:       
-	                    pop                    si
-	                    pop                    cx
-	                    add                    currentX, gridStep
-	                    inc                    si
-	                    dec                    cl
-	                    jnz                    DrawCell
-	                    add                    currentY, gridStep
-	                    dec                    ch
-	                    jnz                    DrawRow
-	                    jmp                    EndDraw
-	Square:             
-	                    DrawSquare             currentX, currentY, gridStep, borderColor, backgroundColor
-	                    jmp                    ContinueDraw
-	Player1:            
-	                    DrawPlayer             currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
-	                    jmp                    ContinueDraw
-	Player2:            
-	                    DrawPlayer             currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
-	                    jmp                    ContinueDraw
-	Ghost:              
-	                    DrawGhost              currentX, currentY, ghostColor, backgroundColor
-	                    jmp                    ContinueDraw
-	Snowflake:          
-	                    DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
-	                    jmp                    ContinueDraw
-	Cherry:             
-	                    DrawCherry             currentX, currentY, red, green, backgroundColor
-	                    jmp                    ContinueDraw
-	Dot:                
-	                    DrawDot                currentX, currentY, white, backgroundColor
-	                    jmp                    ContinueDraw
-	EndDraw:            
-	                    ret
+	                       cmp                    grid[si], 0
+	                       je                     Square
+	                       cmp                    grid[si], player1Code
+	                       je                     Player1
+	                       cmp                    grid[si], player2Code
+	                       je                     Player2
+	                       cmp                    grid[si], ghostCode
+	                       je                     Ghost
+	                       cmp                    grid[si], ghostAndDotCode
+	                       je                     Ghost
+	                       cmp                    grid[si], snowflakeCode
+	                       je                     Snowflake
+	                       cmp                    grid[si], cherryCode
+	                       je                     Cherry
+	                       cmp                    grid[si], dotCode
+	                       je                     Dot
+	ContinueDraw:          
+	                       pop                    si
+	                       pop                    cx
+	                       add                    currentX, gridStep
+	                       inc                    si
+	                       dec                    cl
+	                       jnz                    DrawCell
+	                       add                    currentY, gridStep
+	                       dec                    ch
+	                       jnz                    DrawRow
+	                       jmp                    EndDraw
+	Square:                
+	                       DrawSquare             currentX, currentY, gridStep, borderColor, backgroundColor
+	                       jmp                    ContinueDraw
+	Player1:               
+	                       DrawPlayer             currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
+	                       jmp                    ContinueDraw
+	Player2:               
+	                       DrawPlayer             currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
+	                       jmp                    ContinueDraw
+	Ghost:                 
+	                       DrawGhost              currentX, currentY, ghostColor, backgroundColor
+	                       jmp                    ContinueDraw
+	Snowflake:             
+	                       DrawSnowflake          currentX, currentY, lightCyan, backgroundColor
+	                       jmp                    ContinueDraw
+	Cherry:                
+	                       DrawCherry             currentX, currentY, red, green, backgroundColor
+	                       jmp                    ContinueDraw
+	Dot:                   
+	                       DrawDot                currentX, currentY, white, backgroundColor
+	                       jmp                    ContinueDraw
+	EndDraw:               
+	                       ret
 DrawGrid endp
 
 
 DrawScoreAndLives proc
-	                    mov                    si, @data
-	                    DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
-	                    DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14
-	                    DisplayTextVideoMode   10, 2, 23, livesMessage1, 14
-	                    DisplayTextVideoMode   10, 24, 23, livesMessage2, 14
-	DrawScores:         
-	                    mov                    si,@data
-	                    DisplayNumberVideoMode 15, 1, player1Score
-	                    DisplayNumberVideoMode 37, 1, player2Score
-	                    DisplayNumberVideoMode 12, 23, player1Lives
-	                    DisplayNumberVideoMode 34, 23, player2Lives
-	                    ret
+	                       mov                    si, @data
+	                       DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
+	                       DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14
+	                       DisplayTextVideoMode   10, 2, 23, livesMessage1, 14
+	                       DisplayTextVideoMode   10, 24, 23, livesMessage2, 14
+	DrawScores:            
+	                       mov                    si,@data
+	                       DisplayNumberVideoMode 15, 1, player1Score
+	                       DisplayNumberVideoMode 37, 1, player2Score
+	                       DisplayNumberVideoMode 12, 23, player1Lives
+	                       DisplayNumberVideoMode 34, 23, player2Lives
+	                       ret
 DrawScoreAndLives endp
 
 
 main proc far
 
-	                    mov                    ax, @data
-	                    mov                    ds, ax
-	                    jmp                    StartGame
-	GetPlayer1Name:                                                                                                         	;Reading first player name and saving it to player1name
-	                    SetTextMode
-	                    mov                    dx, 0000
-	                    MoveCursor
-	                    Displaystring          welcomeMessage1
-	                    mov                    dx, 0d0dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    Displaystring          enterMessage
-	                    mov                    dx, 0f0dh
-	                    mov                    dl, 23d
-	                    MoveCursor
-	                    Displaystring          warningMessage
-	                    mov                    dx, 0a0dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    ReadString             nameMessage, player1Name
-	                    ValidateName           player1Name
-	                    cmp                    bl, 0
-	                    je                     showWarning1
-	                    mov                    word ptr warningMessage, byte ptr '$$'
-	                    jmp                    GetPlayer2Name
-	ShowWarning1:       
-	                    mov                    word ptr warningMessage, word ptr 0
-	                    jmp                    GetPlayer1Name
-	GetPlayer2Name:                                                                                                         	;Reading second player name and saving it to player2name
-	                    SetTextMode
-	                    mov                    dx, 0000
-	                    MoveCursor
-	                    Displaystring          welcomeMessage2
-	                    mov                    dx, 0d0dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    displaystring          enterMessage
-	                    mov                    dx, 0f0dh
-	                    mov                    dl, 23d
-	                    MoveCursor
-	                    displaystring          warningMessage
-	                    mov                    dx, 0A0dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    ReadString             nameMessage, player2Name
-	                    ValidateName           player2name
-	                    cmp                    bl, 0
-	                    je                     ShowWarning2
-	                    jmp                    MainMenu
-	ShowWarning2:       
-	                    mov                    word ptr warningMessage, word ptr 0
-	                    jmp                    GetPlayer2Name
+	                       mov                    ax, @data
+	                       mov                    ds, ax
+	                       jmp                    StartGame
+	GetPlayer1Name:                                                                                                            	;Reading first player name and saving it to player1name
+	                       SetTextMode
+	                       mov                    dx, 0000
+	                       MoveCursor
+	                       Displaystring          welcomeMessage1
+	                       mov                    dx, 0d0dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       Displaystring          enterMessage
+	                       mov                    dx, 0f0dh
+	                       mov                    dl, 23d
+	                       MoveCursor
+	                       Displaystring          warningMessage
+	                       mov                    dx, 0a0dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       ReadString             nameMessage, player1Name
+	                       ValidateName           player1Name
+	                       cmp                    bl, 0
+	                       je                     showWarning1
+	                       mov                    word ptr warningMessage, byte ptr '$$'
+	                       jmp                    GetPlayer2Name
+	ShowWarning1:          
+	                       mov                    word ptr warningMessage, word ptr 0
+	                       jmp                    GetPlayer1Name
+	GetPlayer2Name:                                                                                                            	;Reading second player name and saving it to player2name
+	                       SetTextMode
+	                       mov                    dx, 0000
+	                       MoveCursor
+	                       Displaystring          welcomeMessage2
+	                       mov                    dx, 0d0dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       displaystring          enterMessage
+	                       mov                    dx, 0f0dh
+	                       mov                    dl, 23d
+	                       MoveCursor
+	                       displaystring          warningMessage
+	                       mov                    dx, 0A0dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       ReadString             nameMessage, player2Name
+	                       ValidateName           player2name
+	                       cmp                    bl, 0
+	                       je                     ShowWarning2
+	                       jmp                    MainMenu
+	ShowWarning2:          
+	                       mov                    word ptr warningMessage, word ptr 0
+	                       jmp                    GetPlayer2Name
 
-	MainMenu:                                                                                                               	;displaying main menu and provided functions and how to use them
-	                    SetTextMode
-	                    mov                    dx, 080dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    DisplayString          chattingInfo
-	                    mov                    dx, 0a0dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    DisplayString          gameStartInfo
-	                    mov                    dx, 0c0dh
-	                    mov                    dl, 25d
-	                    MoveCursor
-	                    DisplayString          endgameInfo
-	                    mov                    dl, 0
-	                    mov                    dh, 22d
-	                    MoveCursor
-	                    Displaystring          notifactionBar
-	AgainTillKeyPressed:                                                                                                    	;checking if a key is pressed on the main menu
-	                    mov                    ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
-	                    int                    21h
-	                    mov                    ah, 1
-	                    int                    16h
-	                    cmp                    al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
-	                    je                     Terminate1
-	                    cmp                    al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
-	                    je                     LoadingMenu
-	                    jmp                    AgainTillKeyPressed
+	MainMenu:                                                                                                                  	;displaying main menu and provided functions and how to use them
+	                       SetTextMode
+	                       mov                    dx, 080dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       DisplayString          chattingInfo
+	                       mov                    dx, 0a0dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       DisplayString          gameStartInfo
+	                       mov                    dx, 0c0dh
+	                       mov                    dl, 25d
+	                       MoveCursor
+	                       DisplayString          endgameInfo
+	                       mov                    dl, 0
+	                       mov                    dh, 22d
+	                       MoveCursor
+	                       Displaystring          notifactionBar
+	AgainTillKeyPressed:                                                                                                       	;checking if a key is pressed on the main menu
+	                       mov                    ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
+	                       int                    21h
+	                       mov                    ah, 1
+	                       int                    16h
+	                       cmp                    al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                       je                     Terminate1
+	                       cmp                    al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
+	                       je                     LoadingMenu
+	                       jmp                    AgainTillKeyPressed
 
-	Terminate1:         jmp                    Terminate2
-	LoadingMenu:        
-	                    SetVideoMode
+	Terminate1:            jmp                    Terminate2
+	LoadingMenu:           
+	                       SetVideoMode
 
-	                    DrawLoadingScreen      black,yellow,cyan                                                            	;The next code snippet is ofr the delay
-	                    MOV                    CX, 3fH
-	                    MOV                    DX, 4240H
-	                    MOV                    AH, 86H
-	                    INT                    15H
-	StartGame:          
-	                    SetVideoMode
-	                    mov                    grid[31], player1Code
-	                    mov                    grid[448], player2Code
-	                    mov                    grid[256], ghostCode
-	                    mov                    grid[200], ghostCode
-	                    mov                    grid[150], ghostCode
-	                    mov                    grid[400], ghostCode
-	                    mov                    grid[50], snowflakeCode
-	                    mov                    grid[390], snowflakeCode
-	                    mov                    grid[280], snowflakeCode
-	                    mov                    grid[18], snowflakeCode
-	                    mov                    grid[240], cherryCode
-	                    mov                    grid[30], cherryCode
-	                    mov                    grid[160], cherryCode
-	                    mov                    grid[415], dotCode
-	                    mov                    grid[70], dotCode
+	                       DrawLoadingScreen      black,yellow,cyan                                                            	;The next code snippet is ofr the delay
+	                       MOV                    CX, 3fH
+	                       MOV                    DX, 4240H
+	                       MOV                    AH, 86H
+	                       INT                    15H
+	StartGame:             
+	                       SetVideoMode
+	                       mov                    grid[1], player1Code
+	                       mov                    grid[478], player2Code
+	                       mov                    grid[256], ghostCode
+	                       mov                    grid[200], ghostCode
+	                       mov                    grid[150], ghostCode
+	                       mov                    grid[400], ghostCode
+	                       mov                    grid[50], snowflakeCode
+	                       mov                    grid[390], snowflakeCode
+	                       mov                    grid[280], snowflakeCode
+	                       mov                    grid[18], snowflakeCode
+	                       mov                    grid[240], cherryCode
+	                       mov                    grid[30], cherryCode
+	                       mov                    grid[160], cherryCode
+	                       mov                    grid[415], dotCode
+	                       mov                    grid[70], dotCode
 	
-	gameLoop:           
-	                    call                   MovePacman
-	                    call                   DrawGrid
-	                    call                   DrawScoreAndLives
-	                    MOV                    CX, 1H                                                                       	; delay
-	                    MOV                    DX, 4240H
-	                    MOV                    AH, 86H
-	                    INT                    15H
-	                    xor                    isOpen, 1
-	                    jmp                    gameLoop
-	EndLoop:            
-	                    jmp                    EndLoop
-	Terminate2:         
-	                    mov                    ah, 4ch
-	                    int                    21h
+	gameLoop:              
+	                       call                   MovePacman
+	                       call                   DrawGrid
+	                       call                   DrawScoreAndLives
+	                       call                   IsFrozen
+	                       MOV                    CX, 1H                                                                       	; delay
+	                       MOV                    DX, 4240H
+	                       MOV                    AH, 86H
+	                       INT                    15H
+	                       xor                    isOpen, 1
+	                       jmp                    gameLoop
+	EndLoop:               
+	                       jmp                    EndLoop
+	Terminate2:            
+	                       mov                    ah, 4ch
+	                       int                    21h
 main endp
 end main
