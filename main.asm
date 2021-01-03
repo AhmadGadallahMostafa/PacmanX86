@@ -2932,11 +2932,6 @@ DrawGrid proc
 DrawGrid endp
 
 DrawScoreAndLives proc
-	                       mov                    si, @data
-	                       DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
-	                       DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14
-	                       DisplayTextVideoMode   10, 2, 23, livesMessage1, 14
-	                       DisplayTextVideoMode   10, 24, 23, livesMessage2, 14
 	DrawScores:            
 	                       mov                    si,@data
 	                       DisplayNumberVideoMode 15, 1, player1Score
@@ -3056,13 +3051,18 @@ main proc far
 	                       mov                    grid[160], cherryCode
 	                       mov                    grid[415], dotCode
 	                       mov                    grid[70], dotCode
-	
+
+	                       mov                    si, @data
+	                       DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14       ;Draw "Score#1"
+	                       DisplayTextVideoMode   10, 24, 1, scoreMessage2, 14		;Draw "Score#2"
+	                       DisplayTextVideoMode   10, 2, 23, livesMessage1, 14		;Draw "Lives#1"
+	                       DisplayTextVideoMode   10, 24, 23, livesMessage2, 14		;Draw "Lives#2"
 	gameLoop:              
 	                       call                   MovePacman
 	                       call                   DrawGrid
 	                       call                   DrawScoreAndLives
 	                       call                   IsFrozen
-	                       MOV                    CX, 1H                                                                       	; delay
+	                       MOV                    CX, 1H							; delay
 	                       MOV                    DX, 4240H
 	                       MOV                    AH, 86H
 	                       INT                    15H
