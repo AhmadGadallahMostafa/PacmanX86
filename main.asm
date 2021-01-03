@@ -2819,11 +2819,11 @@ MovePacman proc
 	                       mov                     player1Orientation, 'R'
 	;check walls
 	                       inc                     currentXPlayer1
-	                       GridToCell              currentXPlayer1,currentYPlayer1
-	                       cmp                     bx,16
-	                       jle                     terminate
-	;end check walls
+	                       GridToCell              currentXPlayer1 ,currentYPlayer1
 	                       dec                     currentXPlayer1
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       add                     currentXPlayer1,1
@@ -2832,6 +2832,13 @@ MovePacman proc
 	                       cmp                     player1Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'L'
+	;check walls
+	                       dec                     currentXPlayer1
+	                       GridToCell              currentXPlayer1 ,currentYPlayer1
+	                       inc                     currentXPlayer1
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       sub                     currentXPlayer1,1
@@ -2840,6 +2847,13 @@ MovePacman proc
 	                       cmp                     player1Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'U'
+	;check walls
+	                       dec                     currentYPlayer1
+	                       GridToCell              currentXPlayer1 ,currentYPlayer1
+	                       inc                     currentYPlayer1
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       sub                     currentYPlayer1,1
@@ -2848,6 +2862,13 @@ MovePacman proc
 	                       cmp                     player1Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'D'
+	;check walls
+	                       inc                     currentYPlayer1
+	                       GridToCell              currentXPlayer1 ,currentYPlayer1
+	                       dec                     currentYPlayer1
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       add                     currentYPlayer1,1
@@ -2907,6 +2928,13 @@ MovePacman proc
 	                       cmp                     player2Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'R'
+	;check walls
+	                       inc                     currentXPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       dec                     currentXPlayer2
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx],127
 	                       add                     currentXPlayer2,1
@@ -2915,6 +2943,13 @@ MovePacman proc
 	                       cmp                     player2Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'L'
+	;check walls
+	                       dec                     currentXPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       inc                     currentXPlayer2
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx],127
 	                       sub                     currentXPlayer2,1
@@ -2923,6 +2958,13 @@ MovePacman proc
 	                       cmp                     player2Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'U'
+	;check walls
+	                       dec                     currentYPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       inc                     currentYPlayer2
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx],127
 	                       sub                     currentYPlayer2,1
@@ -2931,6 +2973,13 @@ MovePacman proc
 	                       cmp                     player2Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'D'
+	;check walls
+	                       inc                     currentYPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       dec                     currentYPlayer2
+	                       cmp                     grid[bx],16
+	                       jb                      MoveLoop
+	;end check walls
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx], 127
 	                       add                     currentYPlayer2, 1
