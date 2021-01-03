@@ -2399,6 +2399,58 @@ endm DrawBigDot
 ;----------------------------------------------------------------------------------------
 
 
+GridToCell macro gridX, gridY ; takes xPosition, yPosition, puts the cell number in bx
+	mov bx, word ptr gridY
+	shl bx, 5
+	shl gridY, 1
+	sub bx, word ptr gridY
+	shr gridY, 1
+	add bx, word ptr gridX
+endm CheckWall
+
+FindPath macro gridX, gridY ; BFS Algorithm
+	mov ax, @data
+	mov es, ax
+	mov cx, 480
+	mov si, offset zeros
+	mov di, offset gridChecked
+	rep movsb
+	mov cx, 480
+	mov si, offset zeros
+	mov di, offset nodesToSearch
+	rep movsw
+	mov di, 0
+	mov nodesToSearch[di], byte ptr gridX
+	inc di
+	mov nodesToSearch[di], byte ptr gridY
+	mov si, 0
+	SearchLoop:
+		cmp si, di
+		jle EndSearch
+		mov bh, nodesToSearch[si]
+		inc si
+		mov bl, nodesToSearch[si]
+		inc si
+		mov nodeX, bh
+		mov nodeY, bl
+		GridToCell nodeX, nodeY
+		cmp gridChecked[bx], 0
+		jne SearchLoop
+		mov gridChecked[bx], 1
+		cmp grid[bx], player1Code
+		je Found
+		cmp grid[bx], player2Code
+		je Found
+		jmp ContinueSearch
+	ContinueSearch:
+		jmp SearchLoop
+	Found:
+		mov ax, 
+	EndSearch:
+endm FindPath
+
+;---------------------------------------------------------------------------------------
+
 .model huge
 .386 
 .stack 0ffffh
@@ -2490,9 +2542,94 @@ endm DrawBigDot
 	ghostFreezeDur     db  10
 	player1FreezeDur   db  10
 	player2FreezeDur   db  10
-	
+	ghostX             db  0
+	ghostY             db  0
+	searchX            db  0
+	searchY            db  0
+	nodeX              db  0
+	nodeY              db  0
+	searchCount        dw  0
+	gridChecked        db  480 dup(0)
+	nodesToSearch      dw  480 dup(0)
+	zeros              dw  480 dup(0)
+	rightValue         db  0ffh
+	leftValue          db  0ffh
+	upValue            db  0ffh
+	downValue          db  0ffh
 
 .code
+MoveGhosts proc
+	                       mov                    ghostX, 0
+	                       mov                    ghostY, 0
+	                       mov                    si, 0
+	                       mov                    ch, gridYCount
+	LoopRow:               
+	                       mov                    ghostX, 0
+	                       mov                    cl, gridXCount
+	LoopCell:              
+	                       push                   cx
+	                       push                   si
+	                       cmp                    grid[si], ghostCode
+	                       je                     IsGhost
+	                       cmp                    grid[si], ghostAndDotCode
+	                       je                     IsGhost
+	                       jmp                    EndMoveGhost
+	ContinueLoop:          
+	                       pop                    si
+	                       pop                    cx
+	                       add                    ghostX, gridStep
+	                       inc                    si
+	                       dec                    cl
+	                       jnz                    LoopCell
+	                       add                    ghostY, gridStep
+	                       dec                    ch
+	                       jnz                    LoopRow
+	                       jmp                    EndMoveGhost
+	IsGhost:               
+	                       mov                    rightValue, 0ffh
+	                       mov                    leftValue, 0ffh
+	                       mov                    upValue, 0ffh
+	                       mov                    downValue, 0ffh
+	                       mov                    bh, searchX
+	                       mov                    bl, searchY
+	                       mov                    searchX, bh
+	                       mov                    searchY, bl
+	SearchRight:           
+	                       inc                    searchX
+	                       cmp                    searchX, gridXCount
+	                       jge                    SearchLeft
+	                       GridToCell             searchX, searchY
+	                       cmp                    bx, 16
+	                       jb                     SearchLeft
+	                       jmp                    ContinueLoop
+	SearchLeft:            
+	                       dec                    searchX
+	                       cmp                    searchX, 0
+	                       jle                    SearchLeft
+	                       GridToCell             searchX, searchY
+	                       cmp                    bx, 16
+	                       jb                     SearchLeft
+	                       jmp                    ContinueLoop
+	SearchUp:              
+	                       inc                    searchY
+	                       cmp                    searchX, gridYCount
+	                       jge                    SearchLeft
+	                       GridToCell             searchX, searchY
+	                       cmp                    bx, 16
+	                       jb                     SearchLeft
+	                       jmp                    ContinueLoop
+	SearchDown:            
+	                       dec                    searchY
+	                       cmp                    searchY, gridYCount
+	                       jle                    SearchLeft
+	                       GridToCell             searchX, searchY
+	                       cmp                    bx, 16
+	                       jb                     SearchLeft
+	                       jmp                    ContinueLoop
+	EndMoveGhost:          
+	                       ret
+MoveGhosts endp
+
 MovePacman proc
 	                       mov                    player1Moved,0
 	                       mov                    player2Moved,0
@@ -2533,11 +2670,7 @@ MovePacman proc
 	                       cmp                    player1Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player1Orientation, 'R'
-	                       mov                    ax, currentYPlayer1
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer1
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer1, currentYPlayer1
 	                       mov                    grid[bx],0
 	                       add                    currentXPlayer1,1
 	                       jmp                    ChangePlayer1Pacman
@@ -2545,11 +2678,7 @@ MovePacman proc
 	                       cmp                    player1Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player1Orientation, 'L'
-	                       mov                    ax, currentYPlayer1
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer1
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer1, currentYPlayer1
 	                       mov                    grid[bx],0
 	                       sub                    currentXPlayer1,1
 	                       jmp                    ChangePlayer1Pacman
@@ -2557,11 +2686,7 @@ MovePacman proc
 	                       cmp                    player1Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player1Orientation, 'U'
-	                       mov                    ax, currentYPlayer1
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer1
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer1, currentYPlayer1
 	                       mov                    grid[bx],0
 	                       sub                    currentYPlayer1,1
 	                       jmp                    ChangePlayer1Pacman
@@ -2569,20 +2694,12 @@ MovePacman proc
 	                       cmp                    player1Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player1Orientation, 'D'
-	                       mov                    ax, currentYPlayer1
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer1
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer1, currentYPlayer1
 	                       mov                    grid[bx],0
 	                       add                    currentYPlayer1,1
 	                       jmp                    ChangePlayer1Pacman
 	ChangePlayer1Pacman:   
-	                       mov                    ax, currentYPlayer1
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer1
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer1, currentYPlayer1
 	                       jmp                    CheckPowerUpsPlayer1
 	AfterPowerUp1:         
 	                       mov                    grid[bx],player1Code
@@ -2634,11 +2751,7 @@ MovePacman proc
 	                       cmp                    player2Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player2Orientation, 'R'
-	                       mov                    ax, currentYPlayer2
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer2
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer2, currentYPlayer2
 	                       mov                    grid[bx],0
 	                       add                    currentXPlayer2,1
 	                       jmp                    ChangePlayer2Pacman
@@ -2646,11 +2759,7 @@ MovePacman proc
 	                       cmp                    player2Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player2Orientation, 'L'
-	                       mov                    ax, currentYPlayer2
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer2
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer2, currentYPlayer2
 	                       mov                    grid[bx],0
 	                       sub                    currentXPlayer2,1
 	                       jmp                    ChangePlayer2Pacman
@@ -2658,11 +2767,7 @@ MovePacman proc
 	                       cmp                    player2Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player2Orientation, 'U'
-	                       mov                    ax, currentYPlayer2
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax,currentXPlayer2
-	                       mov                    bx,ax
+	                       GridToCell             currentXPlayer2, currentYPlayer2
 	                       mov                    grid[bx],0
 	                       sub                    currentYPlayer2,1
 	                       jmp                    ChangePlayer2Pacman
@@ -2670,20 +2775,12 @@ MovePacman proc
 	                       cmp                    player2Moved,0
 	                       jne                    MoveLoop
 	                       mov                    player2Orientation, 'D'
-	                       mov                    ax, currentYPlayer2
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax, currentXPlayer2
-	                       mov                    bx, ax
+	                       GridToCell             currentXPlayer2, currentYPlayer2
 	                       mov                    grid[bx], 0
 	                       add                    currentYPlayer2, 1
 	                       jmp                    ChangePlayer2Pacman
 	ChangePlayer2Pacman:   
-	                       mov                    ax, currentYPlayer2
-	                       mov                    bx, 30
-	                       mul                    bx
-	                       add                    ax, currentXPlayer2
-	                       mov                    bx, ax
+	                       GridToCell             currentXPlayer2, currentYPlayer2
 	                       jmp                    CheckPowerUpsPlayer2
 	AfterPowerUp2:         
 	                       mov                    grid[bx], player2Code
@@ -2834,7 +2931,6 @@ DrawGrid proc
 	                       ret
 DrawGrid endp
 
-
 DrawScoreAndLives proc
 	                       mov                    si, @data
 	                       DisplayTextVideoMode   10, 2, 1, scoreMessage1, 14
@@ -2849,7 +2945,6 @@ DrawScoreAndLives proc
 	                       DisplayNumberVideoMode 34, 23, player2Lives
 	                       ret
 DrawScoreAndLives endp
-
 
 main proc far
 
@@ -2946,8 +3041,8 @@ main proc far
 	                       INT                    15H
 	StartGame:             
 	                       SetVideoMode
-	                       mov                    grid[1], player1Code
-	                       mov                    grid[478], player2Code
+	                       mov                    grid[31], player1Code
+	                       mov                    grid[448], player2Code
 	                       mov                    grid[256], ghostCode
 	                       mov                    grid[200], ghostCode
 	                       mov                    grid[150], ghostCode
