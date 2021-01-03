@@ -2563,7 +2563,7 @@ endm FindPath
 	player2Lives        dw  3h
 	scanF2              equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC             equ 1Bh
-	grid                db  480 dup(0)
+	grid                db  480 dup(127)
 	black               equ 00h
 	blue                equ 01h
 	green               equ 02h
@@ -2595,6 +2595,7 @@ endm FindPath
 	gridStep            equ 10
 	gridXCount          equ 30
 	gridYCount          equ 16
+	;-------------------------- ITEMS CODES
 	player1Code         equ 16
 	player2Code         equ 17
 	snowflakeCode       equ 18
@@ -2603,23 +2604,24 @@ endm FindPath
 	bigDotCode          equ 21
 	trapCode            equ 22
 	extraLifeCode       equ 23
-	decLifeCode         equ 24
-	cornerLeftUpCode    equ 25
-	cornerLeftDownCode  equ 26
-	cornerRightUpCode   equ 27
-	cornerRightDownCode equ 28
-	horizontalWallCode  equ 29
-	verticalWallCode    equ 30
-	quadWallCode        equ 31
-	triWallDownCode     equ 32
-	triWallUpCode       equ 33
-	triWallLeftCode     equ 34
-	triWallRightCode    equ 35
-	endWallDownCode     equ 36
-	endWallUpCode       equ 37
-	endWallLeftCode     equ 38
-	endWallRightCode    equ 39
+	decLifeCode         equ 1                                                                                 	;MUST BE CHANGED
+	cornerLeftUpCode    equ 1
+	cornerLeftDownCode  equ 2
+	cornerRightUpCode   equ 3
+	cornerRightDownCode equ 4
+	horizontalWallCode  equ 5
+	verticalWallCode    equ 6
+	quadWallCode        equ 7
+	triWallDownCode     equ 8
+	triWallUpCode       equ 9
+	triWallLeftCode     equ 10
+	triWallRightCode    equ 11
+	endWallDownCode     equ 12
+	endWallUpCode       equ 13
+	endWallLeftCode     equ 14
+	endWallRightCode    equ 15
 	ghostCode           equ 128
+	;------------------------- END
 	currentXPlayer1     dw  1
 	currentYPlayer1     dw  1
 	currentXPlayer2     dw  28
@@ -2790,7 +2792,6 @@ MovePacman proc
 	; If Player 1 is frozen we will jmp straight to the part of the code that reads the scancodes responsible for the movement of player2
 	                       cmp                     player1IsFrozen,1
 	                       je                      Player2MovmentCodes
-
 	                       cmp                     ah,rightArrowScan
 	                       je                      MovePlayer1Right
 	                       cmp                     ah,leftArrowScan
@@ -2816,8 +2817,15 @@ MovePacman proc
 	                       cmp                     player1Moved,0
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'R'
+	;check walls
+	                       inc                     currentXPlayer1
+	                       GridToCell              currentXPlayer1,currentYPlayer1
+	                       cmp                     bx,16
+	                       jle                     terminate
+	;end check walls
+	                       dec                     currentXPlayer1
 	                       GridToCell              currentXPlayer1, currentYPlayer1
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       add                     currentXPlayer1,1
 	                       jmp                     ChangePlayer1Pacman
 	MovePlayer1Left:       
@@ -2825,7 +2833,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'L'
 	                       GridToCell              currentXPlayer1, currentYPlayer1
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       sub                     currentXPlayer1,1
 	                       jmp                     ChangePlayer1Pacman
 	MovePlayer1Up:         
@@ -2833,7 +2841,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'U'
 	                       GridToCell              currentXPlayer1, currentYPlayer1
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       sub                     currentYPlayer1,1
 	                       jmp                     ChangePlayer1Pacman
 	MovePlayer1Down:       
@@ -2841,7 +2849,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player1Orientation, 'D'
 	                       GridToCell              currentXPlayer1, currentYPlayer1
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       add                     currentYPlayer1,1
 	                       jmp                     ChangePlayer1Pacman
 	ChangePlayer1Pacman:   
@@ -2900,7 +2908,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'R'
 	                       GridToCell              currentXPlayer2, currentYPlayer2
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       add                     currentXPlayer2,1
 	                       jmp                     ChangePlayer2Pacman
 	MovePlayer2Left:       
@@ -2908,7 +2916,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'L'
 	                       GridToCell              currentXPlayer2, currentYPlayer2
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       sub                     currentXPlayer2,1
 	                       jmp                     ChangePlayer2Pacman
 	MovePlayer2Up:         
@@ -2916,7 +2924,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'U'
 	                       GridToCell              currentXPlayer2, currentYPlayer2
-	                       mov                     grid[bx],0
+	                       mov                     grid[bx],127
 	                       sub                     currentYPlayer2,1
 	                       jmp                     ChangePlayer2Pacman
 	MovePlayer2Down:       
@@ -2924,7 +2932,7 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'D'
 	                       GridToCell              currentXPlayer2, currentYPlayer2
-	                       mov                     grid[bx], 0
+	                       mov                     grid[bx], 127
 	                       add                     currentYPlayer2, 1
 	                       jmp                     ChangePlayer2Pacman
 	ChangePlayer2Pacman:   
@@ -2978,6 +2986,7 @@ MovePacman proc
 	ApplyPacmanUnLife2:    
 	                       sub                     player2Lives, 1
 	                       jmp                     ReturningToMovePlayer2
+	terminate:             
 MovePacman endp
 
 IsFrozen proc
@@ -3035,7 +3044,7 @@ DrawGrid proc
 	                       mov                     cl, grid[si]
 	                       and                     cl, 128d
 	                       jnz                     Ghost
-	                       cmp                     grid[si], 0
+	                       cmp                     grid[si], 127
 	                       je                      Square
 	                       cmp                     grid[si], player1Code
 	                       je                      Player1
