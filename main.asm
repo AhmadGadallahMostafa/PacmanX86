@@ -2538,9 +2538,10 @@ endm FindPath
 	ghostsIsFrozen     db  0
 	player2IsFrozen    db  0
 	player1IsFrozen    db  0
-	ghostFreezeDur     db  10
-	player1FreezeDur   db  10
-	player2FreezeDur   db  10
+	freezeDuration     equ 25
+	player1FreezeDur   db  freezeDuration
+	player2FreezeDur   db  freezeDuration
+	ghostFreezeDur     db  freezeDuration
 	ghostX             db  0
 	ghostY             db  0
 	searchX            db  0
@@ -2715,7 +2716,7 @@ MovePacman proc
 	                       cmp                    grid[bx], bigDotCode
 	; je                     ApplyBigDot1
 	                       cmp                    grid[bx], greenDotCode
-	;je                     ApplyGreenDot1
+	; je                     ApplyGreenDot1
 	                       cmp                    grid[bx], extraLifeCode
 	                       je                     ApplyPacmanLife1
 	                       cmp                    grid[bx], decLifeCode
@@ -2727,6 +2728,8 @@ MovePacman proc
 	                       add                    player1Score, 1
 	                       jmp                    ReturningToMovePlayer1
 	ApplyFreeze1:          
+	                       mov                    player2FreezeDur, freezeDuration
+	                       mov                    ghostFreezeDur, freezeDuration
 	                       mov                    player2IsFrozen, 1
 	                       mov                    ghostsIsFrozen, 1
 	                       jmp                    ReturningToMovePlayer1
@@ -2785,8 +2788,9 @@ MovePacman proc
 	                       mov                    grid[bx], player2Code
 	                       mov                    player2Moved, 1
 	                       jmp                    MoveLoop
-	EndMovePacMan:         
-	                       ret
+
+	;--------------------------------------------------------------------------------------
+
 	CheckPowerUpsPlayer2:  
 	                       push                   bx
 	                       cmp                    grid[bx], dotCode
@@ -2798,7 +2802,7 @@ MovePacman proc
 	                       cmp                    grid[bx], bigDotCode
 	; je                     ApplyBigDot2
 	                       cmp                    grid[bx], greenDotCode
-	;je                     ApplyGreenDot2
+	; je                     ApplyGreenDot2
 	                       cmp                    grid[bx], extraLifeCode
 	                       je                     ApplyPacmanLife2
 	                       cmp                    grid[bx], decLifeCode
@@ -2810,6 +2814,8 @@ MovePacman proc
 	                       add                    player2Score, 1
 	                       jmp                    ReturningToMovePlayer2
 	ApplyFreeze2:          
+	                       mov                    player1FreezeDur, freezeDuration
+	                       mov                    ghostFreezeDur, freezeDuration
 	                       mov                    player1IsFrozen, 1
 	                       mov                    ghostsIsFrozen, 1
 	                       jmp                    ReturningToMovePlayer2
@@ -2861,6 +2867,8 @@ IsFrozen proc
 	SetFreezeGhost:        
 	                       mov                    ghostsIsFrozen,0
 	                       jmp                    ReturnFreeze
+	EndMovePacMan:         
+	                       ret
 IsFrozen endp
 
 DrawGrid proc
