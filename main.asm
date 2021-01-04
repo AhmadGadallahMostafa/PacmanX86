@@ -2665,6 +2665,9 @@ endm FindPath
 	downValue           dw  0ffh
 	maxValue            dw  0ffh
 	nextMove            db  0
+	isPlayer1Dead       db  0
+	isPlayer2Dead       db  0
+	isGameFinished      db  0
 
 .code
 MoveGhosts proc
@@ -2792,6 +2795,8 @@ MovePacman proc
 	; If Player 1 is frozen we will jmp straight to the part of the code that reads the scancodes responsible for the movement of player2
 	                       cmp                     player1IsFrozen,1
 	                       je                      Player2MovmentCodes
+	                       cmp                     isPlayer1Dead, 1
+	                       je                      Player2MovmentCodes
 	                       cmp                     ah,rightArrowScan
 	                       je                      MovePlayer1Right
 	                       cmp                     ah,leftArrowScan
@@ -2804,6 +2809,8 @@ MovePacman proc
 	                       cmp                     player2IsFrozen,1
 	                       je                      MoveLoop
 	Player2MovmentCodes:   
+	                       cmp                     isPlayer2Dead,1
+	                       je                      moveLoop
 	                       cmp                     ah,dScanCode
 	                       je                      MovePlayer2Right
 	                       cmp                     ah,aSCanCode
@@ -2824,6 +2831,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check ghost
+	                       inc                     currentXPlayer1
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       dec                     currentXPlayer1
+	                       cmp                     grid[bx], 128
+	                       jae                     DecrementPlayer1Live
+	;end check ghost
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       add                     currentXPlayer1,1
@@ -2839,6 +2853,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check ghost
+	                       dec                     currentXPlayer1
+	                       GridToCell              currentXPlayer1, currentYPlayer1
+	                       inc                     currentXPlayer1
+	                       cmp                     grid[bx], 128
+	                       jae                     DecrementPlayer1Live
+	;end check ghost
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       sub                     currentXPlayer1,1
@@ -2854,6 +2875,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check Ghost
+	                       dec                     currentYPlayer1
+	                       GridToCell              currentXPlayer1 ,currentYPlayer1
+	                       inc                     currentYPlayer1
+	                       cmp                     grid[bx],128
+	                       jae                     DecrementPlayer1Live
+	;end check Ghosts
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       sub                     currentYPlayer1,1
@@ -2869,6 +2897,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check Ghosts
+	                       inc                     currentYPlayer1
+	                       GridToCell              currentXPlayer1 ,currentYPlayer1
+	                       dec                     currentYPlayer1
+	                       cmp                     grid[bx],128
+	                       jae                     DecrementPlayer1Live
+	;end check Ghosts
 	                       GridToCell              currentXPlayer1, currentYPlayer1
 	                       mov                     grid[bx],127
 	                       add                     currentYPlayer1,1
@@ -2922,6 +2957,18 @@ MovePacman proc
 	                       sub                     player1Lives, 1
 	                       jmp                     ReturningToMovePlayer1
 
+	DecrementPlayer1Live:  
+	                       GridToCell              currentXPlayer1,currentYPlayer1
+	                       mov                     grid[bx],127
+	                       dec                     player1Lives
+	                       cmp                     player1Lives, 0
+	                       je                      SetDead1
+	                       mov                     currentXPlayer1,1
+	                       mov                     currentYPlayer1,1                                                            	;we can add a delay later maybe integrate the freeze functionality
+	                       jmp                     MoveLoop
+	SetDead1:              
+	                       mov                     isPlayer1Dead, 1
+	                       jmp                     moveLoop
 	;--------------------------------------------------------------------------------------
 
 	MovePlayer2Right:      
@@ -2935,6 +2982,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check Ghosts
+	                       inc                     currentXPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       dec                     currentXPlayer2
+	                       cmp                     grid[bx],128
+	                       jae                     DecrementPlayer2Live
+	;end check ghosts
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx],127
 	                       add                     currentXPlayer2,1
@@ -2950,6 +3004,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check ghost
+	                       dec                     currentXPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       inc                     currentXPlayer2
+	                       cmp                     grid[bx],128
+	                       jae                     DecrementPlayer2Live
+	;end check ghosts
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx],127
 	                       sub                     currentXPlayer2,1
@@ -2959,12 +3020,19 @@ MovePacman proc
 	                       jne                     MoveLoop
 	                       mov                     player2Orientation, 'U'
 	;check walls
-	                       dec                     currentYPlayer2
+	                       dec                     currentXPlayer2
 	                       GridToCell              currentXPlayer2 ,currentYPlayer2
-	                       inc                     currentYPlayer2
+	                       inc                     currentXPlayer2
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check ghost
+	                       dec                     currentXPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       inc                     currentXPlayer2
+	                       cmp                     grid[bx],128
+	                       jae                     DecrementPlayer2Live
+	;end check ghost
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx],127
 	                       sub                     currentYPlayer2,1
@@ -2980,6 +3048,13 @@ MovePacman proc
 	                       cmp                     grid[bx],16
 	                       jb                      MoveLoop
 	;end check walls
+	;check Ghosts
+	                       inc                     currentYPlayer2
+	                       GridToCell              currentXPlayer2 ,currentYPlayer2
+	                       dec                     currentYPlayer2
+	                       cmp                     grid[bx],128
+	                       jae                     DecrementPlayer2Live
+	;end check Ghosts
 	                       GridToCell              currentXPlayer2, currentYPlayer2
 	                       mov                     grid[bx], 127
 	                       add                     currentYPlayer2, 1
@@ -3035,6 +3110,17 @@ MovePacman proc
 	ApplyPacmanUnLife2:    
 	                       sub                     player2Lives, 1
 	                       jmp                     ReturningToMovePlayer2
+	DecrementPlayer2Live:  
+	                       GridToCell              currentXPlayer2,currentYPlayer2
+	                       mov                     grid[bx],127
+	                       dec                     player2Lives
+	                       cmp                     player2Lives, 0
+	                       je                      SetDead
+	                       mov                     currentXPlayer2, 28
+	                       mov                     currentYPlayer2, 14                                                          	;we can add a delay later maybe integrate the freeze functionality
+	                       jmp                     MoveLoop
+	SetDead:               mov                     isPlayer2Dead,1
+	                       jmp                     MoveLoop
 	terminate:             
 MovePacman endp
 
