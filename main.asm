@@ -2098,18 +2098,18 @@ DrawTriWallDown macro xPosition, yPosition, borderColor, fillColor, backgroundCo
     DrawHorizontalLine backgroundColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine backgroundColor, 2
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 4
-    DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 3
-    DrawHorizontalLine fillColor, 1
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 2
     inc dx
     mov cx, xPosition
     DrawHorizontalLine fillColor, 4
@@ -2169,18 +2169,18 @@ DrawTriWallUp macro xPosition, yPosition, borderColor, fillColor, backgroundColo
     DrawHorizontalLine fillColor, 4
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 3
-    DrawHorizontalLine fillColor, 1
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine backgroundColor, 2
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 4
-    DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 2
@@ -2200,8 +2200,8 @@ DrawTriWallRight macro xPosition, yPosition, borderColor, fillColor, backgroundC
     DrawHorizontalLine backgroundColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine backgroundColor, 2
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 2
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 1
@@ -2209,8 +2209,8 @@ DrawTriWallRight macro xPosition, yPosition, borderColor, fillColor, backgroundC
     DrawHorizontalLine backgroundColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 3
-    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 3
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 1
     DrawHorizontalLine borderColor, 1
@@ -2245,16 +2245,16 @@ DrawTriWallRight macro xPosition, yPosition, borderColor, fillColor, backgroundC
     DrawHorizontalLine backgroundColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 3
-    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 3
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 1
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine backgroundColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine backgroundColor, 2
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 2
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 1
@@ -2284,16 +2284,16 @@ DrawTriWallLeft macro xPosition, yPosition, borderColor, fillColor, backgroundCo
     DrawHorizontalLine fillColor, 1
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 2
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 1
     DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 2
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 2
@@ -2328,8 +2328,8 @@ DrawTriWallLeft macro xPosition, yPosition, borderColor, fillColor, backgroundCo
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 1
     DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 2
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 2
@@ -2337,8 +2337,8 @@ DrawTriWallLeft macro xPosition, yPosition, borderColor, fillColor, backgroundCo
     DrawHorizontalLine fillColor, 1
     DrawHorizontalLine borderColor, 1
     DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 2
@@ -2688,7 +2688,7 @@ endm FindPath
 	player2Color        db  player2InitialColor
 	borderColor         equ blue
 	;backgroundColor     equ 151d
-	backgroundColor     equ black
+	backgroundColor     equ darkGray
 	ghostInitialColor   equ lightMagenta
 	ghostColor          db  ghostInitialColor
 	dotColor            equ white
@@ -2747,10 +2747,20 @@ endm FindPath
 	ghostsIsFrozen      db  0
 	player2IsFrozen     db  0
 	player1IsFrozen     db  0
+	player1IsBigDot     db  0
+	player2IsBigDot     db  0
+	player1IsGreenDot   db  0
+	player2IsGreenDot   db  0
 	freezeDuration      equ 25
 	player1FreezeDur    db  freezeDuration
 	player2FreezeDur    db  freezeDuration
 	ghostFreezeDur      db  freezeDuration
+	bigDotDuartion      equ 15
+	player1BigDotDur    db  bigDotDuartion
+	player2BigDotDur    db  bigDotDuartion
+	greenDotDuration    equ 15
+	player1GreenDotDur  db  greenDotDuration
+	player2GreenDotDur  db  greenDotDuration
 	ghostX              db  0
 	ghostY              db  0
 	searchX             db  0
@@ -3026,9 +3036,9 @@ MovePacman proc
 	                       cmp                     grid[bx], cherryCode
 	                       je                      ApplyCherry1
 	                       cmp                     grid[bx], bigDotCode
-	; je                     ApplyBigDot1
+	                       je                      ApplyBigDot1
 	                       cmp                     grid[bx], trapCode
-	; je                     ApplyGreenDot1
+	                       je                      ApplyGreenDot1
 	                       cmp                     grid[bx], extraLifeCode
 	                       je                      ApplyPacmanLife1
 	                       cmp                     grid[bx], decLifeCode
@@ -3048,9 +3058,14 @@ MovePacman proc
 	ApplyCherry1:          
 	                       add                     player1Score,10
 	                       jmp                     ReturningToMovePlayer1
-	;ApplyBigDot1:
-
-	;ApplyGreenDot1:
+	ApplyBigDot1:          
+	                       mov                     player1BigDotDur, bigDotDuartion
+	                       mov                     player1IsBigDot, 1
+	                       jmp                     ReturningToMovePlayer1
+	ApplyGreenDot1:        
+	                       mov                     player1GreenDotDur, bigDotDuartion
+	                       mov                     player1IsGreenDot, 1
+	                       jmp                     ReturningToMovePlayer1
 
 	ApplyPacmanLife1:      
 	                       add                     player1Lives, 1
@@ -3180,9 +3195,9 @@ MovePacman proc
 	                       cmp                     grid[bx], cherryCode
 	                       je                      ApplyCherry2
 	                       cmp                     grid[bx], bigDotCode
-	; je                     ApplyBigDot2
+	                       je                      ApplyBigDot2
 	                       cmp                     grid[bx], trapCode
-	; je                     ApplyGreenDot2
+	                       je                      ApplyGreenDot2
 	                       cmp                     grid[bx], extraLifeCode
 	                       je                      ApplyPacmanLife2
 	                       cmp                     grid[bx], decLifeCode
@@ -3202,10 +3217,14 @@ MovePacman proc
 	ApplyCherry2:          
 	                       add                     player2Score,10
 	                       jmp                     ReturningToMovePlayer2
-	;ApplyBigDot2:
-
-	;ApplyGreenDot2:
-
+	ApplyBigDot2:          
+	                       mov                     player2BigDotDur, bigDotDuartion
+	                       mov                     player2IsBigDot, 1
+	                       jmp                     ReturningToMovePlayer2
+	ApplyGreenDot2:        
+	                       mov                     player2GreenDotDur, greenDotDuration
+	                       mov                     player2IsGreenDot, 1
+	                       jmp                     ReturningToMovePlayer2
 	ApplyPacmanLife2:      
 	                       add                     player2Lives, 1
 	                       jmp                     ReturningToMovePlayer2
@@ -3262,6 +3281,33 @@ IsFrozen proc
 	EndMovePacMan:         
 	                       ret
 IsFrozen endp
+
+IsBigDot proc
+	CheckPlayer1BigDot:    
+	                       cmp                     player1IsBigDot,1
+	                       je                      DecPlayer1BigDotEffect
+	CheckPlayer2BigDot:    
+	                       cmp                     player2IsBigDot, 1
+	                       je                      DecPlayer2BigDotEffect
+	ReturnBigDot:          
+	                       ret
+	DecPlayer1BigDotEffect:
+	                       sub                     player1BigDotDur,1
+	                       jz                      SetBigDot1
+	                       jmp                     CheckPlayer2BigDot
+	SetBigDot1:            
+	                       mov                     player1IsBigDot,0
+	                       jmp                     CheckPlayer2BigDot
+	DecPlayer2BigDotEffect:
+	                       sub                     player2BigDotDur,1
+	                       jz                      SetBigDot2
+	                       jmp                     ReturnBigDot
+	SetBigDot2:            
+	                       mov                     player2IsBigDot,0
+	                       jmp                     ReturnBigDot
+	EndMovePacMann:         
+	                       ret
+IsBigDot endp
 
 DrawGrid proc
 	                       mov                     currentX, gridStartX
@@ -3343,11 +3389,15 @@ DrawGrid proc
 	                       jnz                     DrawRow
 	                       jmp                     EndDraw
 	Square:                
-	                       DrawSquare              currentX, currentY, gridStep, black , backgroundColor                        	;borderColor, backgroundColor
+	                       DrawSquare              currentX, currentY, gridStep, backgroundColor , backgroundColor              	;borderColor, backgroundColor
 	                       jmp                     ContinueDraw
 	Player1:               
 	                       cmp                     player1IsFrozen, 1
 	                       je                      Player1Frozen
+	                       cmp                     player1IsBigDot, 1
+	                       je                      Player1BigDot
+	                       cmp                     player1IsGreenDot, 1
+	                       je                      Player1GreenDot
 	                       mov                     player1Color,player1InitialColor
 	DrawPlayer1:           
 	                       DrawPlayer              currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
@@ -3355,15 +3405,31 @@ DrawGrid proc
 	Player1Frozen:         
 	                       mov                     player1Color, lightBlue
 	                       jmp                     DrawPlayer1
+	Player1BigDot:         
+	                       mov                     player1Color, white
+	                       jmp                     DrawPlayer1
+	Player1GreenDot:       
+	                       mov                     player1Color, lightGreen
+	                       jmp                     DrawPlayer1
 	Player2:               
 	                       cmp                     player2IsFrozen, 1
 	                       je                      Player2Frozen
+	                       cmp                     player2IsBigDot, 1
+	                       je                      Player2BigDot
+	                       cmp                     player2IsGreenDot, 1
+	                       je                      Player2GreenDot
 	                       mov                     player2Color, player2InitialColor
 	DrawPlayer2:           
 	                       DrawPlayer              currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
 	                       jmp                     ContinueDraw
 	Player2Frozen:         
 	                       mov                     player2Color,lightBlue
+	                       jmp                     DrawPlayer2
+	Player2BigDot:         
+	                       mov                     player2Color, white
+	                       jmp                     DrawPlayer2
+	Player2GreenDot:       
+	                       mov                     player2Color, lightGreen
 	                       jmp                     DrawPlayer2
 	Ghost:                 
 	                       cmp                     ghostsIsFrozen, 1
@@ -3679,6 +3745,10 @@ main proc far
 	                       mov                     grid[118], extraLifeCode
 	                       mov                     grid[197], decLifeCode
 	                       mov                     grid[292], decLifeCode
+						   mov grid[217], bigDotCode
+						   mov grid[111], bigDotCode
+						   mov grid[99], bigDotCode
+						   mov grid[69], bigDotCode
 						   
 
 	                       mov                     si, @data
@@ -3691,6 +3761,7 @@ main proc far
 	                       call                    DrawGrid
 	                       call                    DrawScoreAndLives
 	                       call                    IsFrozen
+	                       call                    IsBigDot
 	                       MOV                     CX, 1H                                                                       	; delay
 	                       MOV                     DX, 4240H
 	                       MOV                     AH, 86H
