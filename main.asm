@@ -2706,7 +2706,7 @@ endm FindPath
 	bigDotCode          equ 21
 	trapCode            equ 22
 	extraLifeCode       equ 23
-	decLifeCode         equ 24                                                                                	;MUST BE CHANGED
+	decLifeCode         equ 24
 	vacantCode          equ 25
 	cornerLeftUpCode    equ 1
 	cornerLeftDownCode  equ 2
@@ -3138,16 +3138,16 @@ MovePacman proc
 	                         jne                     MoveLoop
 	                         mov                     player2Orientation, 'U'
 	;check walls
-	                         dec                     currentXPlayer2
+	                         dec                     currentYPlayer2
 	                         GridToCell              currentXPlayer2 ,currentYPlayer2
-	                         inc                     currentXPlayer2
+	                         inc                     currentYPlayer2
 	                         cmp                     grid[bx],16
 	                         jb                      MoveLoop
 	;end check walls
 	;check ghost
-	                         dec                     currentXPlayer2
+	                         dec                     currentYPlayer2
 	                         GridToCell              currentXPlayer2 ,currentYPlayer2
-	                         inc                     currentXPlayer2
+	                         inc                     currentYPlayer2
 	                         cmp                     grid[bx],128
 	                         jae                     DecrementPlayer2Live
 	;end check ghost
