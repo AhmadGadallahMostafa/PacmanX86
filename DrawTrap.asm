@@ -101,6 +101,104 @@ DrawHorizontalLine backGroundColor,2
 
 endm DrawTrap
 
+DrawPacManLife macro xPosition, yPosition, borderColor, fillColor, backGroundColor
+mov cx,xPosition
+mov dx,yPosition
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 3
+DrawHorizontalLine borderColor, 4
+DrawHorizontalLine backGroundColor, 3
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine fillColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine fillColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 3
+DrawHorizontalLine borderColor, 4
+DrawHorizontalLine backGroundColor, 3
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+endm DrawPacManLife
+
+DrawPacManUnlife macro xPosition, yPosition, borderColor, fillColor, backGroundColor
+mov cx,xPosition
+mov dx,yPosition
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 6
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 6
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+endm DrawPacManUnlife
+
 .model small
 .stack 64
 .data
@@ -110,6 +208,8 @@ mov ax,@data
 mov ds,ax
 SetVideoMode
 DrawTrap 50,50,1,0ah,2
+DrawPacManLife 70,70,02,0fh,0
+DrawPacManUnlife 90,90,02,0fh,0
 lbl:jmp lbl
 main endp
 end main

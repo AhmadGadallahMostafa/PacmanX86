@@ -2484,6 +2484,108 @@ DrawHorizontalLine backGroundColor,2
 
 endm DrawTrap
 ;----------------------------------------------------------------------------------------
+; Life & UnLife
+;----------------------------------------------------------------------------------------
+
+DrawPacManLife macro xPosition, yPosition, borderColor, fillColor, backGroundColor
+mov cx,xPosition
+mov dx,yPosition
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 3
+DrawHorizontalLine borderColor, 4
+DrawHorizontalLine backGroundColor, 3
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine fillColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine fillColor, 2
+DrawHorizontalLine borderColor, 2
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 3
+DrawHorizontalLine borderColor, 4
+DrawHorizontalLine backGroundColor, 3
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+endm DrawPacManLife
+
+DrawPacManUnlife macro xPosition, yPosition, borderColor, fillColor, backGroundColor
+mov cx,xPosition
+mov dx,yPosition
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 6
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine fillColor, 4
+DrawHorizontalLine borderColor, 1
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 2
+DrawHorizontalLine borderColor, 6
+DrawHorizontalLine backGroundColor, 2
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+mov cx,xPosition
+inc dx
+DrawHorizontalLine backGroundColor, 10
+endm DrawPacManUnlife
+
+;----------------------------------------------------------------------------------------
 
 GridToCell macro gridX, gridY ; takes xPosition, yPosition, puts the cell number in bx
 	mov bx, word ptr gridY
@@ -2604,7 +2706,7 @@ endm FindPath
 	bigDotCode          equ 21
 	trapCode            equ 22
 	extraLifeCode       equ 23
-	decLifeCode         equ 1                                                                                 	;MUST BE CHANGED
+	decLifeCode         equ 24                                                                                	;MUST BE CHANGED
 	cornerLeftUpCode    equ 1
 	cornerLeftDownCode  equ 2
 	cornerRightUpCode   equ 3
@@ -2954,7 +3056,7 @@ MovePacman proc
 	                       add                     player1Lives, 1
 	                       jmp                     ReturningToMovePlayer1
 	ApplyPacmanUnLife1:    
-	                       sub                     player1Lives, 1
+	                       sub                     player2Lives, 1
 	                       jmp                     ReturningToMovePlayer1
 
 	DecrementPlayer1Live:  
@@ -3108,7 +3210,7 @@ MovePacman proc
 	                       add                     player2Lives, 1
 	                       jmp                     ReturningToMovePlayer2
 	ApplyPacmanUnLife2:    
-	                       sub                     player2Lives, 1
+	                       sub                     player1Lives, 1
 	                       jmp                     ReturningToMovePlayer2
 	DecrementPlayer2Live:  
 	                       GridToCell              currentXPlayer2,currentYPlayer2
@@ -3195,6 +3297,10 @@ DrawGrid proc
 	                       je                      BigDot
 	                       cmp                     grid[si], trapCode
 	                       je                      Trap
+	                       cmp                     grid[si], extraLifeCode
+	                       je                      Life
+	                       cmp                     grid[si], decLifeCode
+	                       je                      UnLife
 	                       cmp                     grid[si], cornerLeftDownCode
 	                       je                      CornerLeftDown
 	                       cmp                     grid[si], cornerLeftUpCode
@@ -3282,7 +3388,13 @@ DrawGrid proc
 	                       DrawBigDot              currentX, currentY, white, backgroundColor
 	                       jmp                     ContinueDraw
 	Trap:                  
-	                       DrawTrap                currentX, currentY, backGroundColor, lightGreen, green
+	                       DrawTrap                currentX, currentY, backgroundColor, lightGreen, green
+	                       jmp                     ContinueDraw
+	Life:                  
+	                       DrawPacManLife          currentX, currentY, green, white, backgroundColor
+	                       jmp                     ContinueDraw
+	UnLife:                
+	                       DrawPacManUnlife        currentX, currentY, red, white, backgroundColor
 	                       jmp                     ContinueDraw
 	CornerLeftUp:          
 	                       DrawCornerWallLeftUp    currentX, currentY, black, white, backgroundColor
@@ -3563,6 +3675,10 @@ main proc far
 	                       mov                     grid[288], snowflakeCode
 	                       mov                     grid[266], snowflakeCode
 	                       mov                     grid[400], cherryCode
+	                       mov                     grid[218], extraLifeCode
+	                       mov                     grid[118], extraLifeCode
+	                       mov                     grid[197], decLifeCode
+	                       mov                     grid[292], decLifeCode
 						   
 
 	                       mov                     si, @data
