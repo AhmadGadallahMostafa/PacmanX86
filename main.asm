@@ -1,7 +1,7 @@
 ;Authors : Ahmad Mostafa El Sayed
-;         Muhab Hossam El Din
-;         Mazen Amr
-;         Youssef Shams
+;          Muhab Hossam El Din
+;          Mazen Amr
+;          Youssef Shams
 
 ;	Start Date : 25/12/2020
 ;	Project Description : Simple PacMan game including two players competeing for the highest score
@@ -2486,7 +2486,6 @@ endm DrawTrap
 ;----------------------------------------------------------------------------------------
 ; Life & UnLife
 ;----------------------------------------------------------------------------------------
-
 DrawPacManLife macro xPosition, yPosition, borderColor, fillColor, backGroundColor
 mov cx,xPosition
 mov dx,yPosition
@@ -2586,6 +2585,254 @@ DrawHorizontalLine backGroundColor, 10
 endm DrawPacManUnlife
 
 ;----------------------------------------------------------------------------------------
+; Level 1
+;----------------------------------------------------------------------------------------
+DrawLevel1 macro initial1, initial2
+							 mov 					 bx, initial1
+ 							 mov                     grid[bx], player1Code
+							 mov 					 bx, initial2
+	                         mov                     grid[bx], player2Code
+	                         mov                     grid[0], cornerLeftUpCode
+	                         mov                     grid[479], cornerRightDownCode
+	                         mov                     grid[29], cornerRightUpCode
+	                         mov                     grid[450], cornerLeftDownCode
+	                         mov                     grid[1], horizontalWallCode
+	                         mov                     grid[2], horizontalWallCode
+	                         mov                     grid[3], horizontalWallCode
+	                         mov                     grid[4], horizontalWallCode
+	                         mov                     grid[5], horizontalWallCode
+	                         mov                     grid[6], horizontalWallCode
+	                         mov                     grid[7], horizontalWallCode
+	                         mov                     grid[8], horizontalWallCode
+	                         mov                     grid[9], horizontalWallCode
+	                         mov                     grid[10], horizontalWallCode
+	                         mov                     grid[11], horizontalWallCode
+	                         mov                     grid[12], horizontalWallCode
+	                         mov                     grid[13], triWallUpCode
+	                         mov                     grid[14], horizontalWallCode
+	                         mov                     grid[15], horizontalWallCode
+	                         mov                     grid[16], triWallUpCode
+	                         mov                     grid[17], horizontalWallCode
+	                         mov                     grid[18], horizontalWallCode
+	                         mov                     grid[19], horizontalWallCode
+	                         mov                     grid[20], horizontalWallCode
+	                         mov                     grid[21], horizontalWallCode
+	                         mov                     grid[22], horizontalWallCode
+	                         mov                     grid[23], horizontalWallCode
+	                         mov                     grid[24], horizontalWallCode
+	                         mov                     grid[25], horizontalWallCode
+	                         mov                     grid[26], horizontalWallCode
+	                         mov                     grid[27], horizontalWallCode
+	                         mov                     grid[28], horizontalWallCode
+	                         mov                     grid[43], endWallDownCode
+	                         mov                     grid[44], bigDotCode
+	                         mov                     grid[32], dotCode
+	                         mov                     grid[33], dotCode
+	                         mov                     grid[34], dotCode
+	                         mov                     grid[46], endWallDownCode
+	                         mov                     grid[30], verticalWallCode
+	                         mov                     grid[60], verticalWallCode
+	                         mov                     grid[90], verticalWallCode
+	                         mov                     grid[120], verticalWallCode
+	                         mov                     grid[150], verticalWallCode
+	                         mov                     grid[180], cornerLeftDownCode
+	                         mov                     grid[181], cornerRightUpCode
+	                         mov                     grid[211], verticalWallCode
+	                         mov                     grid[241], verticalWallCode
+	                         mov                     grid[271], cornerRightDownCode
+	                         mov                     grid[270], cornerLeftUpCode
+	                         mov                     grid[300], verticalWallCode
+	                         mov                     grid[330], verticalWallCode
+	                         mov                     grid[360], verticalWallCode
+	                         mov                     grid[390], verticalWallCode
+	                         mov                     grid[420], verticalWallCode
+	                         mov                     grid[165], horizontalWallCode
+	                         mov                     grid[314], horizontalWallCode
+	                         mov                     grid[164], cornerLeftUpCode
+	                         mov                     grid[166], cornerRightUpCode
+	                         mov                     grid[313], cornerLeftDownCode
+	                         mov                     grid[315], cornerRightDownCode
+	                         mov                     grid[194], endWallDownCode
+	                         mov                     grid[196], endWallDownCode
+	                         mov                     grid[283], endWallUpCode
+	                         mov                     grid[285], endWallUpCode
+	                         mov                     grid[195], ghostCode
+	                         mov                     grid[284], ghostCode
+	                         mov                     grid[451], horizontalWallCode
+	                         mov                     grid[452], horizontalWallCode
+	                         mov                     grid[453], horizontalWallCode
+	                         mov                     grid[454], horizontalWallCode
+	                         mov                     grid[455], horizontalWallCode
+	                         mov                     grid[456], horizontalWallCode
+	                         mov                     grid[457], horizontalWallCode
+	                         mov                     grid[458], horizontalWallCode
+	                         mov                     grid[459], horizontalWallCode
+	                         mov                     grid[460], horizontalWallCode
+	                         mov                     grid[461], horizontalWallCode
+	                         mov                     grid[462], horizontalWallCode
+	                         mov                     grid[463], triWallDownCode
+	                         mov                     grid[464], horizontalWallCode
+	                         mov                     grid[465], horizontalWallCode
+	                         mov                     grid[466], triWallDownCode
+	                         mov                     grid[467], horizontalWallCode
+	                         mov                     grid[468], horizontalWallCode
+	                         mov                     grid[469], horizontalWallCode
+	                         mov                     grid[470], horizontalWallCode
+	                         mov                     grid[471], horizontalWallCode
+	                         mov                     grid[472], horizontalWallCode
+	                         mov                     grid[473], horizontalWallCode
+	                         mov                     grid[474], horizontalWallCode
+	                         mov                     grid[475], horizontalWallCode
+	                         mov                     grid[476], horizontalWallCode
+	                         mov                     grid[477], horizontalWallCode
+	                         mov                     grid[478], horizontalWallCode
+	                         mov                     grid[433], endWallUpCode
+	                         mov                     grid[434], bigDotCode
+	                         mov                     grid[447], dotCode
+	                         mov                     grid[436], endWallUpCode
+	                         mov                     grid[59], verticalWallCode
+	                         mov                     grid[89], verticalWallCode
+	                         mov                     grid[119], verticalWallCode
+	                         mov                     grid[149], verticalWallCode
+	                         mov                     grid[179], verticalWallCode
+	                         mov                     grid[209], cornerRightDownCode
+	                         mov                     grid[208], cornerLeftUpCode
+	                         mov                     grid[238], verticalWallCode
+	                         mov                     grid[268], verticalWallCode
+	                         mov                     grid[298], cornerLeftDownCode
+	                         mov                     grid[299], cornerRightUpCode
+	                         mov                     grid[329], verticalWallCode
+	                         mov                     grid[359], verticalWallCode
+	                         mov                     grid[389], verticalWallCode
+	                         mov                     grid[419], verticalWallCode
+	                         mov                     grid[449], verticalWallCode
+	                         mov                     grid[62], cornerLeftUpCode
+	                         mov                     grid[63], horizontalWallCode
+	                         mov                     grid[64], cornerRightUpCode
+	                         mov                     grid[92], verticalWallCode
+	                         mov                     grid[93], vacantCode
+	                         mov                     grid[94], verticalWallCode
+	                         mov                     grid[122], cornerLeftDownCode
+	                         mov                     grid[123], horizontalWallCode
+	                         mov                     grid[124], cornerRightDownCode
+	                         mov                     grid[66], cornerLeftUpCode
+	                         mov                     grid[67], horizontalWallCode
+	                         mov                     grid[68], horizontalWallCode
+	                         mov                     grid[69], cornerRightUpCode
+	                         mov                     grid[96], verticalWallCode
+	                         mov                     grid[97], vacantCode
+	                         mov                     grid[98], vacantCode
+	                         mov                     grid[99], verticalWallCode
+	                         mov                     grid[126], cornerLeftDownCode
+	                         mov                     grid[127], horizontalWallCode
+	                         mov                     grid[128], horizontalWallCode
+	                         mov                     grid[129], cornerRightDownCode
+	                         mov                     grid[71], endWallUpCode
+	                         mov                     grid[101], triWallLeftCode
+	                         mov                     grid[131], endWallDownCode
+	                         mov                     grid[102], horizontalWallCode
+	                         mov                     grid[103], horizontalWallCode
+	                         mov                     grid[104], horizontalWallCode
+	                         mov                     grid[105], horizontalWallCode
+	                         mov                     grid[106], horizontalWallCode
+	                         mov                     grid[107], horizontalWallCode
+	                         mov                     grid[108], triWallRightCode
+	                         mov                     grid[78], endWallUpCode
+	                         mov                     grid[138], endWallDownCode
+	                         mov                     grid[80], cornerLeftUpCode
+	                         mov                     grid[81], horizontalWallCode
+	                         mov                     grid[82], horizontalWallCode
+	                         mov                     grid[83], cornerRightUpCode
+	                         mov                     grid[110], verticalWallCode
+	                         mov                     grid[111], vacantCode
+	                         mov                     grid[112], vacantCode
+	                         mov                     grid[113], verticalWallCode
+	                         mov                     grid[140], cornerLeftDownCode
+	                         mov                     grid[141], horizontalWallCode
+	                         mov                     grid[142], horizontalWallCode
+	                         mov                     grid[143], cornerRightDownCode
+	                         mov                     grid[85], cornerLeftUpCode
+	                         mov                     grid[86], horizontalWallCode
+	                         mov                     grid[87], cornerRightUpCode
+	                         mov                     grid[115], verticalWallCode
+	                         mov                     grid[116], vacantCode
+	                         mov                     grid[117], verticalWallCode
+	                         mov                     grid[145], cornerLeftDownCode
+	                         mov                     grid[146], horizontalWallCode
+	                         mov                     grid[147], cornerRightDownCode
+	                         mov                     grid[332], cornerLeftUpCode
+	                         mov                     grid[333], horizontalWallCode
+	                         mov                     grid[334], cornerRightUpCode
+	                         mov                     grid[362], verticalWallCode
+	                         mov                     grid[363], vacantCode
+	                         mov                     grid[364], verticalWallCode
+	                         mov                     grid[392], cornerLeftDownCode
+	                         mov                     grid[393], horizontalWallCode
+	                         mov                     grid[394], cornerRightDownCode
+	                         mov                     grid[336], cornerLeftUpCode
+	                         mov                     grid[337], horizontalWallCode
+	                         mov                     grid[338], horizontalWallCode
+	                         mov                     grid[339], cornerRightUpCode
+	                         mov                     grid[366], verticalWallCode
+	                         mov                     grid[367], vacantCode
+	                         mov                     grid[368], vacantCode
+	                         mov                     grid[369], verticalWallCode
+	                         mov                     grid[396], cornerLeftDownCode
+	                         mov                     grid[397], horizontalWallCode
+	                         mov                     grid[398], horizontalWallCode
+	                         mov                     grid[399], cornerRightDownCode
+	                         mov                     grid[341], endWallUpCode
+	                         mov                     grid[371], triWallLeftCode
+	                         mov                     grid[401], endWallDownCode
+	                         mov                     grid[372], horizontalWallCode
+	                         mov                     grid[373], horizontalWallCode
+	                         mov                     grid[374], horizontalWallCode
+	                         mov                     grid[375], horizontalWallCode
+	                         mov                     grid[376], horizontalWallCode
+	                         mov                     grid[377], horizontalWallCode
+	                         mov                     grid[378], triWallRightCode
+	                         mov                     grid[348], endWallUpCode
+	                         mov                     grid[408], endWallDownCode
+	                         mov                     grid[350], cornerLeftUpCode
+	                         mov                     grid[351], horizontalWallCode
+	                         mov                     grid[352], horizontalWallCode
+	                         mov                     grid[353], cornerRightUpCode
+	                         mov                     grid[380], verticalWallCode
+	                         mov                     grid[381], vacantCode
+	                         mov                     grid[382], vacantCode
+	                         mov                     grid[383], verticalWallCode
+	                         mov                     grid[410], cornerLeftDownCode
+	                         mov                     grid[411], horizontalWallCode
+	                         mov                     grid[412], horizontalWallCode
+	                         mov                     grid[413], cornerRightDownCode
+	                         mov                     grid[355], cornerLeftUpCode
+	                         mov                     grid[356], horizontalWallCode
+	                         mov                     grid[357], cornerRightUpCode
+	                         mov                     grid[385], verticalWallCode
+	                         mov                     grid[386],vacantCode
+	                         mov                     grid[387], verticalWallCode
+	                         mov                     grid[415], cornerLeftDownCode
+	                         mov                     grid[416], horizontalWallCode
+	                         mov                     grid[417], cornerRightDownCode
+
+	; Testing item drawing functions.
+
+	                         mov                     grid[288], snowflakeCode
+	                         mov                     grid[266], snowflakeCode
+	                         mov                     grid[400], cherryCode
+	                         mov                     grid[218], extraLifeCode
+	                         mov                     grid[118], extraLifeCode
+	                         mov                     grid[197], decLifeCode
+	                         mov                     grid[292], decLifeCode
+	                         mov                     grid[217], bigDotCode
+	                         mov                     grid[76], trapCode
+	                         mov                     grid[214], trapCode
+	                         mov                     grid[260], trapCode
+	                         mov                     grid[310], trapCode
+						   
+endm DrawLevel1
+
+;----------------------------------------------------------------------------------------
 
 GridToCell macro gridX, gridY ; takes xPosition, yPosition, puts the cell number in bx
 	mov bx, word ptr gridY
@@ -2653,7 +2900,10 @@ endm FindPath
 	chattingInfo        db  '*To start chatting press F1$'
 	gameStartInfo       db  '*To Start the Game press F2$'
 	endgameInfo         db  '*To end the game press ESC$'
+	level1Msg           db  '*To start level 1 press F1$'
+	level2Msg           db  '*To start level 2 press F2$'
 	notifactionBar      db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
+	chooseLevelMsg      db  'Please Choose a level: $'
 	welcomePosition     dw  0h
 	scoreMessage1       db  'Score #1: $'
 	scoreMessage2       db  'Score #2: $'
@@ -2663,6 +2913,7 @@ endm FindPath
 	livesMessage2       db  'Lives #2: $'
 	player1Lives        dw  3h
 	player2Lives        dw  3h
+	scanF1              equ 3Bh
 	scanF2              equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC             equ 1Bh
 	grid                db  480 dup(127)
@@ -2783,6 +3034,8 @@ endm FindPath
 	isGameFinished      db  0
 	player1Respawn      db  0
 	player2Respawn      db  0
+	player1Initial       dw  0
+	player2Initial      dw  0
 	player1Lvl1Intial   equ 31
 	player2lvl1Intial   equ 448
 
@@ -3452,7 +3705,8 @@ DrawGrid proc
 	Player1NeedRespawn:      
 	                         mov                     player1Respawn, 0
 	; Change the initial location according to the level here:
-	                         mov                     grid[player1Lvl1Intial], player1Code
+	                         mov                     bx, player1Initial
+	                         mov                     grid[bx], player1Code
 	                         mov                     player1Orientation, 'R'
 	                         jmp                     AfterRespawnCheck
 	Player1:                 
@@ -3482,7 +3736,8 @@ DrawGrid proc
 	                         jmp                     DrawPlayer1
 	Player2NeedRespawn:      
 	                         mov                     player2Respawn, 0
-	                         mov                     grid[player2lvl1Intial], player2Code
+	                         mov                     bx, player2Initial
+	                         mov                     grid[bx], player2Code
 	                         mov                     player2Orientation, 'L'
 	                         jmp                     AfterRespawnCheck
 	Player2:                 
@@ -3604,7 +3859,7 @@ main proc far
 
 	                         mov                     ax, @data
 	                         mov                     ds, ax
-	                         jmp                     StartGame
+	; jmp                     StartGame
 	GetPlayer1Name:                                                                                                               	;Reading first player name and saving it to player1name
 	                         SetTextMode
 	                         mov                     dx, 0000
@@ -3693,250 +3948,43 @@ main proc far
 	                         MOV                     DX, 4240H
 	                         MOV                     AH, 86H
 	                         INT                     15H
-	StartGame:               
+	ChooseLevel:             
+	                         SetTextMode
+	                         mov                     dx, 0000
+	                         MoveCursor
+	                         Displaystring           chooseLevelMsg
+	                         mov                     dx, 0a0dh
+	                         mov                     dl, 25d
+	                         MoveCursor
+	                         displaystring           level1Msg
+	                         mov                     dx, 0c0dh
+	                         mov                     dl, 25d
+	                         MoveCursor
+	                         DisplayString           level2Msg
+	                         mov                     dl, 0
+	                         mov                     dh, 22d
+	                         MoveCursor
+	                         Displaystring           notifactionBar
+	AgainTillKeyPressed2:                                                                                                         	;checking if a key is pressed on the main menu
+	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
+	                         int                     21h
+	                         mov                     ah, 1
+	                         int                     16h
+	                         cmp                     al, scanF1                                                                   	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                         je                      SetLevel1
+	;cmp                     al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
+	;je                      SetLevel2
+	                         jmp                     AgainTillKeyPressed2
+
+	SetLevel1:               
+	; Setting the initial location for each player.
+	                         mov                     player1Initial, player1Lvl1Intial
+	                         mov                     player2Initial, player2lvl1Intial
+	StartLevel1:             
 	                         SetVideoMode
-	Level1:                  
-	                         mov                     grid[player1Lvl1Intial], player1Code
-	                         mov                     grid[player2lvl1Intial], player2Code
-	                         mov                     grid[0], cornerLeftUpCode
-	                         mov                     grid[479], cornerRightDownCode
-	                         mov                     grid[29], cornerRightUpCode
-	                         mov                     grid[450], cornerLeftDownCode
-	                         mov                     grid[1], horizontalWallCode
-	                         mov                     grid[2], horizontalWallCode
-	                         mov                     grid[3], horizontalWallCode
-	                         mov                     grid[4], horizontalWallCode
-	                         mov                     grid[5], horizontalWallCode
-	                         mov                     grid[6], horizontalWallCode
-	                         mov                     grid[7], horizontalWallCode
-	                         mov                     grid[8], horizontalWallCode
-	                         mov                     grid[9], horizontalWallCode
-	                         mov                     grid[10], horizontalWallCode
-	                         mov                     grid[11], horizontalWallCode
-	                         mov                     grid[12], horizontalWallCode
-	                         mov                     grid[13], triWallUpCode
-	                         mov                     grid[14], horizontalWallCode
-	                         mov                     grid[15], horizontalWallCode
-	                         mov                     grid[16], triWallUpCode
-	                         mov                     grid[17], horizontalWallCode
-	                         mov                     grid[18], horizontalWallCode
-	                         mov                     grid[19], horizontalWallCode
-	                         mov                     grid[20], horizontalWallCode
-	                         mov                     grid[21], horizontalWallCode
-	                         mov                     grid[22], horizontalWallCode
-	                         mov                     grid[23], horizontalWallCode
-	                         mov                     grid[24], horizontalWallCode
-	                         mov                     grid[25], horizontalWallCode
-	                         mov                     grid[26], horizontalWallCode
-	                         mov                     grid[27], horizontalWallCode
-	                         mov                     grid[28], horizontalWallCode
-	                         mov                     grid[43], endWallDownCode
-	                         mov                     grid[44], bigDotCode
-	                         mov                     grid[32], dotCode
-	                         mov                     grid[33], dotCode
-	                         mov                     grid[34], dotCode
-	                         mov                     grid[46], endWallDownCode
-	                         mov                     grid[30], verticalWallCode
-	                         mov                     grid[60], verticalWallCode
-	                         mov                     grid[90], verticalWallCode
-	                         mov                     grid[120], verticalWallCode
-	                         mov                     grid[150], verticalWallCode
-	                         mov                     grid[180], cornerLeftDownCode
-	                         mov                     grid[181], cornerRightUpCode
-	                         mov                     grid[211], verticalWallCode
-	                         mov                     grid[241], verticalWallCode
-	                         mov                     grid[271], cornerRightDownCode
-	                         mov                     grid[270], cornerLeftUpCode
-	                         mov                     grid[300], verticalWallCode
-	                         mov                     grid[330], verticalWallCode
-	                         mov                     grid[360], verticalWallCode
-	                         mov                     grid[390], verticalWallCode
-	                         mov                     grid[420], verticalWallCode
-	                         mov                     grid[165], horizontalWallCode
-	                         mov                     grid[314], horizontalWallCode
-	                         mov                     grid[164], cornerLeftUpCode
-	                         mov                     grid[166], cornerRightUpCode
-	                         mov                     grid[313], cornerLeftDownCode
-	                         mov                     grid[315], cornerRightDownCode
-	                         mov                     grid[194], endWallDownCode
-	                         mov                     grid[196], endWallDownCode
-	                         mov                     grid[283], endWallUpCode
-	                         mov                     grid[285], endWallUpCode
-	                         mov                     grid[195], ghostCode
-	                         mov                     grid[284], ghostCode
-	                         mov                     grid[451], horizontalWallCode
-	                         mov                     grid[452], horizontalWallCode
-	                         mov                     grid[453], horizontalWallCode
-	                         mov                     grid[454], horizontalWallCode
-	                         mov                     grid[455], horizontalWallCode
-	                         mov                     grid[456], horizontalWallCode
-	                         mov                     grid[457], horizontalWallCode
-	                         mov                     grid[458], horizontalWallCode
-	                         mov                     grid[459], horizontalWallCode
-	                         mov                     grid[460], horizontalWallCode
-	                         mov                     grid[461], horizontalWallCode
-	                         mov                     grid[462], horizontalWallCode
-	                         mov                     grid[463], triWallDownCode
-	                         mov                     grid[464], horizontalWallCode
-	                         mov                     grid[465], horizontalWallCode
-	                         mov                     grid[466], triWallDownCode
-	                         mov                     grid[467], horizontalWallCode
-	                         mov                     grid[468], horizontalWallCode
-	                         mov                     grid[469], horizontalWallCode
-	                         mov                     grid[470], horizontalWallCode
-	                         mov                     grid[471], horizontalWallCode
-	                         mov                     grid[472], horizontalWallCode
-	                         mov                     grid[473], horizontalWallCode
-	                         mov                     grid[474], horizontalWallCode
-	                         mov                     grid[475], horizontalWallCode
-	                         mov                     grid[476], horizontalWallCode
-	                         mov                     grid[477], horizontalWallCode
-	                         mov                     grid[478], horizontalWallCode
-	                         mov                     grid[433], endWallUpCode
-	                         mov                     grid[434], bigDotCode
-	                         mov                     grid[447], dotCode
-	                         mov                     grid[436], endWallUpCode
-	                         mov                     grid[59], verticalWallCode
-	                         mov                     grid[89], verticalWallCode
-	                         mov                     grid[119], verticalWallCode
-	                         mov                     grid[149], verticalWallCode
-	                         mov                     grid[179], verticalWallCode
-	                         mov                     grid[209], cornerRightDownCode
-	                         mov                     grid[208], cornerLeftUpCode
-	                         mov                     grid[238], verticalWallCode
-	                         mov                     grid[268], verticalWallCode
-	                         mov                     grid[298], cornerLeftDownCode
-	                         mov                     grid[299], cornerRightUpCode
-	                         mov                     grid[329], verticalWallCode
-	                         mov                     grid[359], verticalWallCode
-	                         mov                     grid[389], verticalWallCode
-	                         mov                     grid[419], verticalWallCode
-	                         mov                     grid[449], verticalWallCode
-	                         mov                     grid[62], cornerLeftUpCode
-	                         mov                     grid[63], horizontalWallCode
-	                         mov                     grid[64], cornerRightUpCode
-	                         mov                     grid[92], verticalWallCode
-	                         mov                     grid[93], vacantCode
-	                         mov                     grid[94], verticalWallCode
-	                         mov                     grid[122], cornerLeftDownCode
-	                         mov                     grid[123], horizontalWallCode
-	                         mov                     grid[124], cornerRightDownCode
-	                         mov                     grid[66], cornerLeftUpCode
-	                         mov                     grid[67], horizontalWallCode
-	                         mov                     grid[68], horizontalWallCode
-	                         mov                     grid[69], cornerRightUpCode
-	                         mov                     grid[96], verticalWallCode
-	                         mov                     grid[97], vacantCode
-	                         mov                     grid[98], vacantCode
-	                         mov                     grid[99], verticalWallCode
-	                         mov                     grid[126], cornerLeftDownCode
-	                         mov                     grid[127], horizontalWallCode
-	                         mov                     grid[128], horizontalWallCode
-	                         mov                     grid[129], cornerRightDownCode
-	                         mov                     grid[71], endWallUpCode
-	                         mov                     grid[101], triWallLeftCode
-	                         mov                     grid[131], endWallDownCode
-	                         mov                     grid[102], horizontalWallCode
-	                         mov                     grid[103], horizontalWallCode
-	                         mov                     grid[104], horizontalWallCode
-	                         mov                     grid[105], horizontalWallCode
-	                         mov                     grid[106], horizontalWallCode
-	                         mov                     grid[107], horizontalWallCode
-	                         mov                     grid[108], triWallRightCode
-	                         mov                     grid[78], endWallUpCode
-	                         mov                     grid[138], endWallDownCode
-	                         mov                     grid[80], cornerLeftUpCode
-	                         mov                     grid[81], horizontalWallCode
-	                         mov                     grid[82], horizontalWallCode
-	                         mov                     grid[83], cornerRightUpCode
-	                         mov                     grid[110], verticalWallCode
-	                         mov                     grid[111], vacantCode
-	                         mov                     grid[112], vacantCode
-	                         mov                     grid[113], verticalWallCode
-	                         mov                     grid[140], cornerLeftDownCode
-	                         mov                     grid[141], horizontalWallCode
-	                         mov                     grid[142], horizontalWallCode
-	                         mov                     grid[143], cornerRightDownCode
-	                         mov                     grid[85], cornerLeftUpCode
-	                         mov                     grid[86], horizontalWallCode
-	                         mov                     grid[87], cornerRightUpCode
-	                         mov                     grid[115], verticalWallCode
-	                         mov                     grid[116], vacantCode
-	                         mov                     grid[117], verticalWallCode
-	                         mov                     grid[145], cornerLeftDownCode
-	                         mov                     grid[146], horizontalWallCode
-	                         mov                     grid[147], cornerRightDownCode
-	                         mov                     grid[332], cornerLeftUpCode
-	                         mov                     grid[333], horizontalWallCode
-	                         mov                     grid[334], cornerRightUpCode
-	                         mov                     grid[362], verticalWallCode
-	                         mov                     grid[363], vacantCode
-	                         mov                     grid[364], verticalWallCode
-	                         mov                     grid[392], cornerLeftDownCode
-	                         mov                     grid[393], horizontalWallCode
-	                         mov                     grid[394], cornerRightDownCode
-	                         mov                     grid[336], cornerLeftUpCode
-	                         mov                     grid[337], horizontalWallCode
-	                         mov                     grid[338], horizontalWallCode
-	                         mov                     grid[339], cornerRightUpCode
-	                         mov                     grid[366], verticalWallCode
-	                         mov                     grid[367], vacantCode
-	                         mov                     grid[368], vacantCode
-	                         mov                     grid[369], verticalWallCode
-	                         mov                     grid[396], cornerLeftDownCode
-	                         mov                     grid[397], horizontalWallCode
-	                         mov                     grid[398], horizontalWallCode
-	                         mov                     grid[399], cornerRightDownCode
-	                         mov                     grid[341], endWallUpCode
-	                         mov                     grid[371], triWallLeftCode
-	                         mov                     grid[401], endWallDownCode
-	                         mov                     grid[372], horizontalWallCode
-	                         mov                     grid[373], horizontalWallCode
-	                         mov                     grid[374], horizontalWallCode
-	                         mov                     grid[375], horizontalWallCode
-	                         mov                     grid[376], horizontalWallCode
-	                         mov                     grid[377], horizontalWallCode
-	                         mov                     grid[378], triWallRightCode
-	                         mov                     grid[348], endWallUpCode
-	                         mov                     grid[408], endWallDownCode
-	                         mov                     grid[350], cornerLeftUpCode
-	                         mov                     grid[351], horizontalWallCode
-	                         mov                     grid[352], horizontalWallCode
-	                         mov                     grid[353], cornerRightUpCode
-	                         mov                     grid[380], verticalWallCode
-	                         mov                     grid[381], vacantCode
-	                         mov                     grid[382], vacantCode
-	                         mov                     grid[383], verticalWallCode
-	                         mov                     grid[410], cornerLeftDownCode
-	                         mov                     grid[411], horizontalWallCode
-	                         mov                     grid[412], horizontalWallCode
-	                         mov                     grid[413], cornerRightDownCode
-	                         mov                     grid[355], cornerLeftUpCode
-	                         mov                     grid[356], horizontalWallCode
-	                         mov                     grid[357], cornerRightUpCode
-	                         mov                     grid[385], verticalWallCode
-	                         mov                     grid[386],vacantCode
-	                         mov                     grid[387], verticalWallCode
-	                         mov                     grid[415], cornerLeftDownCode
-	                         mov                     grid[416], horizontalWallCode
-	                         mov                     grid[417], cornerRightDownCode
-
-	; Testing item drawing functions.
-
-	                         mov                     grid[288], snowflakeCode
-	                         mov                     grid[266], snowflakeCode
-	                         mov                     grid[400], cherryCode
-	                         mov                     grid[218], extraLifeCode
-	                         mov                     grid[118], extraLifeCode
-	                         mov                     grid[197], decLifeCode
-	                         mov                     grid[292], decLifeCode
-	                         mov                     grid[217], bigDotCode
-	                         mov                     grid[76], trapCode
-	                         mov                     grid[214], trapCode
-	                         mov                     grid[260], trapCode
-	                         mov                     grid[310], trapCode
-						   
-
+	; Drawing level 1.
+	                         DrawLevel1              player1Initial, player2Initial
+	;SetLevel2:
 	                         mov                     si, @data
 	                         DisplayTextVideoMode    10, 2, 1, scoreMessage1, 14                                                  	;Draw "Score#1"
 	                         DisplayTextVideoMode    10, 24, 1, scoreMessage2, 14                                                 	;Draw "Score#2"
