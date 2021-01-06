@@ -2781,6 +2781,10 @@ endm FindPath
 	isPlayer1Dead       db  0
 	isPlayer2Dead       db  0
 	isGameFinished      db  0
+	player1Respawn      db  0
+	player2Respawn      db  0
+	player1Lvl1Intial   equ 31
+	player2lvl1Intial   equ 448
 
 .code
 MoveGhosts proc
@@ -3072,7 +3076,13 @@ MovePacman proc
 	                         add                     player1Lives, 1
 	                         jmp                     ReturningToMovePlayer1
 	ApplyPacmanUnLife1:      
+	                         cmp                     player2Lives,0
+	                         je                      SetPlayer2Dead
 	                         sub                     player2Lives, 1
+	                         je                      SetPlayer2Dead
+	                         jmp                     ReturningToMovePlayer1
+	SetPlayer2Dead:          
+	                         mov                     isPlayer2Dead, 1
 	                         jmp                     ReturningToMovePlayer1
 
 	DecrementPlayer1Live:    
@@ -3083,6 +3093,7 @@ MovePacman proc
 	                         je                      SetDead1
 	                         mov                     currentXPlayer1,1
 	                         mov                     currentYPlayer1,1                                                            	;we can add a delay later maybe integrate the freeze functionality
+	                         mov                     player1Respawn, 1
 	                         jmp                     MoveLoop
 	SetDead1:                
 	                         mov                     isPlayer1Dead, 1
@@ -3230,8 +3241,15 @@ MovePacman proc
 	                         add                     player2Lives, 1
 	                         jmp                     ReturningToMovePlayer2
 	ApplyPacmanUnLife2:      
+	                         cmp                     player1Lives,0
+	                         je                      SetPlayer1Dead
 	                         sub                     player1Lives, 1
+	                         je                      SetPlayer1Dead
 	                         jmp                     ReturningToMovePlayer2
+	SetPlayer1Dead:          
+	                         mov                     isPlayer1Dead, 1
+	                         jmp                     ReturningToMovePlayer2
+
 	DecrementPlayer2Live:    
 	                         GridToCell              currentXPlayer2,currentYPlayer2
 	                         mov                     grid[bx],127
@@ -3240,6 +3258,7 @@ MovePacman proc
 	                         je                      SetDead
 	                         mov                     currentXPlayer2, 28
 	                         mov                     currentYPlayer2, 14                                                          	;we can add a delay later maybe integrate the freeze functionality
+	                         mov                     player2Respawn, 1
 	                         jmp                     MoveLoop
 	SetDead:                 mov                     isPlayer2Dead,1
 	                         jmp                     MoveLoop
@@ -3353,6 +3372,11 @@ DrawGrid proc
 	; DrawSquare             currentX, currentY, gridStep, gridColor, gridColor ; rainbow
 	; inc                    gridColor
 	; jmp                    ContinueDraw
+	AfterRespawnCheck:       
+	                         cmp                     player1Respawn, 1
+	                         je                      Player1NeedRespawn
+	                         cmp                     player2Respawn, 1
+	                         je                      Player2NeedRespawn
 	                         mov                     cl, grid[si]
 	                         and                     cl, 128d
 	                         jnz                     Ghost
@@ -3425,7 +3449,15 @@ DrawGrid proc
 	Vacant:                  
 	                         DrawSquare              currentX, currentY, gridStep, backgroundColor , backgroundColor
 	                         jmp                     ContinueDraw
+	Player1NeedRespawn:      
+	                         mov                     player1Respawn, 0
+	; Change the initial location according to the level here:
+	                         mov                     grid[player1Lvl1Intial], player1Code
+	                         mov                     player1Orientation, 'R'
+	                         jmp                     AfterRespawnCheck
 	Player1:                 
+	                         cmp                     isPlayer1Dead, 1
+	                         je                      Player1Dead
 	                         cmp                     player1IsFrozen, 1
 	                         je                      Player1Frozen
 	                         cmp                     player1IsBigDot, 1
@@ -3436,6 +3468,9 @@ DrawGrid proc
 	DrawPlayer1:             
 	                         DrawPlayer              currentX, currentY, player1Color, backgroundColor, isOpen, player1Orientation
 	                         jmp                     ContinueDraw
+	Player1Dead:             
+	                         mov                     grid[si], 127
+	                         jmp                     ContinueDraw
 	Player1Frozen:           
 	                         mov                     player1Color, lightBlue
 	                         jmp                     DrawPlayer1
@@ -3445,7 +3480,14 @@ DrawGrid proc
 	Player1GreenDot:         
 	                         mov                     player1Color, green
 	                         jmp                     DrawPlayer1
+	Player2NeedRespawn:      
+	                         mov                     player2Respawn, 0
+	                         mov                     grid[player2lvl1Intial], player2Code
+	                         mov                     player2Orientation, 'L'
+	                         jmp                     AfterRespawnCheck
 	Player2:                 
+	                         cmp                     isPlayer2Dead, 1
+	                         je                      Player2Dead
 	                         cmp                     player2IsFrozen, 1
 	                         je                      Player2Frozen
 	                         cmp                     player2IsBigDot, 1
@@ -3455,6 +3497,9 @@ DrawGrid proc
 	                         mov                     player2Color, player2InitialColor
 	DrawPlayer2:             
 	                         DrawPlayer              currentX, currentY, player2Color, backgroundColor, isOpen, player2Orientation
+	                         jmp                     ContinueDraw
+	Player2Dead:             
+	                         mov                     grid[si], 127
 	                         jmp                     ContinueDraw
 	Player2Frozen:           
 	                         mov                     player2Color,lightBlue
@@ -3651,8 +3696,8 @@ main proc far
 	StartGame:               
 	                         SetVideoMode
 	Level1:                  
-	                         mov                     grid[31], player1Code
-	                         mov                     grid[448], player2Code
+	                         mov                     grid[player1Lvl1Intial], player1Code
+	                         mov                     grid[player2lvl1Intial], player2Code
 	                         mov                     grid[0], cornerLeftUpCode
 	                         mov                     grid[479], cornerRightDownCode
 	                         mov                     grid[29], cornerRightUpCode
@@ -3671,8 +3716,8 @@ main proc far
 	                         mov                     grid[12], horizontalWallCode
 	                         mov                     grid[13], triWallUpCode
 	                         mov                     grid[14], horizontalWallCode
-	                         mov                     grid[15], triWallUpCode
-	                         mov                     grid[16], horizontalWallCode
+	                         mov                     grid[15], horizontalWallCode
+	                         mov                     grid[16], triWallUpCode
 	                         mov                     grid[17], horizontalWallCode
 	                         mov                     grid[18], horizontalWallCode
 	                         mov                     grid[19], horizontalWallCode
@@ -3688,7 +3733,9 @@ main proc far
 	                         mov                     grid[43], endWallDownCode
 	                         mov                     grid[44], bigDotCode
 	                         mov                     grid[32], dotCode
-	                         mov                     grid[45], endWallDownCode
+	                         mov                     grid[33], dotCode
+	                         mov                     grid[34], dotCode
+	                         mov                     grid[46], endWallDownCode
 	                         mov                     grid[30], verticalWallCode
 	                         mov                     grid[60], verticalWallCode
 	                         mov                     grid[90], verticalWallCode
@@ -3705,17 +3752,17 @@ main proc far
 	                         mov                     grid[360], verticalWallCode
 	                         mov                     grid[390], verticalWallCode
 	                         mov                     grid[420], verticalWallCode
-	                         mov                     grid[164], horizontalWallCode
+	                         mov                     grid[165], horizontalWallCode
 	                         mov                     grid[314], horizontalWallCode
-	                         mov                     grid[163], cornerLeftUpCode
-	                         mov                     grid[165], cornerRightUpCode
+	                         mov                     grid[164], cornerLeftUpCode
+	                         mov                     grid[166], cornerRightUpCode
 	                         mov                     grid[313], cornerLeftDownCode
 	                         mov                     grid[315], cornerRightDownCode
-	                         mov                     grid[193], endWallDownCode
-	                         mov                     grid[195], endWallDownCode
+	                         mov                     grid[194], endWallDownCode
+	                         mov                     grid[196], endWallDownCode
 	                         mov                     grid[283], endWallUpCode
 	                         mov                     grid[285], endWallUpCode
-	                         mov                     grid[194], ghostCode
+	                         mov                     grid[195], ghostCode
 	                         mov                     grid[284], ghostCode
 	                         mov                     grid[451], horizontalWallCode
 	                         mov                     grid[452], horizontalWallCode
@@ -3731,8 +3778,8 @@ main proc far
 	                         mov                     grid[462], horizontalWallCode
 	                         mov                     grid[463], triWallDownCode
 	                         mov                     grid[464], horizontalWallCode
-	                         mov                     grid[465], triWallDownCode
-	                         mov                     grid[466], horizontalWallCode
+	                         mov                     grid[465], horizontalWallCode
+	                         mov                     grid[466], triWallDownCode
 	                         mov                     grid[467], horizontalWallCode
 	                         mov                     grid[468], horizontalWallCode
 	                         mov                     grid[469], horizontalWallCode
@@ -3748,7 +3795,7 @@ main proc far
 	                         mov                     grid[433], endWallUpCode
 	                         mov                     grid[434], bigDotCode
 	                         mov                     grid[447], dotCode
-	                         mov                     grid[435], endWallUpCode
+	                         mov                     grid[436], endWallUpCode
 	                         mov                     grid[59], verticalWallCode
 	                         mov                     grid[89], verticalWallCode
 	                         mov                     grid[119], verticalWallCode
@@ -3794,30 +3841,31 @@ main proc far
 	                         mov                     grid[104], horizontalWallCode
 	                         mov                     grid[105], horizontalWallCode
 	                         mov                     grid[106], horizontalWallCode
-	                         mov                     grid[107], triWallRightCode
-	                         mov                     grid[77], endWallUpCode
-	                         mov                     grid[137], endWallDownCode
-	                         mov                     grid[79], cornerLeftUpCode
-	                         mov                     grid[80], horizontalWallCode
+	                         mov                     grid[107], horizontalWallCode
+	                         mov                     grid[108], triWallRightCode
+	                         mov                     grid[78], endWallUpCode
+	                         mov                     grid[138], endWallDownCode
+	                         mov                     grid[80], cornerLeftUpCode
 	                         mov                     grid[81], horizontalWallCode
-	                         mov                     grid[82], cornerRightUpCode
-	                         mov                     grid[109], verticalWallCode
-	                         mov                     grid[110], vacantCode
+	                         mov                     grid[82], horizontalWallCode
+	                         mov                     grid[83], cornerRightUpCode
+	                         mov                     grid[110], verticalWallCode
 	                         mov                     grid[111], vacantCode
-	                         mov                     grid[112], verticalWallCode
-	                         mov                     grid[139], cornerLeftDownCode
-	                         mov                     grid[140], horizontalWallCode
+	                         mov                     grid[112], vacantCode
+	                         mov                     grid[113], verticalWallCode
+	                         mov                     grid[140], cornerLeftDownCode
 	                         mov                     grid[141], horizontalWallCode
-	                         mov                     grid[142], cornerRightDownCode
-	                         mov                     grid[84], cornerLeftUpCode
-	                         mov                     grid[85], horizontalWallCode
-	                         mov                     grid[86], cornerRightUpCode
-	                         mov                     grid[114], verticalWallCode
-	                         mov                     grid[115],vacantCode
-	                         mov                     grid[116], verticalWallCode
-	                         mov                     grid[144], cornerLeftDownCode
-	                         mov                     grid[145], horizontalWallCode
-	                         mov                     grid[146], cornerRightDownCode
+	                         mov                     grid[142], horizontalWallCode
+	                         mov                     grid[143], cornerRightDownCode
+	                         mov                     grid[85], cornerLeftUpCode
+	                         mov                     grid[86], horizontalWallCode
+	                         mov                     grid[87], cornerRightUpCode
+	                         mov                     grid[115], verticalWallCode
+	                         mov                     grid[116], vacantCode
+	                         mov                     grid[117], verticalWallCode
+	                         mov                     grid[145], cornerLeftDownCode
+	                         mov                     grid[146], horizontalWallCode
+	                         mov                     grid[147], cornerRightDownCode
 	                         mov                     grid[332], cornerLeftUpCode
 	                         mov                     grid[333], horizontalWallCode
 	                         mov                     grid[334], cornerRightUpCode
@@ -3847,30 +3895,31 @@ main proc far
 	                         mov                     grid[374], horizontalWallCode
 	                         mov                     grid[375], horizontalWallCode
 	                         mov                     grid[376], horizontalWallCode
-	                         mov                     grid[377], triWallRightCode
-	                         mov                     grid[347], endWallUpCode
-	                         mov                     grid[407], endWallDownCode
-	                         mov                     grid[349], cornerLeftUpCode
-	                         mov                     grid[350], horizontalWallCode
+	                         mov                     grid[377], horizontalWallCode
+	                         mov                     grid[378], triWallRightCode
+	                         mov                     grid[348], endWallUpCode
+	                         mov                     grid[408], endWallDownCode
+	                         mov                     grid[350], cornerLeftUpCode
 	                         mov                     grid[351], horizontalWallCode
-	                         mov                     grid[352], cornerRightUpCode
-	                         mov                     grid[379], verticalWallCode
-	                         mov                     grid[380], vacantCode
+	                         mov                     grid[352], horizontalWallCode
+	                         mov                     grid[353], cornerRightUpCode
+	                         mov                     grid[380], verticalWallCode
 	                         mov                     grid[381], vacantCode
-	                         mov                     grid[382], verticalWallCode
-	                         mov                     grid[409], cornerLeftDownCode
-	                         mov                     grid[410], horizontalWallCode
+	                         mov                     grid[382], vacantCode
+	                         mov                     grid[383], verticalWallCode
+	                         mov                     grid[410], cornerLeftDownCode
 	                         mov                     grid[411], horizontalWallCode
-	                         mov                     grid[412], cornerRightDownCode
-	                         mov                     grid[354], cornerLeftUpCode
-	                         mov                     grid[355], horizontalWallCode
-	                         mov                     grid[356], cornerRightUpCode
-	                         mov                     grid[384], verticalWallCode
-	                         mov                     grid[385],vacantCode
-	                         mov                     grid[386], verticalWallCode
-	                         mov                     grid[414], cornerLeftDownCode
-	                         mov                     grid[415], horizontalWallCode
-	                         mov                     grid[416], cornerRightDownCode
+	                         mov                     grid[412], horizontalWallCode
+	                         mov                     grid[413], cornerRightDownCode
+	                         mov                     grid[355], cornerLeftUpCode
+	                         mov                     grid[356], horizontalWallCode
+	                         mov                     grid[357], cornerRightUpCode
+	                         mov                     grid[385], verticalWallCode
+	                         mov                     grid[386],vacantCode
+	                         mov                     grid[387], verticalWallCode
+	                         mov                     grid[415], cornerLeftDownCode
+	                         mov                     grid[416], horizontalWallCode
+	                         mov                     grid[417], cornerRightDownCode
 
 	; Testing item drawing functions.
 
@@ -3883,6 +3932,9 @@ main proc far
 	                         mov                     grid[292], decLifeCode
 	                         mov                     grid[217], bigDotCode
 	                         mov                     grid[76], trapCode
+	                         mov                     grid[214], trapCode
+	                         mov                     grid[260], trapCode
+	                         mov                     grid[310], trapCode
 						   
 
 	                         mov                     si, @data
