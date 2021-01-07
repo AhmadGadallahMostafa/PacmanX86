@@ -2033,18 +2033,18 @@ DrawQuadWall macro xPosition, yPosition, borderColor, fillColor, backgroundColor
     DrawHorizontalLine backgroundColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine backgroundColor, 2
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 4
-    DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 3
-    DrawHorizontalLine fillColor, 1
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine fillColor, 3
+    DrawHorizontalLine borderColor, 2
     inc dx
     mov cx, xPosition
     DrawHorizontalLine fillColor, 4
@@ -2067,18 +2067,18 @@ DrawQuadWall macro xPosition, yPosition, borderColor, fillColor, backgroundColor
     DrawHorizontalLine fillColor, 4
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 3
-    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine fillColor, 3
     DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine fillColor, 1
-    DrawHorizontalLine borderColor, 3
+    DrawHorizontalLine fillColor, 2
+    DrawHorizontalLine borderColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine backgroundColor, 2
-    DrawHorizontalLine borderColor, 1
+    DrawHorizontalLine backgroundColor, 1
+    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine fillColor, 4
-    DrawHorizontalLine borderColor, 1
-    DrawHorizontalLine backgroundColor, 2
+    DrawHorizontalLine borderColor, 2
+    DrawHorizontalLine backgroundColor, 1
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 2
