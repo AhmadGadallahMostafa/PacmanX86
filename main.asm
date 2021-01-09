@@ -1914,36 +1914,36 @@ DrawEndWallLeft macro xPosition, yPosition, borderColor, fillColor, backgroundCo
     DrawHorizontalLine backgroundColor, 10
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 7
     DrawHorizontalLine backgroundColor, 3
+	DrawHorizontalLine borderColor, 7
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine fillColor, 6
-    DrawHorizontalLine borderColor, 2
     DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine borderColor, 2
+	DrawHorizontalLine fillColor, 6
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 4
-    DrawHorizontalLine fillColor, 1
-    DrawHorizontalLine borderColor, 1
     DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine borderColor, 1
+	DrawHorizontalLine fillColor, 1
+	DrawHorizontalLine borderColor, 4
+	DrawHorizontalLine fillColor, 2
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine fillColor, 2
-    DrawHorizontalLine borderColor, 4
-    DrawHorizontalLine fillColor, 1
-    DrawHorizontalLine borderColor, 1
     DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine borderColor, 1
+	DrawHorizontalLine fillColor, 1
+	DrawHorizontalLine borderColor, 4
+	DrawHorizontalLine fillColor, 2
     inc dx
-    mov cx, xPosition
-    DrawHorizontalLine fillColor, 6
-    DrawHorizontalLine borderColor, 2
+    mov cx, xPosition   
     DrawHorizontalLine backgroundColor, 2
+	DrawHorizontalLine borderColor, 2
+	DrawHorizontalLine fillColor, 6
     inc dx
     mov cx, xPosition
-    DrawHorizontalLine borderColor, 7
     DrawHorizontalLine backgroundColor, 3
+	DrawHorizontalLine borderColor, 7
     inc dx
     mov cx, xPosition
     DrawHorizontalLine backgroundColor, 10
@@ -2809,25 +2809,64 @@ DrawLevel1 macro initial1, initial2
 	                         mov                     grid[356], horizontalWallCode
 	                         mov                     grid[357], cornerRightUpCode
 	                         mov                     grid[385], verticalWallCode
-	                         mov                     grid[386],vacantCode
+	                         mov                     grid[386], vacantCode
 	                         mov                     grid[387], verticalWallCode
 	                         mov                     grid[415], cornerLeftDownCode
 	                         mov                     grid[416], horizontalWallCode
 	                         mov                     grid[417], cornerRightDownCode
-
-	; Testing item drawing functions.
-
+							 mov                     grid[183], cornerLeftUpCode
+							 mov                     grid[184], endWallRightCode
+							 mov                     grid[213], verticalWallCode
+							 mov                     grid[243], verticalWallCode
+							 mov                     grid[273], cornerLeftDownCode
+							 mov 					 grid[274], endWallRightCode
+							 mov 					 grid[216], cornerLeftUpCode
+							 mov 					 grid[246], cornerLeftDownCode
+							 mov 					 grid[217], cornerRightDownCode
+							 mov 					 grid[247], cornerRightUpCode
+							 mov 					 grid[187], cornerLeftUpCode
+							 mov 		  			 grid[277], cornerLeftDownCode
+							 mov 		 			 grid[188], cornerRightUpCode
+							 mov 		 			 grid[278], cornerRightDownCode
+							 mov 		 			 grid[218], cornerLeftDownCode
+							 mov 		 			 grid[248], cornerLeftUpCode
+							 mov 					 grid[219], cornerRightUpCode
+							 mov                     grid[249], cornerRightDownCode
+							 mov                     grid[281], endWallDownCode
+							 mov                     grid[251], verticalWallCode
+							 mov                     grid[221], cornerLeftUpCode
+							 mov                     grid[222], cornerRightDownCode
+							 mov                     grid[192], endWallUpCode
+							 mov                     grid[198], endWallUpCode
+							 mov                     grid[228], verticalWallCode
+							 mov                     grid[258], cornerRightDownCode
+							 mov                     grid[257], cornerLeftUpCode
+							 mov                     grid[287], endWallDownCode
+							 mov                     grid[230], cornerLeftUpCode
+							 mov                     grid[260], cornerLeftDownCode
+							 mov                     grid[231], cornerRightDownCode
+							 mov                     grid[261], cornerRightUpCode
+							 mov                     grid[201], cornerLeftUpCode
+							 mov                     grid[291], cornerLeftDownCode
+							 mov                     grid[202], cornerRightUpCode
+							 mov                     grid[292], cornerRightDownCode
+							 mov                     grid[232], cornerLeftDownCode
+							 mov                     grid[262], cornerLeftUpCode
+							 mov                     grid[233], cornerRightUpCode
+							 mov                     grid[263], cornerRightDownCode
+							 mov                     grid[266], verticalWallCode
+							 mov                     grid[236], verticalWallCode
+							 mov                     grid[206], cornerRightUpCode
+							 mov                     grid[296], cornerRightDownCode
+							 mov                     grid[205], endWallLeftCode
+							 mov                     grid[295], endWallLeftCode					 
+	; Testing item drawing functions:
 	                         mov                     grid[288], snowflakeCode
-	                         mov                     grid[266], snowflakeCode
 	                         mov                     grid[400], cherryCode
-	                         mov                     grid[218], extraLifeCode
 	                         mov                     grid[118], extraLifeCode
 	                         mov                     grid[197], decLifeCode
-	                         mov                     grid[292], decLifeCode
-	                         mov                     grid[217], bigDotCode
 	                         mov                     grid[76], trapCode
 	                         mov                     grid[214], trapCode
-	                         mov                     grid[260], trapCode
 	                         mov                     grid[310], trapCode
 						   
 endm DrawLevel1
@@ -2904,6 +2943,8 @@ endm FindPath
 	level2Msg           db  '*To start level 2 press F2$'
 	notifactionBar      db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
 	chooseLevelMsg      db  'Please Choose a level: $'
+	player1WinsMsg      db  '!!!! PLAYER1 WINS !!!!$'
+	player2WinsMsg      db  '!!!! PLAYER2 WINS !!!!$'
 	welcomePosition     dw  0h
 	scoreMessage1       db  'Score #1: $'
 	scoreMessage2       db  'Score #2: $'
@@ -2933,13 +2974,15 @@ endm FindPath
 	lightMagenta        equ 0dh
 	yellow              equ 0eh
 	white               equ 0fh
+	filllvl1            equ 68h
+	borderlvl1          equ white
 	player1InitialColor equ yellow
 	player1Color        db  player1InitialColor
 	player2InitialColor equ lightGreen
 	player2Color        db  player2InitialColor
-	borderColor         equ blue
-	;backgroundColor     equ 151d
-	backgroundColor     equ darkGray
+	borderColor         db  0
+	backgroundColor     equ black
+	fillColor           db  0
 	ghostInitialColor   equ lightMagenta
 	ghostColor          db  ghostInitialColor
 	dotColor            equ white
@@ -3034,10 +3077,12 @@ endm FindPath
 	isGameFinished      db  0
 	player1Respawn      db  0
 	player2Respawn      db  0
-	player1Initial       dw  0
+	player1Initial      dw  0
 	player2Initial      dw  0
-	player1Lvl1Intial   equ 31
-	player2lvl1Intial   equ 448
+	player1Lvl1Initial  equ 31
+	player2lvl1Initial  equ 448
+	player1Lvl2Initial  equ 241
+	player2Lvl2Initial  equ 298
 
 .code
 MoveGhosts proc
@@ -3697,7 +3742,7 @@ DrawGrid proc
 	                         jnz                     DrawRow
 	                         jmp                     EndDraw
 	Square:                  
-	                         DrawSquare              currentX, currentY, gridStep, backgroundColor , backgroundColor              	;borderColor, backgroundColor
+	                         DrawSquare              currentX, currentY, gridStep, backGroundColor , backgroundColor                  	;borderColor, backgroundColor
 	                         jmp                     ContinueDraw
 	Vacant:                  
 	                         DrawSquare              currentX, currentY, gridStep, backgroundColor , backgroundColor
@@ -3797,49 +3842,49 @@ DrawGrid proc
 	                         DrawPacManUnlife        currentX, currentY, red, white, backgroundColor
 	                         jmp                     ContinueDraw
 	CornerLeftUp:            
-	                         DrawCornerWallLeftUp    currentX, currentY, black, white, backgroundColor
+	                         DrawCornerWallLeftUp    currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	CornerLeftDown:          
-	                         DrawCornerWallLeftDown  currentX, currentY, black, white, backgroundColor
+	                         DrawCornerWallLeftDown  currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	CornerRightUp:           
-	                         DrawCornerWallRightUp   currentX, currentY, black, white, backgroundColor
+	                         DrawCornerWallRightUp   currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	CornerRightDown:         
-	                         DrawCornerWallRightDown currentX, currentY, black, white, backgroundColor
+	                         DrawCornerWallRightDown currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	QuadWall:                
-	                         DrawQuadWall            currentX, currentY, black, white, backgroundColor
+	                         DrawQuadWall            currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	TriWallLeft:             
-	                         DrawTriWallLeft         currentX, currentY, black, white, backgroundColor
+	                         DrawTriWallLeft         currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	TriWallRight:            
-	                         DrawTriWallRight        currentX, currentY, black, white, backgroundColor
+	                         DrawTriWallRight        currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	TriWallUp:               
-	                         DrawTriWallUp           currentX, currentY, black, white, backgroundColor
+	                         DrawTriWallUp           currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	TriWallDown:             
-	                         DrawTriWallDown         currentX, currentY, black, white, backgroundColor
+	                         DrawTriWallDown         currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	HorizontalWall:          
-	                         DrawWallHorizontal      currentX, currentY, black, white, backgroundColor
+	                         DrawWallHorizontal      currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	VerticalWall:            
-	                         DrawWallVertical        currentX, currentY, black, white, backgroundColor
+	                         DrawWallVertical        currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	EndWallLeft:             
-	                         DrawEndWallLeft         currentX, currentY, black, white, backgroundColor
+	                         DrawEndWallLeft         currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	EndWallRight:            
-	                         DrawEndWallRight        currentX, currentY, black, white, backgroundColor
+	                         DrawEndWallRight        currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	EndWallUp:               
-	                         DrawEndWallUp           currentX, currentY, black, white, backgroundColor
+	                         DrawEndWallUp           currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	EndWallDown:             
-	                         DrawEndWallDown         currentX, currentY, black, white, backgroundColor
+	                         DrawEndWallDown         currentX, currentY, borderColor, fillColor, backgroundColor
 	                         jmp                     ContinueDraw
 	EndDraw:                 
 	                         ret
@@ -3859,7 +3904,7 @@ main proc far
 
 	                         mov                     ax, @data
 	                         mov                     ds, ax
-	; jmp                     StartGame
+	                         ;jmp                     SetLevel2
 	GetPlayer1Name:                                                                                                               	;Reading first player name and saving it to player1name
 	                         SetTextMode
 	                         mov                     dx, 0000
@@ -3972,19 +4017,34 @@ main proc far
 	                         int                     16h
 	                         cmp                     al, scanF1                                                                   	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                         je                      SetLevel1
-	;cmp                     al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
-	;je                      SetLevel2
+	                         cmp                     al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
+	                         je                      SetLevel2
 	                         jmp                     AgainTillKeyPressed2
 
 	SetLevel1:               
 	; Setting the initial location for each player.
-	                         mov                     player1Initial, player1Lvl1Intial
-	                         mov                     player2Initial, player2lvl1Intial
+	                         mov                     player1Initial, player1Lvl1Initial
+	                         mov                     player2Initial, player2lvl1Initial
+	                         mov                     borderColor, borderlvl1
+	                         mov                     fillColor, filllvl1
 	StartLevel1:             
 	                         SetVideoMode
-	; Drawing level 1.
 	                         DrawLevel1              player1Initial, player2Initial
-	;SetLevel2:
+	                         jmp                     AfterLevelSelect
+	SetLevel2:               
+	                         mov                     player1Initial, player1Lvl2Initial
+	                         mov                     player2Initial, player2Lvl2Initial
+	                         mov                     currentYPlayer1, 8
+	                         mov                     currentYPlayer2, 9
+	                         mov                     borderColor, white
+	                         mov                     fillColor, yellow
+	StartLevel2:             
+	                         SetVideoMode
+	                         mov                     bx, player1Initial
+	                         mov                     grid[bx], player1Code
+	                         mov                     bx, player2Initial
+	                         mov                     grid[bx], player2Code
+	AfterLevelSelect:        
 	                         mov                     si, @data
 	                         DisplayTextVideoMode    10, 2, 1, scoreMessage1, 14                                                  	;Draw "Score#1"
 	                         DisplayTextVideoMode    10, 24, 1, scoreMessage2, 14                                                 	;Draw "Score#2"
@@ -4002,11 +4062,49 @@ main proc far
 	                         MOV                     AH, 86H
 	                         INT                     15H
 	                         xor                     isOpen, 1
+	                         cmp                     isPlayer1Dead, 1
+	                         je                      CheckPlayer2Lives
 	                         jmp                     gameLoop
 	EndLoop:                 
 	                         jmp                     EndLoop
 	Terminate2:              
 	                         mov                     ah, 4ch
 	                         int                     21h
+	CheckPlayer2Lives:       
+	                         cmp                     isPlayer2Dead, 1
+	                         je                      EndGame
+	                         jmp                     gameLoop
+	EndGame:                 
+	                         SetTextMode
+	                         mov                     dx, 0c0dh
+	                         MoveCursor
+	                         push                    bx
+	                         mov                     bx, player2Score
+	                         cmp                     player1Score, bx
+	                         pop                     bx
+	                         jg                      Player1Wins
+	                         jmp                     Player2Wins
+	Player1Wins:             
+	                         DisplayString           player1WinsMsg
+	AgainTillKeyPressed3:                                                                                                         	;checking if a key is pressed on the main menu
+	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
+	                         int                     21h
+	                         mov                     ah, 1
+	                         int                     16h
+	                         cmp                     al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                         je                      Terminate2
+	                         jmp                     AgainTillKeyPressed3
+	Player2Wins:             
+	                         DisplayString           player2WinsMsg
+	AgainTillKeyPressed4:                                                                                                         	;checking if a key is pressed on the main menu
+	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
+	                         int                     21h
+	                         mov                     ah, 1
+	                         int                     16h
+	                         cmp                     al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
+	                         je                      Terminate2
+	                         jmp                     AgainTillKeyPressed4
+
+
 main endp
 end main
