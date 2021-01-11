@@ -2658,6 +2658,7 @@ DrawLevel1 macro initial1, initial2
 	                         mov                     grid[285], endWallUpCode
 	                         mov                     grid[195], ghostCode
 	                         mov                     grid[284], ghostCode
+							 mov					 grid[282], bigDotCode                   ;for testing empowered pacman
 	                         mov                     grid[451], horizontalWallCode
 	                         mov                     grid[452], horizontalWallCode
 	                         mov                     grid[453], horizontalWallCode
@@ -3042,8 +3043,8 @@ endm FindPath
 	ghostsIsFrozen      db  0
 	player2IsFrozen     db  0
 	player1IsFrozen     db  0
-	player1IsBigDot     db  0
-	player2IsBigDot     db  0
+	player1IsBigDot     dw  0
+	player2IsBigDot     dw  0
 	player1IsGreenDot   db  0
 	player2IsGreenDot   db  0
 	freezeDuration      equ 25
@@ -3251,7 +3252,7 @@ MovePacman proc
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         dec                     currentXPlayer1
 	                         cmp                     grid[bx], 128
-	                         jae                     DecrementPlayer1Live
+	                         jae                     GhostRightPlayer1
 	;end check ghost
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
@@ -3273,7 +3274,8 @@ MovePacman proc
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         inc                     currentXPlayer1
 	                         cmp                     grid[bx], 128
-	                         jae                     DecrementPlayer1Live
+	                         jae                     GhostLeftPlayer1
+	;jae                     DecrementPlayer1Live
 	;end check ghost
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
@@ -3295,7 +3297,8 @@ MovePacman proc
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         inc                     currentYPlayer1
 	                         cmp                     grid[bx],128
-	                         jae                     DecrementPlayer1Live
+	                         jae                     GhostUpPlayer1
+	;jae                     DecrementPlayer1Live
 	;end check Ghosts
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
@@ -3317,7 +3320,8 @@ MovePacman proc
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         dec                     currentYPlayer1
 	                         cmp                     grid[bx],128
-	                         jae                     DecrementPlayer1Live
+	                         jae                     GhostDownPlayer1
+	;jae                     DecrementPlayer1Live
 	;end check Ghosts
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
@@ -3383,20 +3387,87 @@ MovePacman proc
 	                         mov                     isPlayer2Dead, 1
 	                         jmp                     ReturningToMovePlayer1
 
-	DecrementPlayer1Live:    
+	
+	SetDead1:                
+	                         mov                     isPlayer1Dead, 1
+	                         jmp                     moveLoop
+	GhostRightPlayer1:       
+	                         mov                     ax,player1IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostrightplayer1
 	                         GridToCell              currentXPlayer1,currentYPlayer1
 	                         mov                     grid[bx],127
 	                         dec                     player1Lives
 	                         cmp                     player1Lives, 0
 	                         je                      SetDead1
 	                         mov                     currentXPlayer1,1
-	                         mov                     currentYPlayer1,1                                                            	;we can add a delay later maybe integrate the freeze functionality
+	                         mov                     currentYPlayer1,1
 	                         mov                     player1Respawn, 1
 	                         jmp                     MoveLoop
-	SetDead1:                
-	                         mov                     isPlayer1Dead, 1
-	                         jmp                     moveLoop
+	eatghostRightplayer1:    
+	                         mov                     grid[bx],127
+	                         add                     player1Score,10
+	                         add                     currentXPlayer1,1
+	                         jmp                     ChangePlayer1Pacman
+	GhostUpPlayer1:          
+	                         mov                     ax,player1IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostUpplayer1
+	                         GridToCell              currentXPlayer1,currentYPlayer1
+	                         mov                     grid[bx],127
+	                         dec                     player1Lives
+	                         cmp                     player1Lives, 0
+	                         je                      SetDead1
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
+	                         mov                     player1Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostUpplayer1:       
+	                         mov                     grid[bx],127
+	                         add                     player1Score,10
+	                         sub                     currentYPlayer1,1
+	                         jmp                     ChangePlayer1Pacman
+
+	GhostDownPlayer1:        
+	                         mov                     ax,player1IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostDownplayer1
+	                         GridToCell              currentXPlayer1,currentYPlayer1
+	                         mov                     grid[bx],127
+	                         dec                     player1Lives
+	                         cmp                     player1Lives, 0
+	                         je                      SetDead1
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
+	                         mov                     player1Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostDownplayer1:     
+	                         mov                     grid[bx],127
+	                         add                     player1Score,10
+	                         add                     currentYPlayer1,1
+	                         jmp                     ChangePlayer1Pacman
+
+	GhostLeftPlayer1:        
+	                         mov                     ax,player1IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostLeftplayer1
+	                         GridToCell              currentXPlayer1,currentYPlayer1
+	                         mov                     grid[bx],127
+	                         dec                     player1Lives
+	                         cmp                     player1Lives, 0
+	                         je                      SetDead1
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
+	                         mov                     player1Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostLeftplayer1:     
+	                         mov                     grid[bx],127
+	                         add                     player1Score,10
+	                         sub                     currentXPlayer1,1
+	                         jmp                     ChangePlayer1Pacman
+							 
 	;--------------------------------------------------------------------------------------
+     
 
 	MovePlayer2Right:        
 	                         cmp                     player2Moved,0
@@ -3414,7 +3485,7 @@ MovePacman proc
 	                         GridToCell              currentXPlayer2 ,currentYPlayer2
 	                         dec                     currentXPlayer2
 	                         cmp                     grid[bx],128
-	                         jae                     DecrementPlayer2Live
+	                         jae                     GhostRightPlayer2
 	;end check ghosts
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
@@ -3436,7 +3507,7 @@ MovePacman proc
 	                         GridToCell              currentXPlayer2 ,currentYPlayer2
 	                         inc                     currentXPlayer2
 	                         cmp                     grid[bx],128
-	                         jae                     DecrementPlayer2Live
+	                         jae                     GhostLeftPlayer2
 	;end check ghosts
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
@@ -3458,7 +3529,7 @@ MovePacman proc
 	                         GridToCell              currentXPlayer2 ,currentYPlayer2
 	                         inc                     currentYPlayer2
 	                         cmp                     grid[bx],128
-	                         jae                     DecrementPlayer2Live
+	                         jae                     GhostUpPlayer2
 	;end check ghost
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
@@ -3480,7 +3551,7 @@ MovePacman proc
 	                         GridToCell              currentXPlayer2 ,currentYPlayer2
 	                         dec                     currentYPlayer2
 	                         cmp                     grid[bx],128
-	                         jae                     DecrementPlayer2Live
+	                         jae                     GhostDownPlayer2
 	;end check Ghosts
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx], 127
@@ -3553,13 +3624,87 @@ MovePacman proc
 	                         mov                     grid[bx],127
 	                         dec                     player2Lives
 	                         cmp                     player2Lives, 0
-	                         je                      SetDead
+	                         je                      SetDead2
 	                         mov                     currentXPlayer2, 28
 	                         mov                     currentYPlayer2, 14                                                          	;we can add a delay later maybe integrate the freeze functionality
 	                         mov                     player2Respawn, 1
 	                         jmp                     MoveLoop
-	SetDead:                 mov                     isPlayer2Dead,1
+	SetDead2:                mov                     isPlayer2Dead,1
 	                         jmp                     MoveLoop
+	GhostRightPlayer2:       
+	                         mov                     ax,player2IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostrightplayer2
+	                         GridToCell              currentXPlayer2,currentYPlayer2
+	                         mov                     grid[bx],127
+	                         dec                     player2Lives
+	                         cmp                     player2Lives, 0
+	                         je                      SetDead2
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         mov                     player2Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostRightplayer2:    
+	                         mov                     grid[bx],127
+	                         add                     player2Score,10
+	                         add                     currentXPlayer2,1
+	                         jmp                     ChangePlayer2Pacman
+	GhostUpPlayer2:          
+	                         mov                     ax,player2IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostUpplayer2
+	                         GridToCell              currentXPlayer2,currentYPlayer2
+	                         mov                     grid[bx],127
+	                         dec                     player2Lives
+	                         cmp                     player2Lives, 0
+	                         je                      SetDead2
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         mov                     player2Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostUpplayer2:       
+	                         mov                     grid[bx],127
+	                         add                     player2Score,10
+	                         sub                     currentYPlayer2,1
+	                         jmp                     ChangePlayer2Pacman
+
+	GhostDownPlayer2:        
+	                         mov                     ax,player2IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostDownplayer2
+	                         GridToCell              currentXPlayer2,currentYPlayer2
+	                         mov                     grid[bx],127
+	                         dec                     player2Lives
+	                         cmp                     player2Lives, 0
+	                         je                      SetDead2
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         mov                     player2Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostDownplayer2:     
+	                         mov                     grid[bx],127
+	                         add                     player2Score,10
+	                         add                     currentYPlayer2,1
+	                         jmp                     ChangePlayer2Pacman
+
+	GhostLeftPlayer2:        
+	                         mov                     ax,player2IsBigDot
+	                         cmp                     ax,1
+	                         je                      eatghostLeftplayer2
+	                         GridToCell              currentXPlayer2,currentYPlayer2
+	                         mov                     grid[bx],127
+	                         dec                     player2Lives
+	                         cmp                     player2Lives, 0
+	                         je                      SetDead2
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         mov                     player2Respawn, 1
+	                         jmp                     MoveLoop
+	eatghostLeftplayer2:     
+	                         mov                     grid[bx],127
+	                         add                     player2Score,10
+	                         sub                     currentXPlayer2,1
+	                         jmp                     ChangePlayer2Pacman
 	terminate:               
 MovePacman endp
 
@@ -3742,7 +3887,7 @@ DrawGrid proc
 	                         jnz                     DrawRow
 	                         jmp                     EndDraw
 	Square:                  
-	                         DrawSquare              currentX, currentY, gridStep, backGroundColor , backgroundColor                  	;borderColor, backgroundColor
+	                         DrawSquare              currentX, currentY, gridStep, backGroundColor , backgroundColor              	;borderColor, backgroundColor
 	                         jmp                     ContinueDraw
 	Vacant:                  
 	                         DrawSquare              currentX, currentY, gridStep, backgroundColor , backgroundColor
@@ -3904,7 +4049,8 @@ main proc far
 
 	                         mov                     ax, @data
 	                         mov                     ds, ax
-	                         ;jmp                     SetLevel2
+	;jmp                     SetLevel2
+	                         jmp                     setlevel1
 	GetPlayer1Name:                                                                                                               	;Reading first player name and saving it to player1name
 	                         SetTextMode
 	                         mov                     dx, 0000
