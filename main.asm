@@ -3192,10 +3192,10 @@ endm Chat
 	confirmReceive      db  10
 	ghostCount          dw  4
 	ghostPositions      dw  16 dup(?)
-	ghostPeriod         equ 30
+	ghostPeriod         equ 20
 	ghostTimer          db  1
 	powerUpPosition     dw  ?
-	powerUpPeriod       equ 10
+	powerUpPeriod       equ 30
 	powerUpTimer        db  1
 	seed                dw  ?
 	dotcount            db  0
@@ -3251,6 +3251,8 @@ AddPowerUp endp
 MoveGhosts proc
 	                         dec                     ghostTimer
 	                         jnz                     EndMoveGhost
+	                         cmp                     ghostsIsFrozen, 1
+	                         je                      EndMoveGhost
 	                         mov                     ghostTimer, ghostPeriod
 	                         mov                     cx, ghostCount
 	                         mov                     si, 0
