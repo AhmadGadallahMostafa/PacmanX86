@@ -4663,9 +4663,17 @@ main proc far
 	                         mov                     currentYPlayer1, 1
 	                         mov                     currentXPlayer2, 28
 	                         mov                     currentYPlayer2, 14
-	                         mov                     cx, 480
-	                         mov                     si, offset zerogrid
-	                         rep                     movsb
+	; mov                     cx, 480
+	                         
+	;mov                     si, offset zerogrid
+	; rep                     movsb
+	
+	                         mov                     si,0
+	emptyGrid:               
+	                         mov                     grid[si],dotCode
+	                         inc                     si
+	                         cmp                     si , 481
+	                         jl                      emptyGrid
 	                         SetTextMode
 	                         jmp                     MainMenu
 
