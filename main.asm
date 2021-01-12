@@ -3020,7 +3020,7 @@ endm Chat
 	endgameInfo         db  '*To end the game press ESC$'
 	level1Msg           db  '*To start level 1 press F1$'
 	level2Msg           db  '*To start level 2 press F2$'
-	notificationBar      db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
+	notificationBar     db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
 	chooseLevelMsg      db  'Please Choose a level: $'
 	player1WinsMsg      db  '!!!! PLAYER1 WINS !!!!$'
 	player2WinsMsg      db  '!!!! PLAYER2 WINS !!!!$'
@@ -3182,16 +3182,16 @@ endm Chat
 	IsF4Pressed         db  0
 	zerogrid            db  480 dup(0)
 	IsLevel2            db  0
-	letterToSend    db ?
-	msgToSend       db 60,?,60 dup('$')
-    MsgToReceive    db 60,?,60 dup('$')
-    letterToReceive db ?
-    confirmReceive  db 10
+	letterToSend        db  ?
+	msgToSend           db  60,?,60 dup('$')
+	MsgToReceive        db  60,?,60 dup('$')
+	letterToReceive     db  ?
+	confirmReceive      db  10
 	ghostCount          dw  4
 	ghostPositions      dw  16 dup(?)
 	ghostPeriod         equ 30
 	ghostTimer          db  1
-	powerUpPosition     equ 200
+	powerUpPosition     dw  ?
 	powerUpPeriod       equ 10
 	powerUpTimer        db  1
 	seed                dw  ?
@@ -3201,8 +3201,19 @@ AddPowerUp proc
 	                         dec                     powerUpTimer
 	                         jnz                     EndAddPowerUp
 	                         mov                     powerUpTimer, powerUpPeriod
-							 cmp grid[powerUpPosition], 127
-							 jne EndAddPowerUp
+	                         GetRandomNumber         480
+	                         mov                     bx, ax
+	FindEmptyCellPowerup:    
+	                         cmp                     grid[bx], 127d
+	                         je                      EmptyCellFoundPowerup
+	                         inc                     bx
+	                         cmp                     bx, 480
+	                         jb                      FindEmptyCellPowerup
+	                         jmp                     EndAddPowerUp
+	EmptyCellFoundPowerup:   
+	                         cmp                     grid[bx], 127
+	                         jne                     EndAddPowerUp
+
 	                         GetRandomNumber         50
 	                         cmp                     ax, 10
 	                         jb                      AddCherry
@@ -3215,19 +3226,19 @@ AddPowerUp proc
 	                         cmp                     ax, 50
 	                         jb                      AddDecLife
 	AddCherry:               
-	                         mov                     grid[powerUpPosition], cherryCode
+	                         mov                     grid[bx], cherryCode
 	                         jmp                     EndAddPowerUp
 	AddSnowFlake:            
-	                         mov                     grid[powerUpPosition], snowflakeCode
+	                         mov                     grid[bx], snowflakeCode
 	                         jmp                     EndAddPowerUp
 	AddTrap:                 
-	                         mov                     grid[powerUpPosition], trapCode
+	                         mov                     grid[bx], trapCode
 	                         jmp                     EndAddPowerUp
 	AddExtraLife:            
-	                         mov                     grid[powerUpPosition], extraLifeCode
+	                         mov                     grid[bx], extraLifeCode
 	                         jmp                     EndAddPowerUp
 	AddDecLife:              
-	                         mov                     grid[powerUpPosition], decLifeCode
+	                         mov                     grid[bx], decLifeCode
 	                         jmp                     EndAddPowerUp
 	EndAddPowerUp:           
 	                         ret
@@ -3247,18 +3258,18 @@ MoveGhosts proc
 	DontClearGhost:          
 	                         GetRandomNumber         480
 	                         mov                     bx, ax
-	FindEmptyCell:           
+	FindEmptyCellGhost:      
 	                         cmp                     grid[bx], 127d
-	                         je                      EmptyCellFound
+	                         je                      EmptyCellFoundGhost
 	                         inc                     bx
 	                         cmp                     bx, 480
-	                         jb                      FindEmptyCell
+	                         jb                      FindEmptyCellGhost
 	ContinueLoopOverGhosts:  
 	                         add                     si, 2
 	                         dec                     cx
 	                         jnz                     LoopOverGhosts
 	                         jmp                     EndMoveGhost
-	EmptyCellFound:          
+	EmptyCellFoundGhost:     
 	                         mov                     grid[bx], 128d
 	                         mov                     ghostPositions[si], bx
 	                         jmp                     ContinueLoopOverGhosts
@@ -3336,7 +3347,7 @@ MovePacman proc
 	                         cmp                     grid[bx],player2Code
 	                         je                      player2right
 	;end check player2
-	ContMoveRight1:
+	ContMoveRight1:          
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     currentXPlayer1,1
@@ -3359,7 +3370,7 @@ MovePacman proc
 	                         cmp                     grid[bx], 128
 	                         jae                     GhostLeftPlayer1
 	;check player2
-	ContMoveLeft1:
+	ContMoveLeft1:           
 	                         dec                     currentXPlayer1
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         inc                     currentXPlayer1
@@ -3390,7 +3401,7 @@ MovePacman proc
 	                         jae                     GhostUpPlayer1
 	;end check Ghosts
 	;check player2
-	ContMoveUp1:
+	ContMoveUp1:             
 	                         dec                     currentYPlayer1
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         inc                     currentYPlayer1
@@ -3420,7 +3431,7 @@ MovePacman proc
 	                         jae                     GhostDownPlayer1
 	;end check Ghosts
 	;check player2
-	ContMoveDown1:
+	ContMoveDown1:           
 	                         inc                     currentYPlayer1
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         dec                     currentYPlayer1
@@ -4190,7 +4201,7 @@ DrawGrid proc
 	                         mov                     player2Orientation, 'L'
 	                         jmp                     AfterRespawnCheck
 	Player2DeadDrawGrid:     
-							 mov                     grid[448], 127
+	                         mov                     grid[448], 127
 	                         jmp                     AfterRespawnCheck
 	Player2:                 
 	                         cmp                     isPlayer2Dead, 1
@@ -4308,62 +4319,62 @@ DrawScoreAndLives proc
 DrawScoreAndLives endp
 
 InitializeSerialPort proc	near
-	                            mov   dx,3fbh                                         	; Line Control Register
-	                            mov   al,10000000b                                    	;Set Divisor Latch Access Bit
-	                            out   dx,al                                           	;Out it
-	                            mov   dx,3f8h                                         	;Set LSB byte of the Baud Rate Divisor Latch register.
-	                            mov   al,0ch
-	                            out   dx,al
-	                            mov   dx,3f9h                                         	;Set MSB byte of the Baud Rate Divisor Latch register.
-	                            mov   al,00h
-	                            out   dx,al
-	                            mov   dx,3fbh                                         	;Set port configuration
-	                            mov   al,00011011b
-	                            out   dx, al
-	                            ret
+	                         mov                     dx,3fbh                                                                      	; Line Control Register
+	                         mov                     al,10000000b                                                                 	;Set Divisor Latch Access Bit
+	                         out                     dx,al                                                                        	;Out it
+	                         mov                     dx,3f8h                                                                      	;Set LSB byte of the Baud Rate Divisor Latch register.
+	                         mov                     al,0ch
+	                         out                     dx,al
+	                         mov                     dx,3f9h                                                                      	;Set MSB byte of the Baud Rate Divisor Latch register.
+	                         mov                     al,00h
+	                         out                     dx,al
+	                         mov                     dx,3fbh                                                                      	;Set port configuration
+	                         mov                     al,00011011b
+	                         out                     dx, al
+	                         ret
 InitializeSerialPort endp
-;------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;sends value in AH
+	;------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	;sends value in AH
 SendValueThroughSerial proc	near
-	                            push  dx
-	                            push  ax
+	                         push                    dx
+	                         push                    ax
 	;Check that Transmitter Holding Register is Empty
-	                            mov   dx , 3FDH                                       	; Line Status Register
-	                            in    al , dx                                         	;Read Line Status
-	                            test  al , 00100000b
-	                            jnz   EmptyLineRegister                               	;Not empty
-	                            pop   ax
-	                            pop   dx
-	                            ret
-	EmptyLineRegister:          
+	                         mov                     dx , 3FDH                                                                    	; Line Status Register
+	                         in                      al , dx                                                                      	;Read Line Status
+	                         test                    al , 00100000b
+	                         jnz                     EmptyLineRegister                                                            	;Not empty
+	                         pop                     ax
+	                         pop                     dx
+	                         ret
+	EmptyLineRegister:       
 	;If empty put the VALUE in Transmit data register
-	                            mov   dx , 3F8H                                       	; Transmit data register
-	                            mov   al, ah
-	                            out   dx, al
-	                            pop   ax
-	                            pop   dx
-	                            ret
+	                         mov                     dx , 3F8H                                                                    	; Transmit data register
+	                         mov                     al, ah
+	                         out                     dx, al
+	                         pop                     ax
+	                         pop                     dx
+	                         ret
 SendValueThroughSerial endp
 
-; receives a byte from serial stored in AH, and the AL is used a flag (0 means there is a value, 1 means no value was sent)
+	; receives a byte from serial stored in AH, and the AL is used a flag (0 means there is a value, 1 means no value was sent)
 ReceiveValueFromSerial proc	near
 	;Check that Data is Ready
-	                            push  dx
-	                            mov   dx , 3FDH                                       	; Line Status Register
-	                            in    al , dx
-	                            test  al , 1
-	                            JNZ   SerialInput                                     	;Not Ready
-	                            mov   al, 1
-	                            pop   dx
-	                            ret                                                   	;if 1 return
-	SerialInput:                
+	                         push                    dx
+	                         mov                     dx , 3FDH                                                                    	; Line Status Register
+	                         in                      al , dx
+	                         test                    al , 1
+	                         JNZ                     SerialInput                                                                  	;Not Ready
+	                         mov                     al, 1
+	                         pop                     dx
+	                         ret                                                                                                  	;if 1 return
+	SerialInput:             
 	;If Ready read the VALUE in Receive data register
-	                            mov   dx , 03F8H
-	                            in    al , dx
-	                            mov   ah, al
-	                            mov   al, 0
-	                            pop   dx
-	                            ret
+	                         mov                     dx , 03F8H
+	                         in                      al , dx
+	                         mov                     ah, al
+	                         mov                     al, 0
+	                         pop                     dx
+	                         ret
 ReceiveValueFromSerial endp
 
 main proc far
@@ -4451,14 +4462,14 @@ main proc far
 	                         int                     16h
 	                         cmp                     al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                         je                      Terminate1
-							 cmp					 al, scanF1
-							 je						 ChatModule
+	                         cmp                     al, scanF1
+	                         je                      ChatModule
 	                         cmp                     al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
 	                         je                      LoadingMenu
 	                         jmp                     AgainTillKeyPressed
 
 	Terminate1:              jmp                     Terminate2
-	ChatModule:				 Chat
+	ChatModule:              Chat
 
 	LoadingMenu:             
 	                         SetVideoMode
