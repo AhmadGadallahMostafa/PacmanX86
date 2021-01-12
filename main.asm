@@ -2916,6 +2916,15 @@ GetRandomNumber macro value
 endm RandomNumber
 
 Chat macro
+local CheckKey
+local BeginWriting
+local Again1
+local SendNextLetter
+local Again
+local CheckRecieved
+local ReceiveNextLetter
+local Check1
+local EndChat
          mov           ax, @data
 	     mov           ds, ax
          call          InitializeSerialPort
@@ -3294,6 +3303,8 @@ MovePacman proc
 	                         int                     16h
 	                         cmp                     ah, scanF4
 	                         je                      ApplyF4InMove
+							 cmp ah, scanF1
+							 je InGameChat
 	AfterF4Check:            
 	; Added part for Freeze effect:
 	; The dec of FreezeDuration and setting it to zero when the Duration = 0 is in the IsFrozen proc.
@@ -3981,7 +3992,10 @@ MovePacman proc
 	                         dec                     currentYPlayer2
 	                         mov                     player1Respawn, 1
 	                         jmp                     ContMoveDown2
-							 
+		InGameChat:
+			Chat
+			SetVideoMode
+			jmp MoveLoop
 	terminate:               
 MovePacman endp
 
