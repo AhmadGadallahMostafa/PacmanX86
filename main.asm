@@ -2895,46 +2895,22 @@ GridToCell macro gridX, gridY ; takes xPosition, yPosition, puts the cell number
 	add bx, word ptr gridX
 endm CheckWall
 
-FindPath macro gridX, gridY ; BFS Algorithm
-	mov ax, @data
-	mov es, ax
-	mov cx, 480
-	mov si, offset zeros
-	mov di, offset gridChecked
-	rep movsb
-	mov cx, 480
-	mov si, offset zeros
-	mov di, offset nodesToSearch
-	rep movsw
-	mov di, 0
-	mov nodesToSearch[di], byte ptr gridX
-	inc di
-	mov nodesToSearch[di], byte ptr gridY
-	mov si, 0
-	SearchLoop:
-		cmp si, di
-		jle EndSearch
-		mov bh, nodesToSearch[si]
-		inc si
-		mov bl, nodesToSearch[si]
-		inc si
-		mov nodeX, bh
-		mov nodeY, bl
-		GridToCell nodeX, nodeY
-		cmp gridChecked[bx], 0
-		jne SearchLoop
-		mov gridChecked[bx], 1
-		cmp grid[bx], player1Code
-		je Found
-		cmp grid[bx], player2Code
-		je Found
-		jmp ContinueSearch
-	ContinueSearch:
-		jmp SearchLoop
-	Found:
-		mov ax, 
-	EndSearch:
-endm FindPath
+; puts a random number in ax
+GetRandomNumber macro value
+    push bx
+    push dx
+    xor ax, seed
+    xor dx, dx
+    mov bx, value
+    div bx
+    inc dx
+    mov ax, dx
+	mov dx, seed
+	add dx, ax
+	mov seed, dx
+    pop dx
+    pop bx
+endm RandomNumber
 
 Chat macro
          mov           ax, @data
@@ -3032,9 +3008,9 @@ endm Chat
 .386 
 .stack 0ffffh
 .data
-	player1Name         db  30 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 1 name
-	player2Name         db  30 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 2 name
-	nameMessage         db  'Please Enter Your Name: $'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	;Message displayed to prompt the user to enter his name
+	player1Name         db  15 , ? , 30 dup("$")
+	player2Name         db  15 , ? , 30 dup("$")
+	nameMessage         db  'Please Enter Your Name: $'
 	enterMessage        db  'Press Enter to Continue$'
 	welcomeMessage1     db  'Welcome To Our Game, Player 1!$'
 	welcomeMessage2     db  'Welcome To Our Game, Player 2!$'
@@ -3058,7 +3034,8 @@ endm Chat
 	player1Lives        dw  3h
 	player2Lives        dw  3h
 	scanF1              equ 3Bh
-	scanF2              equ 3Ch                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanF2              equ 3Ch
 	scanF4              equ 3Eh
 	scanESC             equ 1Bh
 	grid                db  480 dup(127)
@@ -3210,115 +3187,83 @@ endm Chat
     MsgToReceive    db 60,?,60 dup('$')
     letterToReceive db ?
     confirmReceive  db 10
+	player1Lvl2Initial  equ 241
+	player2Lvl2Initial  equ 238
+	ghostCount          dw  4
+	ghostPositions      dw  16 dup(?)
+	ghostPeriod         equ 30
+	ghostTimer          db  1
+	powerUpPosition     equ 200
+	powerUpPeriod       equ 10
+	powerUpTimer        db  1
+	seed                dw  ?
 
 .code
+AddPowerUp proc
+	                         dec                     powerUpTimer
+	                         jnz                     EndAddPowerUp
+	                         mov                     powerUpTimer, powerUpPeriod
+							 cmp grid[powerUpPosition], 127
+							 jne EndAddPowerUp
+	                         GetRandomNumber         50
+	                         cmp                     ax, 10
+	                         jb                      AddCherry
+	                         cmp                     ax, 20
+	                         jb                      AddSnowFlake
+	                         cmp                     ax, 30
+	                         jb                      AddTrap
+	                         cmp                     ax, 40
+	                         jb                      AddExtraLife
+	                         cmp                     ax, 50
+	                         jb                      AddDecLife
+	AddCherry:               
+	                         mov                     grid[powerUpPosition], cherryCode
+	                         jmp                     EndAddPowerUp
+	AddSnowFlake:            
+	                         mov                     grid[powerUpPosition], snowflakeCode
+	                         jmp                     EndAddPowerUp
+	AddTrap:                 
+	                         mov                     grid[powerUpPosition], trapCode
+	                         jmp                     EndAddPowerUp
+	AddExtraLife:            
+	                         mov                     grid[powerUpPosition], extraLifeCode
+	                         jmp                     EndAddPowerUp
+	AddDecLife:              
+	                         mov                     grid[powerUpPosition], decLifeCode
+	                         jmp                     EndAddPowerUp
+	EndAddPowerUp:           
+	                         ret
+AddPowerUp endp
+
 MoveGhosts proc
-	                         mov                     ghostX, 0
-	                         mov                     ghostY, 0
+	                         dec                     ghostTimer
+	                         jnz                     EndMoveGhost
+	                         mov                     ghostTimer, ghostPeriod
+	                         mov                     cx, ghostCount
 	                         mov                     si, 0
-	                         mov                     ch, gridYCount
-	LoopRow:                 
-	                         mov                     ghostX, 0
-	                         mov                     cl, gridXCount
-	LoopCell:                
-	                         push                    cx
-	                         push                    si
-	                         mov                     cl, grid[si]
-	                         and                     cl, 128d
-	                         push                    si
-	                         jnz                     IsGhost
+	LoopOverGhosts:          
+	                         mov                     di, ghostPositions[si]
+	                         cmp                     grid[di], 128
+	                         jb                      DontClearGhost
+	                         mov                     grid[di], 127
+	DontClearGhost:          
+	                         GetRandomNumber         480
+	                         mov                     bx, ax
+	FindEmptyCell:           
+	                         cmp                     grid[bx], 127d
+	                         je                      EmptyCellFound
+	                         inc                     bx
+	                         cmp                     bx, 480
+	                         jb                      FindEmptyCell
+	ContinueLoopOverGhosts:  
+	                         add                     si, 2
+	                         dec                     cx
+	                         jnz                     LoopOverGhosts
 	                         jmp                     EndMoveGhost
-	FindNextMove:            
-	                         pop                     si
-	                         and                     grid[si], 255d
-	                         mov                     cx, maxValue
-	                         cmp                     cx, rightValue
-	                         jl                      NextMoveIsRight
-	                         cmp                     cx, leftValue
-	                         jl                      NextMoveIsLeft
-	                         cmp                     cx, upValue
-	                         jl                      NextMoveIsUp
-	                         cmp                     cx, downValue
-	                         jl                      NextMoveIsDown
-	ContinueMoveGhost:       
-	                         pop                     si
-	                         pop                     cx
-	                         add                     ghostX, gridStep
-	                         inc                     si
-	                         dec                     cl
-	                         jnz                     LoopCell
-	                         add                     ghostY, gridStep
-	                         dec                     ch
-	                         jnz                     LoopRow
-	                         jmp                     EndMoveGhost
-	IsGhost:                 
-	                         mov                     rightValue, 0ffh
-	                         mov                     leftValue, 0ffh
-	                         mov                     upValue, 0ffh
-	                         mov                     downValue, 0ffh
-	                         mov                     maxValue, 0ffh
-	                         mov                     nextMove, 0
-	                         mov                     bh, searchX
-	                         mov                     bl, searchY
-	                         mov                     searchX, bh
-	                         mov                     searchY, bl
-	SearchRight:             
-	                         inc                     searchX
-	                         cmp                     searchX, gridXCount
-	                         jge                     SearchLeft
-	                         GridToCell              searchX, searchY
-	                         cmp                     grid[bx], 16
-	                         jb                      SearchLeft
-	;FindPath               searchX, searchY
-	                         mov                     rightValue, ax
-	SearchLeft:              
-	                         dec                     searchX
-	                         cmp                     searchX, 0
-	                         jle                     SearchUp
-	                         GridToCell              searchX, searchY
-	                         cmp                     grid[bx], 16
-	                         jb                      SearchUp
-	;FindPath               searchX, searchY
-	                         mov                     leftValue, ax
-	SearchUp:                
-	                         inc                     searchY
-	                         cmp                     searchX, gridYCount
-	                         jge                     SearchDown
-	                         GridToCell              searchX, searchY
-	                         cmp                     grid[bx], 16
-	                         jb                      SearchDown
-	;FindPath               searchX, searchY
-	                         mov                     upValue, ax
-	SearchDown:              
-	                         dec                     searchY
-	                         cmp                     searchY, gridYCount
-	                         jle                     FindNextMove
-	                         GridToCell              searchX, searchY
-	                         cmp                     grid[bx], 16
-	                         jb                      FindNextMove
-	;FindPath               searchX, searchY
-	                         mov                     downValue, ax
-	                         jmp                     FindNextMove
-	NextMoveIsRight:         
-	                         inc                     ghostX
-	                         GridToCell              ghostX, ghostY
-	                         or                      grid[si], 128d
-	                         jmp                     ContinueMoveGhost
-	NextMoveIsLeft:          
-	                         dec                     ghostX
-	                         GridToCell              ghostX, ghostY
-	                         or                      grid[si], 128d
-	                         jmp                     ContinueMoveGhost
-	NextMoveIsUp:            
-	                         dec                     ghostY
-	                         GridToCell              ghostX, ghostY
-	                         or                      grid[si], 128d
-	                         jmp                     ContinueMoveGhost
-	NextMoveIsDown:          
-	                         inc                     ghostY
-	                         GridToCell              ghostX, ghostY
-	                         or                      grid[si], 128d
-	                         jmp                     ContinueMoveGhost
+	EmptyCellFound:          
+	                         mov                     grid[bx], 128d
+	                         mov                     ghostPositions[si], bx
+	                         jmp                     ContinueLoopOverGhosts
 	EndMoveGhost:            
 	                         ret
 MoveGhosts endp
@@ -4525,6 +4470,9 @@ main proc far
 	                         MOV                     DX, 4240H
 	                         MOV                     AH, 86H
 	                         INT                     15H
+	                         mov                     ah, 02h
+	                         int                     1ah
+	                         mov                     seed, dx
 	ChooseLevel:             
 	                         SetTextMode
 	                         mov                     dx, 0000
@@ -4585,6 +4533,8 @@ main proc far
 	                         DisplayTextVideoMode    10, 2, 23, livesMessage1, 14                                                 	;Draw "Lives#1"
 	                         DisplayTextVideoMode    10, 24, 23, livesMessage2, 14                                                	;Draw "Lives#2"
 	gameLoop:                
+	                         call                    AddPowerUp
+	                         call                    MoveGhosts
 	                         call                    MovePacman
 	                         call                    DrawGrid
 	                         call                    DrawScoreAndLives
