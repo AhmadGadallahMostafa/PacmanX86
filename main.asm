@@ -3254,6 +3254,13 @@ MovePacman proc
 	                         cmp                     grid[bx], 128
 	                         jae                     GhostRightPlayer1
 	;end check ghost
+	;check player2
+	                         inc                     currentXPlayer1
+	                         GridToCell              currentXPlayer1 ,currentYPlayer1
+	                         dec                     currentXPlayer1
+	                         cmp                     grid[bx],player2Code
+	                         je                      player2right
+	;end check player2
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     currentXPlayer1,1
@@ -3275,7 +3282,13 @@ MovePacman proc
 	                         inc                     currentXPlayer1
 	                         cmp                     grid[bx], 128
 	                         jae                     GhostLeftPlayer1
-	;jae                     DecrementPlayer1Live
+	;check player2
+	                         dec                     currentXPlayer1
+	                         GridToCell              currentXPlayer1 ,currentYPlayer1
+	                         inc                     currentXPlayer1
+	                         cmp                     grid[bx],player2Code
+	                         je                      player2left
+	;end check player2
 	;end check ghost
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
@@ -3298,8 +3311,14 @@ MovePacman proc
 	                         inc                     currentYPlayer1
 	                         cmp                     grid[bx],128
 	                         jae                     GhostUpPlayer1
-	;jae                     DecrementPlayer1Live
 	;end check Ghosts
+	;check player2
+	                         dec                     currentYPlayer1
+	                         GridToCell              currentXPlayer1 ,currentYPlayer1
+	                         inc                     currentYPlayer1
+	                         cmp                     grid[bx],player2Code
+	                         je                      player2up
+	;end check player2
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
 	                         sub                     currentYPlayer1,1
@@ -3321,8 +3340,14 @@ MovePacman proc
 	                         dec                     currentYPlayer1
 	                         cmp                     grid[bx],128
 	                         jae                     GhostDownPlayer1
-	;jae                     DecrementPlayer1Live
 	;end check Ghosts
+	;check player2
+	                         inc                     currentYPlayer1
+	                         GridToCell              currentXPlayer1 ,currentYPlayer1
+	                         dec                     currentYPlayer1
+	                         cmp                     grid[bx],player2Code
+	                         je                      player2down
+	;end check player2
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     currentYPlayer1,1
@@ -3465,10 +3490,55 @@ MovePacman proc
 	                         add                     player1Score,10
 	                         sub                     currentXPlayer1,1
 	                         jmp                     ChangePlayer1Pacman
-							 
-	;--------------------------------------------------------------------------------------
-     
 
+	player2right:            
+	                         cmp                     player1IsGreenDot,1
+	                         je                      eatplayer2Right
+	                         jmp                     moveLoop
+	eatplayer2Right:         mov                     grid[bx], 127
+	                         dec                     player2Lives
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         add                     player1Score,20
+	                         inc                     currentXPlayer1
+	                         jmp                     moveLoop
+
+	player2left:             
+	                         cmp                     player1IsGreenDot,1
+	                         je                      eatplayer2left
+	                         jmp                     moveLoop
+	eatplayer2left:          mov                     grid[bx], 127
+	                         dec                     player2Lives
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         add                     player1Score,20
+	                         dec                     currentXPlayer1
+	                         jmp                     moveLoop
+
+	player2up:               
+	                         cmp                     player1IsGreenDot,1
+	                         je                      eatplayer2up
+	                         jmp                     moveLoop
+	eatplayer2up:            mov                     grid[bx], 127
+	                         dec                     player2Lives
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         add                     player1Score,20
+	                         inc                     currentYPlayer1
+	                         jmp                     moveLoop
+
+	player2down:             
+	                         cmp                     player1IsGreenDot,1
+	                         je                      eatplayer2down
+	                         jmp                     moveLoop
+	eatplayer2down:          mov                     grid[bx], 127
+	                         dec                     player2Lives
+	                         mov                     currentXPlayer2,28
+	                         mov                     currentYPlayer2,14
+	                         add                     player1Score,20
+	                         dec                     currentYPlayer1
+	                         jmp                     moveLoop
+	;--------------------------------------------------------------------------------------
 	MovePlayer2Right:        
 	                         cmp                     player2Moved,0
 	                         jne                     MoveLoop
@@ -3487,6 +3557,14 @@ MovePacman proc
 	                         cmp                     grid[bx],128
 	                         jae                     GhostRightPlayer2
 	;end check ghosts
+	;check player1
+	                         inc                     currentXPlayer2
+	                         GridToCell              currentXPlayer2 ,currentYPlayer2
+	                         dec                     currentXPlayer2
+	                         cmp                     grid[bx],player1Code
+	                         je                      player1right
+	;end check player1
+
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         add                     currentXPlayer2,1
@@ -3509,6 +3587,13 @@ MovePacman proc
 	                         cmp                     grid[bx],128
 	                         jae                     GhostLeftPlayer2
 	;end check ghosts
+	;check player1
+	                         dec                     currentXPlayer2
+	                         GridToCell              currentXPlayer2 ,currentYPlayer2
+	                         inc                     currentXPlayer2
+	                         cmp                     grid[bx],player1Code
+	                         je                      player1left
+	;end check player1
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         sub                     currentXPlayer2,1
@@ -3531,6 +3616,13 @@ MovePacman proc
 	                         cmp                     grid[bx],128
 	                         jae                     GhostUpPlayer2
 	;end check ghost
+	;check player1
+	                         dec                     currentYPlayer2
+	                         GridToCell              currentXPlayer2 ,currentYPlayer2
+	                         inc                     currentYPlayer2
+	                         cmp                     grid[bx],player1Code
+	                         je                      player1up
+	;end check player1
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         sub                     currentYPlayer2,1
@@ -3553,6 +3645,13 @@ MovePacman proc
 	                         cmp                     grid[bx],128
 	                         jae                     GhostDownPlayer2
 	;end check Ghosts
+	;check player1
+	                         inc                     currentYPlayer2
+	                         GridToCell              currentXPlayer2 ,currentYPlayer2
+	                         dec                     currentYPlayer2
+	                         cmp                     grid[bx],player1Code
+	                         je                      player1down
+	;end check player1
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx], 127
 	                         add                     currentYPlayer2, 1
@@ -3705,6 +3804,54 @@ MovePacman proc
 	                         add                     player2Score,10
 	                         sub                     currentXPlayer2,1
 	                         jmp                     ChangePlayer2Pacman
+
+	player1right:            
+	                         cmp                     player2IsGreenDot,1
+	                         je                      eatplayer1Right
+	                         jmp                     moveLoop
+	eatplayer1Right:         mov                     grid[bx], 127
+	                         dec                     player1Lives
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
+	                         add                     player2Score,20
+	                         inc                     currentXPlayer2
+	                         jmp                     moveLoop
+
+	player1left:             
+	                         cmp                     player2IsGreenDot,1
+	                         je                      eatplayer1left
+	                         jmp                     moveLoop
+	eatplayer1left:          mov                     grid[bx], 127
+	                         dec                     player1Lives
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
+	                         add                     player2Score,20
+	                         dec                     currentXPlayer2
+	                         jmp                     moveLoop
+
+	player1up:               
+	                         cmp                     player2IsGreenDot,1
+	                         je                      eatplayer1up
+	                         jmp                     moveLoop
+	eatplayer1up:            mov                     grid[bx], 127
+	                         dec                     player1Lives
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
+	                         add                     player2Score,20
+	                         inc                     currentYPlayer2
+	                         jmp                     moveLoop
+
+	player1down:             
+	                         cmp                     player2IsGreenDot,1
+	                         je                      eatplayer1down
+	                         jmp                     moveLoop
+	eatplayer1down:          mov                     grid[bx], 127
+	                         dec                     player1Lives
+	                         mov                     currentXPlayer1,28
+	                         mov                     currentYPlayer1,14
+	                         add                     player2Score,20
+	                         dec                     currentYPlayer2
+	                         jmp                     moveLoop
 	terminate:               
 MovePacman endp
 
