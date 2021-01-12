@@ -3187,8 +3187,6 @@ endm Chat
     MsgToReceive    db 60,?,60 dup('$')
     letterToReceive db ?
     confirmReceive  db 10
-	player1Lvl2Initial  equ 241
-	player2Lvl2Initial  equ 238
 	ghostCount          dw  4
 	ghostPositions      dw  16 dup(?)
 	ghostPeriod         equ 30
