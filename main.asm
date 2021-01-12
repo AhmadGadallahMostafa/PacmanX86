@@ -4453,6 +4453,10 @@ main proc far
 	                         jmp                     GetPlayer2Name
 
 	MainMenu:                                                                                                                     	;displaying main menu and provided functions and how to use them
+	                         mov                     ax, @data
+	                         mov                     ds, ax
+	                         mov                     es, ax
+	                         mov                     di, offset grid
 	                         SetTextMode
 	                         mov                     dx, 080dh
 	                         mov                     dl, 25d
