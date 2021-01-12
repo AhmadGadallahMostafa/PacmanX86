@@ -2648,6 +2648,10 @@ DrawLevel1 macro initial1, initial2
 	                         mov                     grid[120], verticalWallCode
 	                         mov                     grid[150], verticalWallCode
 	                         mov                     grid[180], cornerLeftDownCode
+							 mov                     grid[210], vacantCode
+							 mov                     grid[240], vacantCode
+							 mov grid[239], vacantCode
+							 mov grid[269], vacantCode
 	                         mov                     grid[181], cornerRightUpCode
 	                         mov                     grid[211], verticalWallCode
 	                         mov                     grid[241], verticalWallCode
@@ -2668,8 +2672,6 @@ DrawLevel1 macro initial1, initial2
 	                         mov                     grid[196], endWallDownCode
 	                         mov                     grid[283], endWallUpCode
 	                         mov                     grid[285], endWallUpCode
-	                         mov                     grid[195], ghostCode
-	                         mov                     grid[284], ghostCode
 							 mov					 grid[282], bigDotCode                   ;for testing empowered pacman
 	                         mov                     grid[451], horizontalWallCode
 	                         mov                     grid[452], horizontalWallCode
@@ -2872,15 +2874,16 @@ DrawLevel1 macro initial1, initial2
 							 mov                     grid[206], cornerRightUpCode
 							 mov                     grid[296], cornerRightDownCode
 							 mov                     grid[205], endWallLeftCode
-							 mov                     grid[295], endWallLeftCode					 
+							 mov                     grid[295], endWallLeftCode	
+
 	; Testing item drawing functions:
-	                         mov                     grid[288], snowflakeCode
-	                         mov                     grid[400], cherryCode
-	                         mov                     grid[118], extraLifeCode
-	                         mov                     grid[197], decLifeCode
-	                         mov                     grid[76], trapCode
-	                         mov                     grid[214], trapCode
-	                         mov                     grid[310], trapCode
+	                         mov                     grid[288], 127
+	                         mov                     grid[400], 127
+	                         mov                     grid[118], 127
+	                         mov                     grid[197], 127
+	                         mov                     grid[76], 127
+	                         mov                     grid[214], 127
+	                         mov                     grid[310], 127
 						   
 endm DrawLevel1
 
@@ -3038,22 +3041,22 @@ endm Chat
 	scanF2              equ 3Ch
 	scanF4              equ 3Eh
 	scanESC             equ 1Bh
-	grid                db  480 dup(127)
+	grid                db  480 dup(dotCode)
 	grid2               db  cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,    horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode,vacantCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,              horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode
-	                    db  verticalWallCode,127,bigDotCode,127,ghostCode,127,trapCode,127,127,127,                                                                                                                                           127,127,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,127,127,                                                                                    127,127,127,127,127,127,127,127,cornerLeftDownCode,cornerRightUpCode
-	                    db  verticalWallCode,127,127,cornerLeftUpCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                      horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftUpCode,horizontalWallCode,                                                                                        horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,cornerRightUpCode,127,127,verticalWallCode
-	                    db  verticalWallCode,127,cornerLeftUpCode,cornerRightDownCode,verticalWallCode,127,verticalWallCode,vacantCode,vacantCode,vacantCode,                                                               vacantCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftDownCode,horizontalWallCode,                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,cornerLeftDownCode,cornerRightUpCode,127,verticalWallCode
-	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,127,verticalWallCode,127,127,verticalWallCode,127,127,127,                                                                                        127,127,127,127,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
-	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,127,127,127,127,                                                                                                          127,127,127,endWallDownCode,127,127,endWallDownCode,127,cornerLeftUpCode,horizontalWallCode,                                                                                             horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
-	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode
-	                    db  verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                 horizontalWallCode,cornerRightDownCode,127,endWallLeftCode,triWallUpCode,cornerRightUpCode,127,127,127,127,                                                                              127,127,127,127,127,127,127,127,127,verticalWallCode
-	                    db  verticalWallCode,127,127,127,127,127,127,127,127,127,                                                                                                                                           127,127,127,127,cornerLeftDownCode,triWallDownCode,endWallRightCode,127,cornerLeftUpCode,horizontalWallCode,                                                                             horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode
-	                    db  verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
-	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,127,endWallUpCode,127,127,endWallUpCode,127,127,127,                                                                                              127,127,127,127,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
-	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,127,127,127,127,                                                                                                          127,127,127,verticalWallCode,127,127,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,                                                                                           horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
-	                    db  verticalWallCode,127,cornerLeftDownCode,cornerRightUpCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,                                   vacantCode,vacantCode,vacantCode,verticalWallCode,127,verticalWallCode,cornerLeftUpCode,cornerRightDownCode,127,verticalWallCode
-	                    db  verticalWallCode,127,127,cornerLeftDownCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightDownCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                    horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,cornerRightDownCode,127,127,verticalWallCode
-	                    db  cornerLeftDownCode,cornerRightUpCode,127,127,127,127,127,127,127,127,                                                                                                                           127,127,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,127,127,                                                                                        127,127,127,127,127,127,127,127,127,verticalWallCode
+	                    db  verticalWallCode,dotCode,dotCode,dotCode,dotCode,dotCode,127,dotCode,dotCode,dotCode,                                                                                                                                           dotCode,dotCode,dotCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,dotCode,dotCode,dotCode,                                                                                    127,dotCode,dotCode,dotCode,127,dotCode,dotCode,dotCode,cornerLeftDownCode,cornerRightUpCode
+	                    db  verticalWallCode,dotCode,dotCode,cornerLeftUpCode,cornerRightUpCode,dotCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                      horizontalWallCode,cornerRightUpCode,dotCode,dotCode,127,dotCode,dotCode,dotCode,cornerLeftUpCode,horizontalWallCode,                                                                                        horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,dotCode,cornerLeftUpCode,cornerRightUpCode,dotCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,cornerLeftUpCode,cornerRightDownCode,verticalWallCode,dotCode,verticalWallCode,vacantCode,vacantCode,vacantCode,                                                               vacantCode,verticalWallCode,dotCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,dotCode,cornerLeftDownCode,horizontalWallCode,                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,dotCode,verticalWallCode,cornerLeftDownCode,cornerRightUpCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,dotCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,dotCode,verticalWallCode,dotCode,dotCode,verticalWallCode,dotCode,dotCode,dotCode,                                                                                        dotCode,dotCode,127,dotCode,127,verticalWallCode,vacantCode,verticalWallCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,127,dotCode,dotCode,dotCode,dotCode,                                                                                                          dotCode,dotCode,127,endWallDownCode,dotCode,dotCode,endWallDownCode,dotCode,cornerLeftUpCode,horizontalWallCode,                                                                                             horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode,vacantCode,verticalWallCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,dotCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightUpCode,dotCode,dotCode,dotCode,dotCode,dotCode,127,cornerLeftDownCode,horizontalWallCode,                                                                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,dotCode,cornerLeftDownCode,horizontalWallCode,cornerRightDownCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,cornerLeftDownCode,horizontalWallCode,cornerRightDownCode,dotCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                 horizontalWallCode,cornerRightDownCode,dotCode,endWallLeftCode,triWallUpCode,cornerRightUpCode,dotCode,dotCode,dotCode,dotCode,                                                                              127,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,                                                                                                                                           dotCode,dotCode,dotCode,dotCode,cornerLeftDownCode,triWallDownCode,endWallRightCode,dotCode,cornerLeftUpCode,horizontalWallCode,                                                                             horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,dotCode,cornerLeftUpCode,horizontalWallCode,cornerRightUpCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,cornerLeftUpCode,horizontalWallCode,cornerRightUpCode,dotCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,dotCode,dotCode,dotCode,127,dotCode,dotCode,cornerLeftDownCode,horizontalWallCode,                                                                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,verticalWallCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,dotCode,endWallUpCode,dotCode,dotCode,endWallUpCode,dotCode,dotCode,dotCode,                                                                                              dotCode,dotCode,127,dotCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,dotCode,dotCode,dotCode,dotCode,dotCode,                                                                                                          dotCode,dotCode,dotCode,verticalWallCode,dotCode,dotCode,verticalWallCode,dotCode,cornerLeftUpCode,horizontalWallCode,                                                                                           horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,dotCode,verticalWallCode,vacantCode,verticalWallCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,cornerLeftDownCode,cornerRightUpCode,verticalWallCode,dotCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,dotCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,                                   vacantCode,vacantCode,vacantCode,verticalWallCode,127,verticalWallCode,cornerLeftUpCode,cornerRightDownCode,dotCode,verticalWallCode
+	                    db  verticalWallCode,dotCode,dotCode,cornerLeftDownCode,cornerRightDownCode,dotCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightDownCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,cornerLeftDownCode,horizontalWallCode,                                                                                    horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,dotCode,cornerLeftDownCode,cornerRightDownCode,127,dotCode,verticalWallCode
+	                    db  cornerLeftDownCode,cornerRightUpCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,dotCode,                                                                                                                           dotCode,dotCode,dotCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,dotCode,dotCode,dotCode,                                                                                        dotCode,127,dotCode,dotCode,dotCode,127,dotCode,dotCode,127,verticalWallCode
 	                    db  vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,vacantCode,vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode
 	
 	black               equ 00h
@@ -3180,7 +3183,7 @@ endm Chat
 	player1Lvl2Initial  equ 31
 	player2Lvl2Initial  equ 448
 	IsF4Pressed         db  0
-	zerogrid            db  480 dup(0)
+	zerogrid            db  480 dup(dotcode)
 	IsLevel2            db  0
 	letterToSend        db  ?
 	msgToSend           db  60,?,60 dup('$')
@@ -3195,6 +3198,7 @@ endm Chat
 	powerUpPeriod       equ 10
 	powerUpTimer        db  1
 	seed                dw  ?
+	dotcount            db  0
 
 .code
 AddPowerUp proc
@@ -3527,6 +3531,7 @@ MovePacman proc
 	                         mov                     player1Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostRightplayer1:    
+	                         GridToCell              currentXPlayer1,currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     player1Score,10
 	                         add                     currentXPlayer1,1
@@ -3545,6 +3550,7 @@ MovePacman proc
 	                         mov                     player1Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostUpplayer1:       
+	                         GridToCell              currentXPlayer1,currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     player1Score,10
 	                         sub                     currentYPlayer1,1
@@ -3564,6 +3570,7 @@ MovePacman proc
 	                         mov                     player1Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostDownplayer1:     
+	                         GridToCell              currentXPlayer1,currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     player1Score,10
 	                         add                     currentYPlayer1,1
@@ -3583,6 +3590,7 @@ MovePacman proc
 	                         mov                     player1Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostLeftplayer1:     
+	                         GridToCell              currentXPlayer1,currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     player1Score,10
 	                         sub                     currentXPlayer1,1
@@ -4246,6 +4254,7 @@ DrawGrid proc
 	                         jmp                     ContinueDraw
 	Dot:                     
 	                         DrawDot                 currentX, currentY, white, backgroundColor
+	                         add                     dotcount, 1
 	                         jmp                     ContinueDraw
 	BigDot:                  
 	                         DrawBigDot              currentX, currentY, white, backgroundColor
@@ -4474,7 +4483,7 @@ main proc far
 	LoadingMenu:             
 	                         SetVideoMode
 
-	                         DrawLoadingScreen       black,yellow,cyan                                                            	;The next code snippet is ofr the delay
+	                         ;DrawLoadingScreen       black,yellow,cyan                                                            	;The next code snippet is ofr the delay
 	                         MOV                     CX, 3fH
 	                         MOV                     DX, 4240H
 	                         MOV                     AH, 86H
@@ -4542,6 +4551,7 @@ main proc far
 	                         DisplayTextVideoMode    10, 2, 23, livesMessage1, 14                                                 	;Draw "Lives#1"
 	                         DisplayTextVideoMode    10, 24, 23, livesMessage2, 14                                                	;Draw "Lives#2"
 	gameLoop:                
+	                         mov                     dotcount, 0
 	                         call                    AddPowerUp
 	                         call                    MoveGhosts
 	                         call                    MovePacman
@@ -4557,6 +4567,8 @@ main proc far
 	                         xor                     isOpen, 1
 	                         cmp                     isPlayer1Dead, 1
 	                         je                      CheckPlayer2Lives
+	                         cmp                     dotcount,0
+	                         je                      EndGame
 	                         cmp                     IsF4Pressed, 1
 	                         je                      ApplyF4
 	                         jmp                     gameLoop
@@ -4648,8 +4660,7 @@ main proc far
 	                         mov                     cx, 480
 	                         mov                     si, offset zerogrid
 	                         rep                     movsb
-
-	;SetTextMode
+	                         SetTextMode
 	                         jmp                     MainMenu
 
 main endp
