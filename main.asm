@@ -4603,6 +4603,9 @@ main proc far
 	                         jmp                     Player2Wins
 	Player1Wins:             
 	                         DisplayString           player1WinsMsg
+							 mov                     dx, 0d0dh
+	                         MoveCursor
+	                         DisplayString           player1Name+2
 	AgainTillKeyPressed3:                                                                                                         	;checking if a key is pressed on the main menu
 	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
 	                         int                     21h
@@ -4613,6 +4616,9 @@ main proc far
 	                         jmp                     AgainTillKeyPressed3
 	Player2Wins:             
 	                         DisplayString           player2WinsMsg
+							 mov                     dx, 0d0dh
+	                         MoveCursor
+	                         DisplayString           player2Name+2
 	AgainTillKeyPressed4:                                                                                                         	;checking if a key is pressed on the main menu
 	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
 	                         int                     21h
