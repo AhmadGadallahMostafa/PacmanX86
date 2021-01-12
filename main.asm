@@ -2930,9 +2930,9 @@ endm FindPath
 .386 
 .stack 0ffffh
 .data
-	player1Name         db  15 , ? , 30 dup("$")                                                              	;variable holding player 1 name
-	player2Name         db  15 , ? , 30 dup("$")                                                              	;variable holding player 2 name
-	nameMessage         db  'Please Enter Your Name: $'                                                       	;Message displayed to prompt the user to enter his name
+	player1Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           	;variable holding player 1 name
+	player2Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           	;variable holding player 2 name
+	nameMessage         db  'Please Enter Your Name: $'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	;Message displayed to prompt the user to enter his name
 	enterMessage        db  'Press Enter to Continue$'
 	welcomeMessage1     db  'Welcome To Our Game, Player 1!$'
 	welcomeMessage2     db  'Welcome To Our Game, Player 2!$'
@@ -2956,9 +2956,26 @@ endm FindPath
 	player1Lives        dw  3h
 	player2Lives        dw  3h
 	scanF1              equ 3Bh
-	scanF2              equ 3Ch                                                                               	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanF2              equ 3Ch                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
 	scanESC             equ 1Bh
 	grid                db  480 dup(127)
+	grid2               db  vacantCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,            horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode,vacantCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,              horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode
+	                    db  cornerLeftUpCode,cornerRightDownCode,127,127,127,127,127,127,127,127,                                                                                                                           127,127,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,127,127,                                                                                    127,127,127,127,127,127,127,127,cornerLeftDownCode,cornerRightUpCode
+	                    db  verticalWallCode,127,127,cornerLeftUpCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                      horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftUpCode,horizontalWallCode,                                                                                        horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,cornerRightUpCode,127,127,verticalWallCode
+	                    db  verticalWallCode,127,cornerLeftUpCode,cornerRightDownCode,verticalWallCode,127,verticalWallCode,vacantCode,vacantCode,vacantCode,                                                               vacantCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftDownCode,horizontalWallCode,                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,cornerLeftDownCode,cornerRightUpCode,127,verticalWallCode
+	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,127,verticalWallCode,127,127,verticalWallCode,127,127,127,                                                                                        127,127,127,127,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
+	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,127,127,127,127,                                                                                                          127,127,127,endWallDownCode,127,127,endWallDownCode,127,cornerLeftUpCode,horizontalWallCode,                                                                                             horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
+	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode
+	                    db  verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                 horizontalWallCode,cornerRightDownCode,127,endWallLeftCode,triWallUpCode,cornerRightUpCode,127,127,127,127,                                                                              127,127,127,127,127,127,127,127,127,verticalWallCode
+	                    db  verticalWallCode,127,127,127,127,127,127,127,127,127,                                                                                                                                           127,127,127,127,cornerLeftDownCode,triWallDownCode,endWallRightCode,127,cornerLeftUpCode,horizontalWallCode,                                                                             horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode
+	                    db  verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
+	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,127,endWallUpCode,127,127,endWallUpCode,127,127,127,                                                                                              127,127,127,127,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
+	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,127,127,127,127,                                                                                                          127,127,127,verticalWallCode,127,127,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,                                                                                           horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
+	                    db  verticalWallCode,127,cornerLeftDownCode,cornerRightUpCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,                                   vacantCode,vacantCode,vacantCode,verticalWallCode,127,verticalWallCode,cornerLeftUpCode,cornerRightDownCode,127,verticalWallCode
+	                    db  verticalWallCode,127,127,cornerLeftDownCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightDownCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                    horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,cornerRightDownCode,127,127,verticalWallCode
+	                    db  cornerLeftDownCode,cornerRightUpCode,127,127,127,127,127,127,127,127,                                                                                                                           127,127,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,127,127,                                                                                        127,127,127,127,127,127,127,127,cornerLeftUpCode,cornerRightDownCode
+	                    db  vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,vacantCode,vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,vacantCode
+	
 	black               equ 00h
 	blue                equ 01h
 	green               equ 02h
@@ -2976,6 +2993,7 @@ endm FindPath
 	yellow              equ 0eh
 	white               equ 0fh
 	filllvl1            equ 68h
+	filllvl2            equ 0dbh
 	borderlvl1          equ white
 	player1InitialColor equ yellow
 	player1Color        db  player1InitialColor
@@ -3064,9 +3082,6 @@ endm FindPath
 	nodeX               db  0
 	nodeY               db  0
 	searchCount         dw  0
-	gridChecked         db  480 dup(0)
-	nodesToSearch       dw  480 dup(0)
-	zeros               dw  480 dup(0)
 	rightValue          dw  0ffh
 	leftValue           dw  0ffh
 	upValue             dw  0ffh
@@ -3083,7 +3098,7 @@ endm FindPath
 	player1Lvl1Initial  equ 31
 	player2lvl1Initial  equ 448
 	player1Lvl2Initial  equ 241
-	player2Lvl2Initial  equ 298
+	player2Lvl2Initial  equ 238
 
 .code
 MoveGhosts proc
@@ -4196,8 +4211,11 @@ main proc far
 
 	                         mov                     ax, @data
 	                         mov                     ds, ax
-	;jmp                     SetLevel2
-	                         jmp                     setlevel1
+	                         mov                     es, ax
+	                         mov                     di, offset grid
+
+	                         ;jmp                     SetLevel2
+	;jmp                     setlevel1
 	GetPlayer1Name:                                                                                                               	;Reading first player name and saving it to player1name
 	                         SetTextMode
 	                         mov                     dx, 0000
@@ -4328,15 +4346,19 @@ main proc far
 	                         mov                     player1Initial, player1Lvl2Initial
 	                         mov                     player2Initial, player2Lvl2Initial
 	                         mov                     currentYPlayer1, 8
-	                         mov                     currentYPlayer2, 9
+	                         mov                     currentYPlayer2, 7
 	                         mov                     borderColor, white
-	                         mov                     fillColor, yellow
+	                         mov                     fillColor, filllvl2
 	StartLevel2:             
 	                         SetVideoMode
+	                         mov                     cx, 480
+	                         mov                     si, offset grid2
+	                         rep                     movsb
 	                         mov                     bx, player1Initial
 	                         mov                     grid[bx], player1Code
 	                         mov                     bx, player2Initial
 	                         mov                     grid[bx], player2Code
+
 	AfterLevelSelect:        
 	                         mov                     si, @data
 	                         DisplayTextVideoMode    10, 2, 1, scoreMessage1, 14                                                  	;Draw "Score#1"
