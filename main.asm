@@ -2955,6 +2955,10 @@ BeginWriting:
            mov dl, 7
            mov dh, 15
            MoveCursor
+		   DisplayString clearMessage
+           mov dl, 7
+           mov dh, 15
+           MoveCursor
 	       mov  ah, 0Ah
 	       mov  dx, offset msgToSend
 	       int  21h
@@ -3001,6 +3005,10 @@ Check1:
 			int 21h
 			dec cl
 			jnz ReceiveNextLetter
+			; mov dl, 7
+			; mov dh, 1
+			; MoveCursor
+			; displaystring clearMessage
 			mov dl, 7
 			mov dh, 1
 			MoveCursor
@@ -3022,6 +3030,7 @@ endm Chat
 .data
 	player1Name         db  15 , ? , 30 dup("$")
 	player2Name         db  15 , ? , 30 dup("$")
+	clearMessage db 50 dup(0), 10 dup("$")
 	nameMessage         db  'Please Enter Your Name: $'
 	enterMessage        db  'Press Enter to Continue$'
 	welcomeMessage1     db  'Welcome To Our Game, Player 1!$'
