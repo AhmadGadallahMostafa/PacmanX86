@@ -2946,7 +2946,7 @@ CheckKey:
         int 16h
         cmp ah, 1ch
         jz BeginWriting
-        cmp ah, 3dh
+        cmp ah, scanF1
         jz EndChat
         RemoveValueBuffer
         jmp CheckRecieved
@@ -3015,12 +3015,8 @@ Check1:
 			DisplayString MsgToReceive+2
 			JMP CheckKey
 EndChat:
-            SetTextMode
-            mov dl, 0
-            mov dh, 0
-            MoveCursor
-            mov ah,4ch
-            int 21h
+	mov ah, 0
+	int 16h
 endm Chat
 ;---------------------------------------------------------------------------------------
 
@@ -4347,6 +4343,11 @@ DrawGrid proc
 DrawGrid endp
 
 DrawScoreAndLives proc
+	                         mov                     si, @data
+	                         DisplayTextVideoMode    10, 2, 1, scoreMessage1, 14                                                  	;Draw "Score#1"
+	                         DisplayTextVideoMode    10, 24, 1, scoreMessage2, 14                                                 	;Draw "Score#2"
+	                         DisplayTextVideoMode    10, 2, 23, livesMessage1, 14                                                 	;Draw "Lives#1"
+	                         DisplayTextVideoMode    10, 24, 23, livesMessage2, 14                                                	;Draw "Lives#2"
 	DrawScores:              
 	                         mov                     si,@data
 	                         DisplayNumberVideoMode  15, 1, player1Score
@@ -4512,6 +4513,7 @@ main proc far
 
 	Terminate1:              jmp                     Terminate2
 	ChatModule:              Chat
+	jmp MainMenu
 
 	LoadingMenu:             
 	                         SetVideoMode
