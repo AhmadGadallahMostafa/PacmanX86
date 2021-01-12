@@ -180,6 +180,18 @@ ValidateName macro name    ;valdiating that the first char of the letter is a al
 	Terminate:
 endm ValidateName
 
+RemoveValueBuffer macro
+local noValue
+        MOV AX,100H
+        INT 16h
+        CMP AX,100H
+        JZ novalue
+        MOV AH,0
+        INT 16H
+noValue:
+        nop      
+endm RemoveValueBuffer
+
 ;---------------------------------------------------------------------------------------
 
 ;---------------------------------------------------------------------------------------
@@ -2924,14 +2936,104 @@ FindPath macro gridX, gridY ; BFS Algorithm
 	EndSearch:
 endm FindPath
 
+Chat macro
+         mov           ax, @data
+	     mov           ds, ax
+         call          InitializeSerialPort
+	     SetTextMode
+         mov dl, 0
+         mov dh, 12
+         MoveCursor
+         DisplayString notificationBar
+         mov dl, 0
+         mov dh, 0
+	     MoveCursor
+	     DisplayString player1Name+2
+         mov dl, 0
+         mov dh, 13
+	     MoveCursor 
+	     DisplayString player2Name+2
+CheckKey:         
+        mov ah, 1
+        int 16h
+        cmp ah, 1ch
+        jz BeginWriting
+        cmp ah, 3dh
+        jz EndChat
+        RemoveValueBuffer
+        jmp CheckRecieved
+BeginWriting:
+           RemoveValueBuffer
+           mov dl, 7
+           mov dh, 15
+           MoveCursor
+	       mov  ah, 0Ah
+	       mov  dx, offset msgToSend
+	       int  21h
+           mov  si, offset msgToSend+1
+	       mov  cl, byte ptr [si]         ;Send size of string
+           mov  ah, cl
+           mov dx , 3fdh		; Line Status Register
+Again1:  	
+            in al , dx 			;Read Line Status
+  	     	and al , 00100000b
+            jz Again1
+            call SendValueThroughSerial
+            lea  si, msgToSend+2
+SendNextLetter:  
+        	mov dx , 3fdh		; Line Status Register
+Again:  	in al , dx 			;Read Line Status
+  	     	and al , 00100000b
+      		jz Again
+            mov  ah,[si]
+            call SendValueThroughSerial
+            inc  si
+            dec  cl   
+            jnz  SendNextLetter
+            jmp  CheckKey
+CheckRecieved:
+			call ReceiveValueFromSerial
+			cmp al, 1
+			jz CheckKey
+			lea SI, MsgToReceive+1
+			mov cl, ah
+			inc SI
+			mov dl, 7
+			mov dh, 1
+			MoveCursor
+ReceiveNextLetter:
+			mov dx, 3fdh		; Line Status Register
+Check1:
+			in al, dx 
+			and al, 1
+			jz Check1
+			call ReceiveValueFromSerial
+			mov dl, ah
+			MOV ah, 2
+			int 21h
+			dec cl
+			jnz ReceiveNextLetter
+			mov dl, 7
+			mov dh, 1
+			MoveCursor
+			DisplayString MsgToReceive+2
+			JMP CheckKey
+EndChat:
+            SetTextMode
+            mov dl, 0
+            mov dh, 0
+            MoveCursor
+            mov ah,4ch
+            int 21h
+endm Chat
 ;---------------------------------------------------------------------------------------
 
 .model huge
 .386 
 .stack 0ffffh
 .data
-	player1Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 1 name
-	player2Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 2 name
+	player1Name         db  30 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 1 name
+	player2Name         db  30 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 2 name
 	nameMessage         db  'Please Enter Your Name: $'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	;Message displayed to prompt the user to enter his name
 	enterMessage        db  'Press Enter to Continue$'
 	welcomeMessage1     db  'Welcome To Our Game, Player 1!$'
@@ -2942,7 +3044,7 @@ endm FindPath
 	endgameInfo         db  '*To end the game press ESC$'
 	level1Msg           db  '*To start level 1 press F1$'
 	level2Msg           db  '*To start level 2 press F2$'
-	notifactionBar      db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
+	notificationBar      db  '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$'
 	chooseLevelMsg      db  'Please Choose a level: $'
 	player1WinsMsg      db  '!!!! PLAYER1 WINS !!!!$'
 	player2WinsMsg      db  '!!!! PLAYER2 WINS !!!!$'
@@ -3103,6 +3205,11 @@ endm FindPath
 	IsF4Pressed         db  0
 	zerogrid            db  480 dup(0)
 	IsLevel2            db  0
+	letterToSend    db ?
+	msgToSend       db 60,?,60 dup('$')
+    MsgToReceive    db 60,?,60 dup('$')
+    letterToReceive db ?
+    confirmReceive  db 10
 
 .code
 MoveGhosts proc
@@ -4257,6 +4364,65 @@ DrawScoreAndLives proc
 	                         ret
 DrawScoreAndLives endp
 
+InitializeSerialPort proc	near
+	                            mov   dx,3fbh                                         	; Line Control Register
+	                            mov   al,10000000b                                    	;Set Divisor Latch Access Bit
+	                            out   dx,al                                           	;Out it
+	                            mov   dx,3f8h                                         	;Set LSB byte of the Baud Rate Divisor Latch register.
+	                            mov   al,0ch
+	                            out   dx,al
+	                            mov   dx,3f9h                                         	;Set MSB byte of the Baud Rate Divisor Latch register.
+	                            mov   al,00h
+	                            out   dx,al
+	                            mov   dx,3fbh                                         	;Set port configuration
+	                            mov   al,00011011b
+	                            out   dx, al
+	                            ret
+InitializeSerialPort endp
+;------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+;sends value in AH
+SendValueThroughSerial proc	near
+	                            push  dx
+	                            push  ax
+	;Check that Transmitter Holding Register is Empty
+	                            mov   dx , 3FDH                                       	; Line Status Register
+	                            in    al , dx                                         	;Read Line Status
+	                            test  al , 00100000b
+	                            jnz   EmptyLineRegister                               	;Not empty
+	                            pop   ax
+	                            pop   dx
+	                            ret
+	EmptyLineRegister:          
+	;If empty put the VALUE in Transmit data register
+	                            mov   dx , 3F8H                                       	; Transmit data register
+	                            mov   al, ah
+	                            out   dx, al
+	                            pop   ax
+	                            pop   dx
+	                            ret
+SendValueThroughSerial endp
+
+; receives a byte from serial stored in AH, and the AL is used a flag (0 means there is a value, 1 means no value was sent)
+ReceiveValueFromSerial proc	near
+	;Check that Data is Ready
+	                            push  dx
+	                            mov   dx , 3FDH                                       	; Line Status Register
+	                            in    al , dx
+	                            test  al , 1
+	                            JNZ   SerialInput                                     	;Not Ready
+	                            mov   al, 1
+	                            pop   dx
+	                            ret                                                   	;if 1 return
+	SerialInput:                
+	;If Ready read the VALUE in Receive data register
+	                            mov   dx , 03F8H
+	                            in    al , dx
+	                            mov   ah, al
+	                            mov   al, 0
+	                            pop   dx
+	                            ret
+ReceiveValueFromSerial endp
+
 main proc far
 
 	                         mov                     ax, @data
@@ -4334,7 +4500,7 @@ main proc far
 	                         mov                     dl, 0
 	                         mov                     dh, 22d
 	                         MoveCursor
-	                         Displaystring           notifactionBar
+	                         Displaystring           notificationBar
 	AgainTillKeyPressed:                                                                                                          	;checking if a key is pressed on the main menu
 	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
 	                         int                     21h
@@ -4342,11 +4508,15 @@ main proc far
 	                         int                     16h
 	                         cmp                     al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                         je                      Terminate1
+							 cmp					 al, scanF1
+							 je						 ChatModule
 	                         cmp                     al, scanF2                                                                   	;comparing ah with the f2 scan code if equal go to game loading menu
 	                         je                      LoadingMenu
 	                         jmp                     AgainTillKeyPressed
 
 	Terminate1:              jmp                     Terminate2
+	ChatModule:				 Chat
+
 	LoadingMenu:             
 	                         SetVideoMode
 
@@ -4371,7 +4541,7 @@ main proc far
 	                         mov                     dl, 0
 	                         mov                     dh, 22d
 	                         MoveCursor
-	                         Displaystring           notifactionBar
+	                         Displaystring           notificationBar
 	AgainTillKeyPressed2:                                                                                                         	;checking if a key is pressed on the main menu
 	                         mov                     ah, 08h                                                                      	;these two line are used to flush the keyboard buffer
 	                         int                     21h
