@@ -3865,6 +3865,7 @@ MovePacman proc
 	                         mov                     player2Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostRightplayer2:    
+	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         add                     player2Score,10
 	                         add                     currentXPlayer2,1
@@ -3883,6 +3884,7 @@ MovePacman proc
 	                         mov                     player2Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostUpplayer2:       
+	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         add                     player2Score,10
 	                         sub                     currentYPlayer2,1
@@ -3902,6 +3904,7 @@ MovePacman proc
 	                         mov                     player2Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostDownplayer2:     
+	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         add                     player2Score,10
 	                         add                     currentYPlayer2,1
@@ -3921,6 +3924,7 @@ MovePacman proc
 	                         mov                     player2Respawn, 1
 	                         jmp                     MoveLoop
 	eatghostLeftplayer2:     
+	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         add                     player2Score,10
 	                         sub                     currentXPlayer2,1
@@ -4485,7 +4489,7 @@ main proc far
 	LoadingMenu:             
 	                         SetVideoMode
 
-	                         ;DrawLoadingScreen       black,yellow,cyan                                                            	;The next code snippet is ofr the delay
+	;DrawLoadingScreen       black,yellow,cyan                                                            	;The next code snippet is ofr the delay
 	                         MOV                     CX, 3fH
 	                         MOV                     DX, 4240H
 	                         MOV                     AH, 86H
