@@ -2930,9 +2930,9 @@ endm FindPath
 .386 
 .stack 0ffffh
 .data
-	player1Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           	;variable holding player 1 name
-	player2Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           	;variable holding player 2 name
-	nameMessage         db  'Please Enter Your Name: $'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	;Message displayed to prompt the user to enter his name
+	player1Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 1 name
+	player2Name         db  15 , ? , 30 dup("$")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	;variable holding player 2 name
+	nameMessage         db  'Please Enter Your Name: $'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	;Message displayed to prompt the user to enter his name
 	enterMessage        db  'Press Enter to Continue$'
 	welcomeMessage1     db  'Welcome To Our Game, Player 1!$'
 	welcomeMessage2     db  'Welcome To Our Game, Player 2!$'
@@ -2956,11 +2956,12 @@ endm FindPath
 	player1Lives        dw  3h
 	player2Lives        dw  3h
 	scanF1              equ 3Bh
-	scanF2              equ 3Ch                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanF2              equ 3Ch                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	;Scan code for F2 - change to 00h if using emu8086 else keep 3Ch
+	scanF4              equ 3Eh
 	scanESC             equ 1Bh
 	grid                db  480 dup(127)
-	grid2               db  vacantCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,            horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode,vacantCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,              horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode
-	                    db  cornerLeftUpCode,cornerRightDownCode,127,127,127,127,127,127,127,127,                                                                                                                           127,127,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,127,127,                                                                                    127,127,127,127,127,127,127,127,cornerLeftDownCode,cornerRightUpCode
+	grid2               db  cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,    horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode,vacantCode,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,              horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,vacantCode
+	                    db  verticalWallCode,127,bigDotCode,127,ghostCode,127,trapCode,127,127,127,                                                                                                                                           127,127,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,127,127,                                                                                    127,127,127,127,127,127,127,127,cornerLeftDownCode,cornerRightUpCode
 	                    db  verticalWallCode,127,127,cornerLeftUpCode,cornerRightUpCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                      horizontalWallCode,cornerRightUpCode,127,127,127,127,127,127,cornerLeftUpCode,horizontalWallCode,                                                                                        horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftUpCode,cornerRightUpCode,127,127,verticalWallCode
 	                    db  verticalWallCode,127,cornerLeftUpCode,cornerRightDownCode,verticalWallCode,127,verticalWallCode,vacantCode,vacantCode,vacantCode,                                                               vacantCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,cornerLeftDownCode,horizontalWallCode,                                      horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,cornerLeftDownCode,cornerRightUpCode,127,verticalWallCode
 	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                              horizontalWallCode,cornerRightDownCode,127,verticalWallCode,127,127,verticalWallCode,127,127,127,                                                                                        127,127,127,127,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
@@ -2973,8 +2974,8 @@ endm FindPath
 	                    db  verticalWallCode,127,verticalWallCode,vacantCode,verticalWallCode,127,127,127,127,127,                                                                                                          127,127,127,verticalWallCode,127,127,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,                                                                                           horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,verticalWallCode,vacantCode,verticalWallCode,127,verticalWallCode
 	                    db  verticalWallCode,127,cornerLeftDownCode,cornerRightUpCode,verticalWallCode,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                       horizontalWallCode,cornerRightUpCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,verticalWallCode,vacantCode,                                   vacantCode,vacantCode,vacantCode,verticalWallCode,127,verticalWallCode,cornerLeftUpCode,cornerRightDownCode,127,verticalWallCode
 	                    db  verticalWallCode,127,127,cornerLeftDownCode,cornerRightDownCode,127,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,                                                horizontalWallCode,cornerRightDownCode,127,127,127,127,127,127,cornerLeftDownCode,horizontalWallCode,                                                                                    horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,127,cornerLeftDownCode,cornerRightDownCode,127,127,verticalWallCode
-	                    db  cornerLeftDownCode,cornerRightUpCode,127,127,127,127,127,127,127,127,                                                                                                                           127,127,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,127,127,                                                                                        127,127,127,127,127,127,127,127,cornerLeftUpCode,cornerRightDownCode
-	                    db  vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,vacantCode,vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,vacantCode
+	                    db  cornerLeftDownCode,cornerRightUpCode,127,127,127,127,127,127,127,127,                                                                                                                           127,127,127,cornerLeftUpCode,horizontalWallCode,horizontalWallCode,cornerRightUpCode,127,127,127,                                                                                        127,127,127,127,127,127,127,127,127,verticalWallCode
+	                    db  vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode,vacantCode,vacantCode,cornerLeftDownCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,          horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,horizontalWallCode,cornerRightDownCode
 	
 	black               equ 00h
 	blue                equ 01h
@@ -3097,8 +3098,11 @@ endm FindPath
 	player2Initial      dw  0
 	player1Lvl1Initial  equ 31
 	player2lvl1Initial  equ 448
-	player1Lvl2Initial  equ 241
-	player2Lvl2Initial  equ 238
+	player1Lvl2Initial  equ 31
+	player2Lvl2Initial  equ 448
+	IsF4Pressed         db  0
+	zerogrid            db  480 dup(0)
+	IsLevel2            db  0
 
 .code
 MoveGhosts proc
@@ -3221,6 +3225,9 @@ MovePacman proc
 	                         jz                      endMovePacMan
 	                         mov                     ah,0
 	                         int                     16h
+	                         cmp                     ah, scanF4
+	                         je                      ApplyF4InMove
+	AfterF4Check:            
 	; Added part for Freeze effect:
 	; The dec of FreezeDuration and setting it to zero when the Duration = 0 is in the IsFrozen proc.
 	; If Player 1 is frozen we will jmp straight to the part of the code that reads the scancodes responsible for the movement of player2
@@ -3251,6 +3258,9 @@ MovePacman proc
 	                         cmp                     ah,sSCanCode
 	                         je                      MovePlayer2Down
 	                         jmp                     MoveLoop
+	ApplyF4InMove:           
+	                         mov                     IsF4Pressed, 1
+	                         jmp                     AfterF4Check
 	MovePlayer1Right:        
 	                         cmp                     player1Moved,0
 	                         jne                     MoveLoop
@@ -3276,6 +3286,7 @@ MovePacman proc
 	                         cmp                     grid[bx],player2Code
 	                         je                      player2right
 	;end check player2
+	ContMoveRight1:
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         mov                     grid[bx],127
 	                         add                     currentXPlayer1,1
@@ -3298,6 +3309,7 @@ MovePacman proc
 	                         cmp                     grid[bx], 128
 	                         jae                     GhostLeftPlayer1
 	;check player2
+	ContMoveLeft1:
 	                         dec                     currentXPlayer1
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         inc                     currentXPlayer1
@@ -3328,6 +3340,7 @@ MovePacman proc
 	                         jae                     GhostUpPlayer1
 	;end check Ghosts
 	;check player2
+	ContMoveUp1:
 	                         dec                     currentYPlayer1
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         inc                     currentYPlayer1
@@ -3357,6 +3370,7 @@ MovePacman proc
 	                         jae                     GhostDownPlayer1
 	;end check Ghosts
 	;check player2
+	ContMoveDown1:
 	                         inc                     currentYPlayer1
 	                         GridToCell              currentXPlayer1 ,currentYPlayer1
 	                         dec                     currentYPlayer1
@@ -3371,8 +3385,13 @@ MovePacman proc
 	                         GridToCell              currentXPlayer1, currentYPlayer1
 	                         jmp                     CheckPowerUpsPlayer1
 	AfterPowerUp1:           
+	                         cmp                     player1Lives, 0
+	                         je                      Player1Deadd
 	                         mov                     grid[bx],player1Code
 	                         mov                     player1Moved,1
+	                         jmp                     MoveLoop
+	Player1Deadd:            
+	                         mov                     isPlayer1Dead, 1
 	                         jmp                     MoveLoop
 	CheckPowerUpsPlayer1:    
 	                         push                    bx
@@ -3408,10 +3427,12 @@ MovePacman proc
 	ApplyBigDot1:            
 	                         mov                     player1BigDotDur, bigDotDuartion
 	                         mov                     player1IsBigDot, 1
+	                         mov                     player1IsGreenDot, 0
 	                         jmp                     ReturningToMovePlayer1
 	ApplyGreenDot1:          
 	                         mov                     player1GreenDotDur, bigDotDuartion
 	                         mov                     player1IsGreenDot, 1
+	                         mov                     player1IsBigDot, 0
 	                         jmp                     ReturningToMovePlayer1
 
 	ApplyPacmanLife1:        
@@ -3516,7 +3537,8 @@ MovePacman proc
 	                         mov                     currentYPlayer2,14
 	                         add                     player1Score,20
 	                         inc                     currentXPlayer1
-	                         jmp                     moveLoop
+	                         mov                     player2Respawn, 1
+	                         jmp                     ContMoveRight1
 
 	player2left:             
 	                         cmp                     player1IsGreenDot,1
@@ -3528,7 +3550,8 @@ MovePacman proc
 	                         mov                     currentYPlayer2,14
 	                         add                     player1Score,20
 	                         dec                     currentXPlayer1
-	                         jmp                     moveLoop
+	                         mov                     player2Respawn, 1
+	                         jmp                     ContMoveLeft1
 
 	player2up:               
 	                         cmp                     player1IsGreenDot,1
@@ -3540,7 +3563,8 @@ MovePacman proc
 	                         mov                     currentYPlayer2,14
 	                         add                     player1Score,20
 	                         inc                     currentYPlayer1
-	                         jmp                     moveLoop
+	                         mov                     player2Respawn, 1
+	                         jmp                     ContMoveUp1
 
 	player2down:             
 	                         cmp                     player1IsGreenDot,1
@@ -3552,7 +3576,8 @@ MovePacman proc
 	                         mov                     currentYPlayer2,14
 	                         add                     player1Score,20
 	                         dec                     currentYPlayer1
-	                         jmp                     moveLoop
+	                         mov                     player2Respawn, 1
+	                         jmp                     ContMoveDown1
 	;--------------------------------------------------------------------------------------
 	MovePlayer2Right:        
 	                         cmp                     player2Moved,0
@@ -3579,6 +3604,7 @@ MovePacman proc
 	                         cmp                     grid[bx],player1Code
 	                         je                      player1right
 	;end check player1
+	ContMoveRight2:          
 
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
@@ -3609,6 +3635,7 @@ MovePacman proc
 	                         cmp                     grid[bx],player1Code
 	                         je                      player1left
 	;end check player1
+	ContMoveLeft2:           
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         sub                     currentXPlayer2,1
@@ -3638,6 +3665,7 @@ MovePacman proc
 	                         cmp                     grid[bx],player1Code
 	                         je                      player1up
 	;end check player1
+	ContMoveUp2:             
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx],127
 	                         sub                     currentYPlayer2,1
@@ -3667,6 +3695,7 @@ MovePacman proc
 	                         cmp                     grid[bx],player1Code
 	                         je                      player1down
 	;end check player1
+	ContMoveDown2:           
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         mov                     grid[bx], 127
 	                         add                     currentYPlayer2, 1
@@ -3675,10 +3704,14 @@ MovePacman proc
 	                         GridToCell              currentXPlayer2, currentYPlayer2
 	                         jmp                     CheckPowerUpsPlayer2
 	AfterPowerUp2:           
+	                         cmp                     player2Lives, 0
+	                         je                      Player2Deadd
 	                         mov                     grid[bx], player2Code
 	                         mov                     player2Moved, 1
 	                         jmp                     MoveLoop
-
+	Player2Deadd:            
+	                         mov                     isPlayer2Dead, 1
+	                         jmp                     MoveLoop
 	;--------------------------------------------------------------------------------------
 
 	CheckPowerUpsPlayer2:    
@@ -3715,10 +3748,12 @@ MovePacman proc
 	ApplyBigDot2:            
 	                         mov                     player2BigDotDur, bigDotDuartion
 	                         mov                     player2IsBigDot, 1
+	                         mov                     player2IsGreenDot, 0
 	                         jmp                     ReturningToMovePlayer2
 	ApplyGreenDot2:          
 	                         mov                     player2GreenDotDur, greenDotDuration
 	                         mov                     player2IsGreenDot, 1
+	                         mov                     player2IsBigDot, 0
 	                         jmp                     ReturningToMovePlayer2
 	ApplyPacmanLife2:        
 	                         add                     player2Lives, 1
@@ -3830,7 +3865,8 @@ MovePacman proc
 	                         mov                     currentYPlayer1,1
 	                         add                     player2Score,20
 	                         inc                     currentXPlayer2
-	                         jmp                     moveLoop
+	                         mov                     player1Respawn, 1
+	                         jmp                     ContMoveRight2
 
 	player1left:             
 	                         cmp                     player2IsGreenDot,1
@@ -3842,7 +3878,8 @@ MovePacman proc
 	                         mov                     currentYPlayer1,1
 	                         add                     player2Score,20
 	                         dec                     currentXPlayer2
-	                         jmp                     moveLoop
+	                         mov                     player1Respawn, 1
+	                         jmp                     ContMoveLeft2
 
 	player1up:               
 	                         cmp                     player2IsGreenDot,1
@@ -3854,7 +3891,8 @@ MovePacman proc
 	                         mov                     currentYPlayer1,1
 	                         add                     player2Score,20
 	                         inc                     currentYPlayer2
-	                         jmp                     moveLoop
+	                         mov                     player1Respawn, 1
+	                         jmp                     ContMoveUp2
 
 	player1down:             
 	                         cmp                     player2IsGreenDot,1
@@ -3862,11 +3900,13 @@ MovePacman proc
 	                         jmp                     moveLoop
 	eatplayer1down:          mov                     grid[bx], 127
 	                         dec                     player1Lives
-	                         mov                     currentXPlayer1,28
-	                         mov                     currentYPlayer1,14
+	                         mov                     currentXPlayer1,1
+	                         mov                     currentYPlayer1,1
 	                         add                     player2Score,20
 	                         dec                     currentYPlayer2
-	                         jmp                     moveLoop
+	                         mov                     player1Respawn, 1
+	                         jmp                     ContMoveDown2
+							 
 	terminate:               
 MovePacman endp
 
@@ -4056,10 +4096,15 @@ DrawGrid proc
 	                         jmp                     ContinueDraw
 	Player1NeedRespawn:      
 	                         mov                     player1Respawn, 0
+	                         cmp                     player1Lives, 0
+	                         je                      Player1DeadDrawGrid
 	; Change the initial location according to the level here:
 	                         mov                     bx, player1Initial
 	                         mov                     grid[bx], player1Code
 	                         mov                     player1Orientation, 'R'
+	                         jmp                     AfterRespawnCheck
+	Player1DeadDrawGrid:     
+	                         mov                     grid[31], 127
 	                         jmp                     AfterRespawnCheck
 	Player1:                 
 	                         cmp                     isPlayer1Dead, 1
@@ -4088,9 +4133,14 @@ DrawGrid proc
 	                         jmp                     DrawPlayer1
 	Player2NeedRespawn:      
 	                         mov                     player2Respawn, 0
+	                         cmp                     player2Lives, 0
+	                         je                      Player2DeadDrawGrid
 	                         mov                     bx, player2Initial
 	                         mov                     grid[bx], player2Code
 	                         mov                     player2Orientation, 'L'
+	                         jmp                     AfterRespawnCheck
+	Player2DeadDrawGrid:     
+							 mov                     grid[448], 127
 	                         jmp                     AfterRespawnCheck
 	Player2:                 
 	                         cmp                     isPlayer2Dead, 1
@@ -4213,8 +4263,9 @@ main proc far
 	                         mov                     ds, ax
 	                         mov                     es, ax
 	                         mov                     di, offset grid
+	                         
 
-	                         ;jmp                     SetLevel2
+	;jmp                     SetLevel2
 	;jmp                     setlevel1
 	GetPlayer1Name:                                                                                                               	;Reading first player name and saving it to player1name
 	                         SetTextMode
@@ -4343,10 +4394,8 @@ main proc far
 	                         DrawLevel1              player1Initial, player2Initial
 	                         jmp                     AfterLevelSelect
 	SetLevel2:               
-	                         mov                     player1Initial, player1Lvl2Initial
-	                         mov                     player2Initial, player2Lvl2Initial
-	                         mov                     currentYPlayer1, 8
-	                         mov                     currentYPlayer2, 7
+	                         mov                     player1Initial, player1Lvl1Initial
+	                         mov                     player2Initial, player2Lvl1Initial
 	                         mov                     borderColor, white
 	                         mov                     fillColor, filllvl2
 	StartLevel2:             
@@ -4379,6 +4428,8 @@ main proc far
 	                         xor                     isOpen, 1
 	                         cmp                     isPlayer1Dead, 1
 	                         je                      CheckPlayer2Lives
+	                         cmp                     IsF4Pressed, 1
+	                         je                      ApplyF4
 	                         jmp                     gameLoop
 	EndLoop:                 
 	                         jmp                     EndLoop
@@ -4419,7 +4470,58 @@ main proc far
 	                         cmp                     al, scanESC                                                                  	;comparing al with the esc ascci code if equal terminate the program esc pressed puts ah:01 and al:1b
 	                         je                      Terminate2
 	                         jmp                     AgainTillKeyPressed4
+	ApplyF4:                 
+	                         mov                     IsF4Pressed, 0
+	                         SetTextMode
+	                         mov                     dx, 0a0dh
+	; mov                     dl, 25d
+	                         MoveCursor
+	                         Displaystring           player1Name+2
+	                         mov                     dx, 0b0dh
+	;mov                     dl, 23d
+	                         MoveCursor
+	                         Displaystring           scoreMessage1
+	                         DisplayNumber           player1Score
+	                         mov                     dx, 0e0dh
+	;mov                     dl, 25d
+	                         MoveCursor
+	                         Displaystring           player2Name+2
+	                         mov                     dx, 0f0dh
+	;mov                     dl, 23d
+	                         MoveCursor
+	                         Displaystring           scoreMessage2
+	                         DisplayNumber           player2Score
 
+	                         MOV                     CX, 55H                                                                      	; delay
+	                         MOV                     DX, 4240H
+	                         MOV                     AH, 86H
+	                         INT                     15H
+
+	                         mov                     player1Lives, 3
+	                         mov                     player2Lives, 3
+	                         mov                     player1Score, 0
+	                         mov                     player2score, 0
+	                         mov                     player1IsBigDot, 0
+	                         mov                     player1IsFrozen, 0
+	                         mov                     player1IsGreenDot, 0
+	                         mov                     player2IsBigDot, 0
+	                         mov                     player2IsFrozen, 0
+	                         mov                     player2IsGreenDot, 0
+	                         mov                     ghostsIsFrozen, 0
+	                         mov                     isPlayer1Dead,0
+	                         mov                     isPlayer2Dead,0
+	                         mov                     player1Respawn,0
+	                         mov                     player2Respawn,0
+	                         mov                     currentXPlayer1, 1
+	                         mov                     currentYPlayer1, 1
+	                         mov                     currentXPlayer2, 28
+	                         mov                     currentYPlayer2, 14
+	                         mov                     cx, 480
+	                         mov                     si, offset zerogrid
+	                         rep                     movsb
+
+	;SetTextMode
+	                         jmp                     MainMenu
 
 main endp
 end main
